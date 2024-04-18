@@ -8,6 +8,7 @@ import {dbUrl} from "./config";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
+import CreteRecipePage from "./pages/CreteRecipePage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
               <Route path={'/login'} element={<LoginPage/>}/>
               <Route path={'/registration'} element={<RegisterPage/>}/>
               <Route path={'/profile/:id'} element={<ProfilePage/>}/>
+              <Route path={'/crateRecipe'} element={<CreteRecipePage/>}/>
               <Route path={'/'} element={<p>Успешеый вход</p>}/>
           </Routes>
       </BrowserRouter>
