@@ -12,16 +12,15 @@ const Recipe = new Schema({
     createdAt: {type: Date, default: Date.now(), immutable: true},
 
 
-    // comments: [{type: Object, ref: 'RecipeStep'}],
-
     ingredients: [{
         ingredient: { type: Schema.Types.ObjectId, ref: 'RecipeIngredient', required: true },
         quantity: { type: Number, required: true }
     }],
-    kitchen: [{type: Schema.Types.ObjectId, ref: 'RecipeIngredient', required: true}],
-    type: [{type: Schema.Types.ObjectId, ref: 'RecipeIngredient', required: true}],
+    comments: [{type: Schema.Types.ObjectId, ref: 'RecipeComment', required: true}],
+    kitchen: {type: Schema.Types.ObjectId, ref: 'RecipeIngredient', required: true},
+    type: {type: Schema.Types.ObjectId, ref: 'RecipeIngredient', required: true},
     equipments: [{type: Schema.Types.ObjectId, ref: 'RecipeIngredient', required: true}],
-    steps: [{type: Schema.Types.ObjectId, ref: 'RecipeStep', required: true}]
+    // steps: [{type: Schema.Types.ObjectId, ref: 'RecipeStep', required: true}]
 
 
 
