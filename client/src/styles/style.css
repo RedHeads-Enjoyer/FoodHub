@@ -1,0 +1,12 @@
+@import "colors.css";
+@import "fonts.css";
+@import "numbers.css";
+* {
+    margin: 0;
+}
+
+* {
+    color: var(--font-main-color);
+    font-size: var(--font-main-size);
+    font-family: Roboto, sans-serif;
+}
