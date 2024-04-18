@@ -19,9 +19,9 @@ router.put('/users/:id', [
 
 router.post('/registration', controller.registration)
 router.post('/login', controller.login)
-router.get('/users', roleMiddleware(['admin']), controller.getUsers)
-router.get('/users/:id', controller.getUser)
-router.delete('/users/:id', ownerMiddleware(['admin']), controller.deleteUser)
-router.put('/users/:id', ownerMiddleware(['admin']), controller.updateUser)
+router.get('/users', roleMiddleware(['admin']), controller.getAll)
+router.get('/users/:id', controller.getOneById)
+router.delete('/users/:id', ownerMiddleware(['admin']), controller.deleteById)
+router.put('/users/:id', ownerMiddleware(['admin']), controller.updateById)
 
 module.exports = router

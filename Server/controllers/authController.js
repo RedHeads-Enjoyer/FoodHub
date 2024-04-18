@@ -57,7 +57,7 @@ class authController {
         }
     }
 
-    async getUsers(req, res) {
+    async getAll(req, res) {
         try {
             const users = await User.find()
             res.json(users)
@@ -67,7 +67,7 @@ class authController {
         }
     }
 
-    async getUser(req, res) {
+    async getOneById(req, res) {
         const {id} = req.params
         try {
             const user = await User.findById(id)
@@ -81,7 +81,7 @@ class authController {
     }
 
 
-    async deleteUser(req, res) {
+    async deleteById(req, res) {
         const { id } = req.params;
         try {
             const user = await User.findById(id);
@@ -96,7 +96,7 @@ class authController {
         }
     }
 
-    async updateUser(req, res) {
+    async updateById(req, res) {
         const {id} = req.params
         const updatedFields = req.body
         try {

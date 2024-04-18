@@ -26,7 +26,7 @@ class recipeIngredientController {
         }
     }
 
-    async getRecipeIngredients(req, res) {
+    async getAll(req, res) {
         try {
             const recipeIngredients = await RecipeIngredient.find()
             res.json(recipeIngredients)
@@ -35,7 +35,7 @@ class recipeIngredientController {
         }
     }
 
-    async getRecipeIngredient(req, res) {
+    async getOneById(req, res) {
         const {id} = req.params
         try {
             const recipeIngredient = await RecipeIngredient.findById(id)
@@ -49,7 +49,7 @@ class recipeIngredientController {
     }
 
 
-    async deleteRecipeIngredient(req, res) {
+    async deleteById(req, res) {
         const { id } = req.params;
         try {
             const recipeIngredient = await RecipeIngredient.findById(id);
@@ -64,7 +64,7 @@ class recipeIngredientController {
         }
     }
 
-    async updateRecipeIngredient(req, res) {
+    async updateById(req, res) {
         const {id} = req.params
         const updatedFields = req.body
         try {
