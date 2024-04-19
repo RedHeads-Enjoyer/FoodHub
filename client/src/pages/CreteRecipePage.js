@@ -4,6 +4,8 @@ import axios from "axios";
 import {currentUser, dbUrl} from "../config";
 import {Link, useNavigate} from "react-router-dom";
 import {useParams} from "react-router-dom";
+import loginPage from "./LoginPage";
+
 
 const CreateRecipePage = () => {
     const [recipe, setRecipe] = useState({
@@ -12,9 +14,9 @@ const CreateRecipePage = () => {
         // image: "",
         difficult: 1,
         ingredients: [],
-        comments: [],
-        kitchen: "",
-        type: "",
+        // comments: [],
+        kitchenID: "",
+        typeID: "",
         equipment: [],
     })
 
@@ -25,45 +27,6 @@ const CreateRecipePage = () => {
     const [kitchens, setKitchens] = useState([])
     const [types, setTypes] = useState([])
 
-    const handleChangeRecipe = ({currentTarget: input}) => {
-        setRecipe({...recipe, [input.name]: input.value})
-    }
-
-    const handleChangeSelectedIngredients = (e, ingId) => {
-        const { name, value } = e.target;
-        // Обновляем состояние компонента, включая новое значение quantity для соответствующего ингредиента
-        setSelectedIngredients(prevIngredients => {
-            return prevIngredients.map(ing => {
-                if (ing._id === ingId) {
-                    return { ...ing, [name]: value };
-                }
-                return ing;
-            });
-        });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        console.log(recipe)
-        // try {
-        //     const url = dbUrl + '/auth/login'
-        //     const response = await axios.post(url, data)
-        //     localStorage.setItem("token", response.data.token)
-        //     navigate(`/profile/${currentUser._id}`)
-        // } catch (error) {
-        //     if (error.response) {
-        //         // Здесь обрабатываем ошибку на уровне ответа от сервера
-        //         console.log(error.response.data.message)
-        //         setError(error.response.data.message)
-        //     } else if (error.request.request.request) {
-        //         // Здесь обрабатываем ошибку на уровне запроса
-        //         console.log('Ошибка запроса:', error.request)
-        //     } else {
-        //         // Здесь обрабатываем другие типы ошибок
-        //         console.log('Ошибка:', error.message)
-        //     }
-        // }
-    }
 
     useEffect(() => {
         axios
@@ -95,9 +58,104 @@ const CreateRecipePage = () => {
             )
     }, [])
 
+
+    const handleChangeRecipe = ({currentTarget: input}) => {
+        setRecipe({...recipe, [input.name]: input.value})
+    }
+
+    const handleChangeSelectedIngredientsQuantity = (e, ingId) => {
+        const { name, value } = e.target;
+        setSelectedIngredients(prevIngredients => {
+            return prevIngredients.map(ing => {
+                if (ing._id === ingId) {
+                    return { ...ing, [name]: value };
+                }
+                return ing;
+            });
+        });
+    };
+
+    const handleChangeSelectedIngredients = () => {
+        let recipeIngredients = []
+        selectedIngredients.map((ingredient) => {
+            recipeIngredients.push({
+                ingredientID: ingredient._id,
+                quantity: Number(ingredient.quantity)
+            })
+        })
+        setRecipe({
+            ...recipe,
+            ingredients: recipeIngredients,
+        })
+    }
+
+    const handleChangeSelectedEquipment = () => {
+        let recipeEquipment = []
+        selectedEquipment.map((equipment) => {
+            recipeEquipment.push(String(equipment._id))
+        })
+        setRecipe({
+            ...recipe,
+            equipment: recipeEquipment,
+        })
+    }
+
+    const handleChangeRecipeType = (e) => {
+        const selectedType = types.find(type => type.name === e.target.value);
+        setRecipe({
+            ...recipe,
+            typeID: selectedType._id,
+        })
+    }
+
+    const handleChangeRecipeKitchen = (e) => {
+        let selectedKitchen = kitchens.find(kitchen => kitchen.name === e.target.value)
+        setRecipe({
+            ...recipe,
+            kitchenID:  selectedKitchen._id,
+        })
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+
+
+
+        try {
+            const url = dbUrl + '/recipe'
+            const response = await axios.post(url, recipe)
+            console.log(response)
+        } catch (error) {
+            if (error.response) {
+                // Здесь обрабатываем ошибку на уровне ответа от сервера
+                console.log(error.response.data.message)
+            } else if (error.request.request.request) {
+                // Здесь обрабатываем ошибку на уровне запроса
+                console.log('Ошибка запроса:', error.request)
+            } else {
+                // Здесь обрабатываем другие типы ошибок
+                console.log('Ошибка:', error.message)
+            }
+        }
+    }
+
+    useEffect(() => {
+        console.log(recipe)
+    }, [recipe])
+
+    useEffect(() => {
+        handleChangeSelectedIngredients()
+    }, [selectedIngredients])
+
+    useEffect(() => {
+        handleChangeSelectedEquipment()
+    }, [selectedEquipment])
+
+
     const addIngredient = (e) => {
         setIngredients(ingredients.filter(ing => ing._id !== e._id))
-        setSelectedIngredients([...selectedIngredients, {...e, quantity: 0}])
+        setSelectedIngredients([...selectedIngredients, {...e, quantity: 1}])
     }
 
     const removeIngredient = (e) => {
@@ -115,23 +173,10 @@ const CreateRecipePage = () => {
         setEquipment([...equipment, e])
     }
 
-
-    // useEffect(() => {
-    //     axios
-    //         .get(`http://localhost:5000/api/auth/users/${id}`)
-    //         .then(data => {
-    //             setData(data.data)
-    //             console.log(data.data)
-    //         })
-    //         .catch(error => {
-    //             console.error("Ошибка получения данных:", error.response.data.message);
-    //         });
-    // }, [])
-
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <p>Вход</p>
+                <p>Создание рецепта</p>
                 <input
                     type={"text"}
                     placeholder={"Название"}
@@ -180,7 +225,7 @@ const CreateRecipePage = () => {
                                 type={"number"}
                                 placeholder={"Количество"}
                                 name={"quantity"}
-                                onChange={(e) => handleChangeSelectedIngredients(e, ing._id)}
+                                onChange={(e) => handleChangeSelectedIngredientsQuantity(e, ing._id)}
                                 value={ing.quantity}
                                 required
                             />
@@ -195,34 +240,24 @@ const CreateRecipePage = () => {
                     </div>
                 ))}
                 <p>Добавленное оборужование</p>
-                {   selectedIngredients.length === 0 ? (
-                    <p>Нет добавленных ингредиентов</p>
+                {   selectedEquipment.length === 0 ? (
+                    <p>Нет добавленного оборудования</p>
                 ) : (
-                    selectedIngredients.map((ing) => (
-                        <div key={ing._id} >
-                            <button onClick={() => removeIngredient(ing)}>{ing.name}</button>
-                            <input
-                                min={1}
-                                max={100000}
-                                type={"number"}
-                                placeholder={"Количество"}
-                                name={"quantity"}
-                                onChange={(e) => handleChangeSelectedIngredients(e, ing._id)}
-                                value={ing.quantity}
-                                required
-                            />
+                    selectedEquipment.map((eq) => (
+                        <div key={eq._id} >
+                            <button onClick={() => removeEquipment(eq)}>{eq.name}</button>
                         </div>
                     )))
                 }
                 <p>Тип кухни</p>
-                <select name={"kitchen"} onChange={handleChangeRecipe} defaultValue="">
+                <select name={"kitchenID"} onChange={handleChangeRecipeKitchen} defaultValue="">
                     <option disabled value="">Выберите кухню</option>
                     {kitchens.map((kitchen) => (
                         <option key={kitchen._id}>{kitchen.name}</option>
                     ))}
                 </select>
                 <p>Тип блюда</p>
-                <select name={"type"} onChange={handleChangeRecipe} defaultValue="">
+                <select name={"typeID"} onChange={handleChangeRecipeType} defaultValue="">
                     <option disabled value="">Выберите тип</option>
                     {types.map((type) => (
                         <option key={type._id}>{type.name}</option>

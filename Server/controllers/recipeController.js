@@ -1,10 +1,11 @@
 const Recipe = require('../models/Recipe')
+const ObjectId  = require('mongoose').Types.ObjectId
 
 class recipeController {
     async create(req, res) {
         try {
-            const {name, ingredients} = req.body
-            const recipe = new Recipe({name, ingredients})
+            const {name, description, difficult, ingredients, kitchenID, typeID, equipment} = req.body
+            const recipe = new Recipe({name, description, difficult, ingredients, kitchenID, typeID, equipment})
             await recipe.save()
             return res.json({message: "Рецепт успешно добавлен"})
         } catch (e) {
