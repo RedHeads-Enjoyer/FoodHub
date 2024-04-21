@@ -1,16 +1,17 @@
 const Recipe = require('../models/Recipe')
-const ObjectId  = require('mongoose').Types.ObjectId
 
 class recipeController {
     async create(req, res) {
         try {
-            const {name, description, difficult, ingredients, kitchenID, typeID, equipment} = req.body
-            const recipe = new Recipe({name, description, difficult, ingredients, kitchenID, typeID, equipment})
-            await recipe.save()
-            return res.json({message: "Рецепт успешно добавлен"})
+            const {name, description, difficult, ingredients, kitchenID, typeID, equipment, steps, authorID} = req.body;
+            const image = req.file.path; // Путь к загруженному файлу изображения
+            const recipe = new Recipe({name, description, difficult, ingredients, kitchenID, typeID, equipment, steps, authorID, image});
+
+            await recipe.save();
+            return res.json({message: "Рецепт успешно добавлен"});
         } catch (e) {
-            console.log(e)
-            return res.status(500).json({message: 'Ошибка во время добавления рецепта'})
+            console.log(e);
+            return res.status(500).json({message: 'Ошибка во время добавления рецепта'});
         }
     }
 

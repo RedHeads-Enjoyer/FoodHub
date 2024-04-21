@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const multer = require("multer")
 const authRouter = require('./routers/authRouter')
 const recipeIngredientRouter = require('./routers/recipeIngredientRouter')
 const recipeRouter = require('./routers/recipeRouter')
