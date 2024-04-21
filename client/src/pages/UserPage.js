@@ -1,11 +1,10 @@
 import React, {useEffect} from "react";
 import {useState} from "react";
 import axios from "axios";
-import {currentUser} from "../config";
-import {Link, useNavigate} from "react-router-dom";
 import {useParams} from "react-router-dom";
 
-const LoginPage = () => {
+const UserPage = () => {
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"))
     const [data, setData] = useState({
         _id: 0,
         email: "",
@@ -16,7 +15,7 @@ const LoginPage = () => {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:5000/api/auth/users/${id}`)
+            .get(`http://localhost:5000/api/auth/user/${id}`)
             .then(data => {
                 setData(data.data)
                 console.log(data.data)
@@ -38,4 +37,4 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage
+export default UserPage

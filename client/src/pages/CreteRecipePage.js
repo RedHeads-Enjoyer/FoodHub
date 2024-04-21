@@ -1,23 +1,23 @@
 import React, {useEffect} from "react";
 import {useState} from "react";
 import axios from "axios";
-import {currentUser, dbUrl} from "../config";
-import {Link, useNavigate} from "react-router-dom";
-import {useParams} from "react-router-dom";
-import loginPage from "./LoginPage";
+import {dbUrl} from "../config";
 
 
 const CreateRecipePage = () => {
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"))
     const [recipe, setRecipe] = useState({
         name: "",
         description: "",
-        // image: "",
+        image: "3",
         difficult: 1,
         ingredients: [],
         // comments: [],
         kitchenID: "",
         typeID: "",
         equipment: [],
+        authorID: currentUser._id,
+        steps: []
     })
 
     const [selectedIngredients, setSelectedIngredients] = useState([])
@@ -26,36 +26,39 @@ const CreateRecipePage = () => {
     const [selectedEquipment, setSelectedEquipment] = useState([])
     const [kitchens, setKitchens] = useState([])
     const [types, setTypes] = useState([])
+    const [image, setImage] = useState("")
 
 
     useEffect(() => {
         axios
-            .get('http://localhost:5000/api/ingredient')
+            .get(dbUrl + '/ingredient')
             .then(data => {
                 setIngredients(data.data)
                 }
             )
 
         axios
-            .get('http://localhost:5000/api/kitchen')
+            .get(dbUrl + '/kitchen')
             .then(data => {
                     setKitchens(data.data)
                 }
             )
 
         axios
-            .get('http://localhost:5000/api/type')
+            .get(dbUrl + '/type')
             .then(data => {
                     setTypes(data.data)
                 }
             )
 
         axios
-            .get('http://localhost:5000/api/equipment')
+            .get(dbUrl + '/equipment')
             .then(data => {
                     setEquipment(data.data)
                 }
             )
+
+        console.log(recipe.authorID)
     }, [])
 
 
@@ -75,12 +78,14 @@ const CreateRecipePage = () => {
         });
     };
 
+
+
     const handleChangeSelectedIngredients = () => {
         let recipeIngredients = []
-        selectedIngredients.map((ingredient) => {
+        selectedIngredients.forEach((ingredient) => {
             recipeIngredients.push({
                 ingredientID: ingredient._id,
-                quantity: Number(ingredient.quantity)
+                quantity: parseInt(ingredient.quantity)
             })
         })
         setRecipe({
@@ -91,7 +96,7 @@ const CreateRecipePage = () => {
 
     const handleChangeSelectedEquipment = () => {
         let recipeEquipment = []
-        selectedEquipment.map((equipment) => {
+        selectedEquipment.forEach((equipment) => {
             recipeEquipment.push(String(equipment._id))
         })
         setRecipe({
@@ -116,43 +121,6 @@ const CreateRecipePage = () => {
         })
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-
-
-
-
-        try {
-            const url = dbUrl + '/recipe'
-            const response = await axios.post(url, recipe)
-            console.log(response)
-        } catch (error) {
-            if (error.response) {
-                // Здесь обрабатываем ошибку на уровне ответа от сервера
-                console.log(error.response.data.message)
-            } else if (error.request.request.request) {
-                // Здесь обрабатываем ошибку на уровне запроса
-                console.log('Ошибка запроса:', error.request)
-            } else {
-                // Здесь обрабатываем другие типы ошибок
-                console.log('Ошибка:', error.message)
-            }
-        }
-    }
-
-    useEffect(() => {
-        console.log(recipe)
-    }, [recipe])
-
-    useEffect(() => {
-        handleChangeSelectedIngredients()
-    }, [selectedIngredients])
-
-    useEffect(() => {
-        handleChangeSelectedEquipment()
-    }, [selectedEquipment])
-
-
     const addIngredient = (e) => {
         setIngredients(ingredients.filter(ing => ing._id !== e._id))
         setSelectedIngredients([...selectedIngredients, {...e, quantity: 1}])
@@ -173,6 +141,106 @@ const CreateRecipePage = () => {
         setEquipment([...equipment, e])
     }
 
+    const addRecipeStep = (e) => {
+        e.preventDefault()
+        setRecipe({...recipe, steps: [...recipe.steps, {
+                description: "",
+                duration: ""
+            }]})
+    }
+
+    const handleChangeRecipeStepDescription = (e, index) => {
+        const { name, value } = e.target;
+        setRecipe(prevRecipe => {
+            const updatedSteps = [...prevRecipe.steps];
+            updatedSteps[index][name] = value;
+            return { ...prevRecipe, steps: updatedSteps };
+        });
+    }
+
+    const handleChangeRecipeStepDuration = (e, index) => {
+        const { name, value } = e.target;
+        setRecipe(prevRecipe => {
+            const updatedSteps = [...prevRecipe.steps];
+            updatedSteps[index][name] = parseInt(value);
+            return { ...prevRecipe, steps: updatedSteps };
+        });
+    };
+
+    const handleRecipeStepDelete = (e, index) => {
+        e.preventDefault()
+        setRecipe(prevRecipe => {
+            let updatedSteps = [...prevRecipe.steps];
+            updatedSteps.splice(index, 1)
+            return { ...prevRecipe, steps: updatedSteps };
+        });
+    }
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0]; // Получаем выбранный файл изображения
+        if (file) {
+            setRecipe(prevRecipe => ({
+                ...prevRecipe,
+                image: file // Обновляем состояние recipe, добавляя выбранный файл в качестве изображения
+            }));
+
+            let reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = () => {
+                setImage(reader.result)
+            }
+        }
+
+    };
+
+    useEffect(() => {
+        console.log(recipe)
+    }, [recipe])
+
+    useEffect(() => {
+        handleChangeSelectedIngredients()
+    }, [selectedIngredients])
+
+    useEffect(() => {
+        handleChangeSelectedEquipment()
+    }, [selectedEquipment])
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const formData = new FormData();
+            formData.append('image', recipe.image); // Используем выбранный файл из состояния recipe
+            formData.append('name', recipe.name);
+            formData.append('description', recipe.description);
+            formData.append('difficult', recipe.difficult);
+            formData.append('kitchenID', recipe.kitchenID);
+            formData.append('typeID', recipe.typeID);
+            formData.append('equipment', recipe.equipment);
+            formData.append('steps', recipe.steps);
+            formData.append('authorID', recipe.authorID);
+
+
+            const url = dbUrl + '/recipe';
+            const response = await axios.post(url, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            console.log(response);
+        } catch (error) {
+            if (error.response) {
+                // Здесь обрабатываем ошибку на уровне ответа от сервера
+                console.log(error.response.data.message);
+            } else if (error.request) {
+                // Здесь обрабатываем ошибку на уровне запроса
+                console.log('Ошибка запроса:', error.request);
+            } else {
+                // Здесь обрабатываем другие типы ошибок
+                console.log('Ошибка:', error.message);
+            }
+        }
+    }
+
     return (
         <div>
             <form onSubmit={handleSubmit}>
@@ -185,6 +253,17 @@ const CreateRecipePage = () => {
                     value={recipe.name}
                     required
                 />
+                <input
+                    type="file"
+                    onChange={handleImageChange}
+                />
+                {image === "" || image == null ? "" :
+                    <img
+                        style={{width: "200px"}}
+                        src={image}
+                    />
+                }
+
                 <textarea
                     rows="5"
                     cols="40"
@@ -263,6 +342,35 @@ const CreateRecipePage = () => {
                         <option key={type._id}>{type.name}</option>
                     ))}
                 </select>
+                {/* Создание этапов */}
+                {recipe.steps.map((step, index) => (
+                    <div key={`step${index}`}>
+                        <p>{`Этап ${index + 1}`}</p>
+                        <input
+                            min={1}
+                            max={100000}
+                            type={"number"}
+                            placeholder={"Количество"}
+                            name={"duration"}
+                            onChange={(e) => handleChangeRecipeStepDuration(e, index)}
+                            value={step.duration}
+                            required
+                        />
+                        <textarea
+                            rows="5"
+                            cols="40"
+                            placeholder={"Описание"}
+                            name={"description"}
+                            onChange={(e) => handleChangeRecipeStepDescription(e, index)}
+                            value={step.description}
+                            required
+                        />
+                        <button onClick={(e) => handleRecipeStepDelete(e, index)}>Удалить этап</button>
+                    </div>
+                ))}
+                <div>
+                    <button onClick={addRecipeStep}>Добавить этап</button>
+                </div>
                 <br/>
                 <br/>
                 <br/>

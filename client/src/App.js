@@ -1,14 +1,11 @@
-import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./styles/style.css"
-import RecipeCarp from "./components/RecipeCarp";
-import {useState, useEffect} from "react";
-import axios from "axios";
-import {dbUrl} from "./config";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import ProfilePage from "./pages/ProfilePage";
+import UserPage from "./pages/UserPage";
 import CreteRecipePage from "./pages/CreteRecipePage";
+import SearchPage from "./pages/SearchPage";
+import ShowRecipePage from "./pages/ShowRecipePage";
 
 function App() {
   return (
@@ -16,8 +13,10 @@ function App() {
           <Routes>
               <Route path={'/login'} element={<LoginPage/>}/>
               <Route path={'/registration'} element={<RegisterPage/>}/>
-              <Route path={'/profile/:id'} element={<ProfilePage/>}/>
-              <Route path={'/crateRecipe'} element={<CreteRecipePage/>}/>
+              <Route path={'/user/:id'} element={<UserPage/>}/>
+              <Route path={'/createRecipe'} element={<CreteRecipePage/>}/>
+              <Route path={'/search'} element={<SearchPage/>}/>
+              <Route path={'/recipe/:id'} element={<ShowRecipePage/>}/>
               <Route path={'/'} element={<p>Успешеый вход</p>}/>
           </Routes>
       </BrowserRouter>

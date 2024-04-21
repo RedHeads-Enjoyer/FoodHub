@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useState} from "react";
 import axios from "axios";
 import {currentUser, dbUrl, jwtToken} from "../config";
@@ -22,8 +22,17 @@ const LoginPage = () => {
         try {
             const url = dbUrl + '/auth/login'
             const response = await axios.post(url, data)
-            localStorage.setItem("token", response.data.token)
-            navigate(`/profile/${currentUser._id}`)
+            const token = response.data.token
+            localStorage.setItem("token", token)
+            console.log("get token")
+            const decodedToken = jwtDecode(token)
+            localStorage.setItem("currentUser", JSON.stringify({
+                _id: decodedToken.id,
+                roles: decodedToken.roles,
+                username: decodedToken.username
+            }))
+            let currentUser = JSON.parse(localStorage.getItem("currentUser"))
+            navigate('/user/' + currentUser._id)
         } catch (error) {
             if (error.response) {
                 // Здесь обрабатываем ошибку на уровне ответа от сервера
