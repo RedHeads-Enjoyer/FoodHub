@@ -5,7 +5,8 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/'); // Укажите путь к директории, куда вы хотите сохранять файлы
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname); // Сохраните файл с его оригинальным именем
+        const uniqueSuffix = Date.now()
+        cb(null, uniqueSuffix + "_" + file.originalname); // Сохраните файл с его оригинальным именем
     }
 });
 

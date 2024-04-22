@@ -6,6 +6,7 @@ const recipeRouter = require('./routers/recipeRouter')
 const recipeKitchenRouter = require('./routers/recipeKitchenRouter')
 const recipeEquipmentRouter = require('./routers/recipeEquipmentRouter')
 const recipeTypeRouter = require('./routers/recipeTypeRouter')
+const imageRouter = require('./routers/imageRouter')
 const cors = require('cors')
 const PORT = process.env.PORT || 5000
 
@@ -19,6 +20,7 @@ app.use('/api', recipeRouter)
 app.use('/api', recipeTypeRouter)
 app.use('/api', recipeKitchenRouter)
 app.use('/api', recipeEquipmentRouter)
+app.use('/api', imageRouter)
 
 const start = async () => {
     try {

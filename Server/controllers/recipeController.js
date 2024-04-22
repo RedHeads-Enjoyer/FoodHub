@@ -5,7 +5,7 @@ class recipeController {
     async create(req, res) {
         try {
             const {name, description, difficult, ingredients, kitchenID, typeID, equipment, steps, authorID} = req.body;
-            const image = req.file.path; // Путь к загруженному файлу изображения
+            const image = req.file.filename; // Путь к загруженному файлу изображения
             const recipe = new Recipe({name, description, difficult, ingredients, kitchenID, typeID, equipment, steps, authorID, image});
 
             await recipe.save();

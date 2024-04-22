@@ -3,7 +3,7 @@ const {Schema, model} = require('mongoose')
 const Recipe = new Schema({
     name: {type: String, required: true},
     description: {type: String, required: true},
-    image: {type: Buffer, required: true},
+    image: {type: String, required: true},
     views: {type: Number, default: 0},
     rating: {type: Number, default: 0},
     votes: {type: Number, default: 0},
