@@ -1,0 +1,17 @@
+.card__wrapper {
+    width: 300px;
+}
+
+.image__wrapper img {
+    width: 100%;
+}
+
+.recipe__name {
+    text-align: center;
+    font-weight: var(--font-accent-width);
+}
+
+.info__grid p {
+    color: var(--font-semi-color);
+    font-size: var(--fonst-semi-size);
+}
