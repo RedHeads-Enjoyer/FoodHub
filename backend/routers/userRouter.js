@@ -15,6 +15,7 @@ router.put('/users/:id', [
 
 router.get('/user', controller.getAll)
 router.get('/user/me', authMiddleware,controller.getMe)
+router.get('/user/brief/:id',controller.getBrief)
 router.get('/user/:id', controller.getOneById)
 router.delete('/user/:id', ownerMiddleware(['admin']), controller.deleteById)
 router.put('/user/:id', upload.single('image'), controller.updateById)

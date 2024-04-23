@@ -1,8 +1,9 @@
-import React, {useEffect} from "react";
 import {useState} from "react";
 import axios from "axios";
-import {currentUser, dbUrl} from "../config";
+import {dbUrl} from "../config";
 import {Link, useNavigate} from "react-router-dom";
+import classes from "./loginPage.module.css";
+import Button from "../components/Button";
 
 
 const LoginPage = () => {
@@ -38,30 +39,32 @@ const LoginPage = () => {
     }
 
     return (
-        <>
+        <div className={classes.login__wrapper}>
             <Link to={'/registration'}>Регистрация</Link>
             <form onSubmit={handleSubmit}>
-                <p>Вход</p>
-                <p>{error}</p>
-                <input
-                    type={"text"}
-                    placeholder={"Email"}
-                    name={"email"}
-                    onChange={handleChange}
-                    value={data.email}
-                    required
-                />
-                <input
-                    type={"text"}
-                    placeholder={"Пароль"}
-                    name={"password"}
-                    onChange={handleChange}
-                    value={data.password}
-                    required
-                />
-                <button type={"submit"}>Войти</button>
+                <div className={classes.form__wrapper}>
+                    <p>Вход</p>
+                    <p>{error}</p>
+                    <input
+                        type={"text"}
+                        placeholder={"Email"}
+                        name={"email"}
+                        onChange={handleChange}
+                        value={data.email}
+                        required
+                    />
+                    <input
+                        type={"text"}
+                        placeholder={"Пароль"}
+                        name={"password"}
+                        onChange={handleChange}
+                        value={data.password}
+                        required
+                    />
+                    <Button name={"Войти"} onClick={handleSubmit}/>
+                </div>
             </form>
-        </>
+        </div>
     )
 }
 

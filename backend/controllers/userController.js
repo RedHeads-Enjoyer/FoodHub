@@ -76,6 +76,19 @@ class userController {
             res.status(500).send({message: "Ошибка при получнии данных о пользователе"});
         }
     }
+
+    async getBrief(req, res) {
+        const {id} = req.params
+        try {
+            const user = await User.findById(id).select('image username')
+            if (!user) {
+                return res.status(404).json({ message: "Пользователь не найден" });
+            }
+            return res.json(user);
+        } catch (e) {
+            res.status(500).json({ message: "Ошибка при выводе пользователя" });
+        }
+    }
 }
 
 module.exports = new userController()

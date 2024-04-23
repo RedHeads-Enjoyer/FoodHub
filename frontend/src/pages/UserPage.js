@@ -3,8 +3,7 @@ import {useState} from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import {dbUrl, translit} from "../config";
-import getJwtAuthHeader from "../functions";
-import Cookies from "js-cookie";
+import {getJwtAuthHeader} from "../functions";
 
 
 const UserPage = () => {
@@ -43,6 +42,27 @@ const UserPage = () => {
                 console.error("Ошибка получения данных:", error.response.data.message);
             });
     }, [])
+
+    useEffect(() => {
+        if (user.image !== "") {
+            const fetchImage = async () => {
+                try {
+                    const response = await axios.get(dbUrl + '/image/' + user.image, {
+                        responseType: 'blob'
+                    });
+                    const avatar = URL.createObjectURL(response.data);
+                    setAvatar(avatar);
+                } catch (error) {
+                    console.error('Error fetching image:', error);
+                }
+            };
+            fetchImage();
+
+            return () => {
+                URL.revokeObjectURL(avatar);
+            };
+        }
+    }, [user]);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0]; // Получаем выбранный файл изображения

@@ -1,0 +1,17 @@
+.user__wrapper {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+}
+
+.user__image {
+    border-radius: 100%;
+}
+
+.username {
+    margin-left: 10px;
+}
+
+.user__link {
+    width: fit-content;
+}

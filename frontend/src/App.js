@@ -6,20 +6,27 @@ import UserPage from "./pages/UserPage";
 import CreteRecipePage from "./pages/CreteRecipePage";
 import SearchPage from "./pages/SearchPage";
 import ShowRecipePage from "./pages/ShowRecipePage";
+import Header from "./components/Header";
 
 function App() {
   return (
-      <BrowserRouter>
-          <Routes>
-              <Route path={'/login'} element={<LoginPage/>}/>
-              <Route path={'/registration'} element={<RegisterPage/>}/>
-              <Route path={'/user/:id'} element={<UserPage/>}/>
-              <Route path={'/createRecipe'} element={<CreteRecipePage/>}/>
-              <Route path={'/search'} element={<SearchPage/>}/>
-              <Route path={'/recipe/:id'} element={<ShowRecipePage/>}/>
-              <Route path={'/'} element={<p>Успешеый вход</p>}/>
-          </Routes>
-      </BrowserRouter>
+      <>
+          <Header/>
+          <main>
+              <BrowserRouter>
+                  <Routes>
+                      <Route path={'/login'} element={<LoginPage/>}/>
+                      <Route path={'/registration'} element={<RegisterPage/>}/>
+                      <Route path={'/user/:id'} element={<UserPage/>}/>
+                      <Route path={'/createRecipe'} element={<CreteRecipePage/>}/>
+                      <Route path={'/search'} element={<SearchPage/>}/>
+                      <Route path={'/recipe/:id'} element={<ShowRecipePage/>}/>
+                      <Route path={'/'} element={<p>Успешеый вход</p>}/>
+                  </Routes>
+              </BrowserRouter>
+          </main>
+      </>
+
   );
 }
 

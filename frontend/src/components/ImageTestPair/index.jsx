@@ -3,7 +3,7 @@ import classes from "./styles.module.css";
 
 const ImageTextPair = ({image, text}) => {
       return (
-          <div>
+          <div className={classes.pair__wrapper}>
               <img src={image}/>
               <p>{text}</p>
           </div>
