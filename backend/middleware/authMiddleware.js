@@ -1,21 +1,21 @@
 const jwt = require('jsonwebtoken')
 const {secret} = require('../config')
+const User = require('../models/User')
 
-module.exports = function (req, res, next) {
-    if (req.method === "OPTIONS") {
-        next()
-    }
-
+module.exports = async function (req, res, next) {
+    const token = req.header('Authorization').replace('Bearer ', '');
     try {
-        const token = req.headers.authorization.split(' ')[1]
-        if (!token) {
-            return res.status(403).json({message: "Пользователь не авторизован"})
+        const decoded = jwt.verify(token, secret);
+        const user = await User.findById(decoded.id);
+
+        if (!user) {
+            throw new Error();
         }
-        const decodedData = jwt.verify(token, secret)
-        req.user = decodedData
-        next()
-    } catch (e) {
-        console.log(e)
-        return res.status(403).json({message: "Пользователь не авторизован"})
+
+        req.token = token;
+        req.user = user;
+        next();
+    } catch (error) {
+        res.status(401).send({ error: 'Please authenticate.' });
     }
 }

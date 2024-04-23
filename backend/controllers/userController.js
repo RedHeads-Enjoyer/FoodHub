@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const {validationResult} = require('express-validator')
 const {secret} = require('../config')
 const Recipe = require("../models/Recipe");
+const RecipeEquipmentContoller = require("../models/RecipeEquipment");
 
 class userController {
     async getAll(req, res) {
@@ -48,10 +49,13 @@ class userController {
 
     async updateById(req, res) {
         const {id} = req.params
-        const {name, description, difficult, ingredients, kitchenID, typeID, equipment, steps, authorID} = req.body;
-        const image = req.file.filename; // Путь к загруженному файлу изображения
-        const recipe = new Recipe({name, description, difficult, ingredients, kitchenID, typeID, equipment, steps, authorID, image});
-        const updatedFields = req.body
+        const {username} = req.body;
+        let updatedFields = {...req.body}
+        if (req.file) {
+            const image = req.file.filename;
+            updatedFields = {...updatedFields, image}
+        }
+         // Путь к загруженному файлу изображения
         try {
             const user = await User.findById(id)
             if (!user) {
@@ -62,6 +66,14 @@ class userController {
             return res.json({ message: "Пользователь успешно обновлен", user });
         } catch (e) {
             res.status(500).json({ message: "Ошибка при обновлении пользователя" });
+        }
+    }
+
+    async getMe(req, res) {
+        try {
+            res.send(req.user);
+        } catch (error) {
+            res.status(500).send({message: "Ошибка при получнии данных о пользователе"});
         }
     }
 }

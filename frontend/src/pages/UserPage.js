@@ -3,9 +3,11 @@ import {useState} from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import {dbUrl, translit} from "../config";
+import getJwtAuthHeader from "../functions";
+import Cookies from "js-cookie";
+
 
 const UserPage = () => {
-    let currentUser = JSON.parse(localStorage.getItem("currentUser"))
     const [user, setUser] = useState({
         _id: 0,
         email: "",
@@ -13,8 +15,22 @@ const UserPage = () => {
         image: "",
         roles: []
     })
+
+    const [currentUser, setCurrentUser] = useState("")
+    const [needUpdate, setNeedUpdate] = useState(false)
     const [avatar, setAvatar] = useState("")
     const {id} = useParams()
+
+    useEffect(() => {
+        console.log()
+        axios.get(dbUrl + `/user/me`,getJwtAuthHeader())
+            .then(data => {
+                setCurrentUser(data.data)
+            })
+            .catch(error => {
+                console.error("Ошибка получения данных:", error.response.data.message);
+            });
+    }, [needUpdate])
 
     useEffect(() => {
         axios
@@ -47,15 +63,15 @@ const UserPage = () => {
         }
     };
 
-    const handleUpdate = () => {
-    //     axios.put(dbUrl + '//' + id, changedData)
-    //         .then(() => {
-    //             setNeedData(prevState => !prevState);
-    //         })
-    //         .catch((error) => {
-    //             // Обработка ошибок при удалении
-    //             console.error('Error deleting recipe:', error);
-    //         });
+    const handleUpdate = async () => {
+        const formData = new FormData();
+        formData.append('image', user.image);
+        const response = await axios.put(dbUrl + '/user/' + currentUser._id, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        console.log(response);
     }
 
 
@@ -66,7 +82,7 @@ const UserPage = () => {
             {user.roles.map((role) => (
                 <p key={role}>role {role}</p>
             ))}
-            {currentUser._id === user._id && <>
+            {currentUser !== "" && currentUser._id=== user._id && <>
                 <input
                     type="file"
                     accept={"image/*"}
