@@ -19,5 +19,7 @@ router.put('/users/:id', [
 
 router.post('/registration', controller.registration)
 router.post('/login', controller.login)
+router.post('/logout', authMiddleware,controller.logout)
+router.post('/refresh', controller.refresh)
 
 module.exports = router

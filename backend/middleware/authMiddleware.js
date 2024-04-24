@@ -1,21 +1,26 @@
 const jwt = require('jsonwebtoken')
 const {secret} = require('../config')
 const User = require('../models/User')
+const BlackListedToken = require('../models/BlackListedToken')
 
 module.exports = async function (req, res, next) {
-    const token = req.header('Authorization').replace('Bearer ', '');
+    let token = req.header('Authorization');
+    if (token === "" || token == null) {
+        res.status(401).send({ error: 'Authorization token is missing or invalid' });
+        return;
+    }
+    token = token.replace('Bearer ', '')
     try {
         const decoded = jwt.verify(token, secret);
         const user = await User.findById(decoded.id);
-
-        if (!user) {
-            throw new Error();
+        if (!user || BlackListedToken.findOne({token})) {
+            res.status(403).send({ error: 'Access forbidden. Your token is invalid or has expired.' });
+            return;
         }
-
         req.token = token;
         req.user = user;
         next();
     } catch (error) {
-        res.status(401).send({ error: 'Please authenticate.' });
+        res.status(500).send({ error: 'Internal server error' });
     }
 }

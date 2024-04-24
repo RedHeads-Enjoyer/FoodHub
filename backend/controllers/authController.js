@@ -1,5 +1,6 @@
 const User = require('../models/User')
 const Role = require('../models/Role')
+const BlackListedToken = require('../models/BlackListedToken')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const {validationResult} = require('express-validator')
@@ -50,11 +51,39 @@ class authController {
             }
             const token = generateAccessToken(user._id, user.roles, user.username)
             res.cookie("token", token)
-            return res.json({token: token, _id: user._id})
+            return res.json({token: token})
 
         } catch (e) {
             console.log(e)
             res.status(500).json({message: 'Ошибка во время авторизации'})
+        }
+    }
+
+    async logout(req, res) {
+        try {
+            const token = req.token
+            const expireAt = new Date();
+            expireAt.setHours(expireAt.getHours() + Number(24));
+            const blackListedToken = new BlackListedToken({token, expireAt})
+            await blackListedToken.save()
+            res.clearCookie('token'); // Пример для куки
+            return res.status(200).json({ message: "Вы успешно вышли из системы" });
+        } catch (error) {
+            res.status(500).send({ error: 'Internal server error' });
+        }
+    }
+
+    async refresh(req, res) {
+        const refreshToken = req.body.token;
+        if (refreshToken == null) return res.sendStatus(401);
+        try {
+            const decoded = jwt.verify(refreshToken, secret);
+            const user = await User.findById(decoded.id);
+            const token = generateAccessToken(user.id, user.roles, user.username);
+            res.cookie("token", token)
+            res.json({token});
+        } catch (error) {
+            res.sendStatus(403)
         }
     }
 }
