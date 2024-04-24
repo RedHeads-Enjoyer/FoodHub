@@ -13,7 +13,8 @@ module.exports = async function (req, res, next) {
     try {
         const decoded = jwt.verify(token, secret);
         const user = await User.findById(decoded.id);
-        if (!user || BlackListedToken.findOne({token})) {
+        const blackListedToken = await BlackListedToken.find({"token" : token})
+        if (!user || blackListedToken.length > 0) {
             res.status(403).send({ error: 'Access forbidden. Your token is invalid or has expired.' });
             return;
         }

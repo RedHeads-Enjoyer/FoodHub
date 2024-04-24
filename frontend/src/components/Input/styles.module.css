@@ -1,15 +1,12 @@
-.btn {
-    outline: none;
+.input__class {
     border: 0;
-    background-color: var(--color-accent-main);
+    background-color: var(--background-semi-color);
     border-radius: var(--border-radius-main);
+    outline: 0;
+    padding: 10px;
+    width: 100%;
 }
 
-.btn p {
-    padding: 8px;
-    color: white;
-}
-
-.btn:hover {
-    cursor: pointer;
+.input__class::placeholder {
+    color: var(--font-placeholder-color);
 }

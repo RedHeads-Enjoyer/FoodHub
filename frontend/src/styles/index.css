@@ -1,5 +1,15 @@
-body {
+@import "colors.css";
+@import "fonts.css";
+@import "numbers.css";
+
+* {
   margin: 0;
+  color: var(--font-main-color);
+  font-size: var(--font-main-size);
+  font-family: Roboto, sans-serif;
+}
+
+body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -10,4 +20,14 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+
+html, body, #root, main {
+  height: 100%;
 }

@@ -1,9 +1,21 @@
 import classes from "./styles.module.css";
 
-const Button = ({type, placeholder, name, onChange, value, required}) => {
+const InputText = ({label, type, placeholder, name, onChange, value, required}) => {
       return (
-          <button className={classes.btn} onClick={onClick}><p>{name}</p></button>
+          <div>
+              <label htmlFor={name}>{label}</label>
+              <input
+                  id = {name}
+                  className={classes.input__class}
+                  type={type}
+                  placeholder={placeholder}
+                  name={name}
+                  onChange={onChange}
+                  value={value}
+                  required={required}
+              />
+          </div>
     );
 };
 
-export default Button
+export default InputText

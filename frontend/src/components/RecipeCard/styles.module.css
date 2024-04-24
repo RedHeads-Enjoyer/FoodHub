@@ -8,7 +8,7 @@
 
 .recipe__name {
     text-align: center;
-    font-weight: var(--font-accent-width);
+    font-weight: var(--font-accent-weight);
 }
 
 .info__grid p {

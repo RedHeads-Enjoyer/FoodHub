@@ -6,25 +6,25 @@ import {dbUrl} from "../../config";
 import {getJwtAuthHeader, fetchImage} from "../../functions";
 
 const Header = () => {
-    const [currentUser, setCurrentUser] = useState('')
-    const [image, setImage] = useState('')
-
-    useEffect(() => {
-        console.log()
-        axios.get(dbUrl + `/user/me`,getJwtAuthHeader())
-            .then(data => {
-                setCurrentUser(data.data)
-            })
-            .catch(error => {
-                console.error("Ошибка получения данных:", error.response.data.message);
-            });
-    }, [])
-
-    useEffect(() => {
-        if (currentUser !== '') {
-            fetchImage(setImage, currentUser.image)
-        }
-    }, [currentUser])
+    // const [currentUser, setCurrentUser] = useState('')
+    // const [image, setImage] = useState('')
+    //
+    // useEffect(() => {
+    //     console.log()
+    //     axios.get(dbUrl + `/user/me`,getJwtAuthHeader())
+    //         .then(data => {
+    //             setCurrentUser(data.data)
+    //         })
+    //         .catch(error => {
+    //             console.error("Ошибка получения данных:", error.response.data.message);
+    //         });
+    // }, [])
+    //
+    // useEffect(() => {
+    //     if (currentUser !== '') {
+    //         fetchImage(setImage, currentUser.image)
+    //     }
+    // }, [currentUser])
 
       return (
           <header>

@@ -13,19 +13,8 @@ a {
     font-family: Roboto, sans-serif;
 }
 
-input[type=text] {
-    border: 0;
-    background-color: var(--background-semi-color);
-    border-radius: var(--border-radius-main);
-    outline: 0;
-    padding: 10px;
-}
-
-input[type=text]::placeholder {
-    color: var(--font-placeholder-color);
-}
-
-main {
-    width: 100vw;
-    min-height: calc(100vh - 40px);
+html, body, #root, main {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
