@@ -14,45 +14,26 @@ const LoginPage = () => {
         email: "",
         password: ""
     })
-    const [error, setError] = useState("")
+    const [errors, setErrors] = useState([])
 
     const handleChange = ({currentTarget: input}) => {
         setData({...data, [input.name]: input.value})
     }
 
-    const checkData = () => {
-        let errors = []
-        const password = data.password
-        if (password.length < 8) {
-            errors.push("Пароль должен содержать от 8 до 16 символов")
-        }
-        const symbols = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>?]/
-        if (!symbols.test(password)) {
-            errors.push(`Пароль должен содержать минимум один из специальных символов !"#$%&'()*+,-./:;<=>?@[]^_{|}~`)
-        }
-        const numbers = /[0-9]/
-        if (!numbers.test(password)) {
-            errors.push(`Пароль должен содержать минимум одну цифру`)
-        }
-        const capitals = /[A-Z]/
-        if (!capitals.test(password)) {
-            errors.push(`Пароль должен содержать минимум одну заглавную букву`)
-        }
-        console.log(errors)
-        return errors.length === 0
-    }
-
     axios.defaults.withCredentials = true;
     const handleSubmit = async (e) => {
-        // if (!checkData()) return false
         e.preventDefault()
         try {
-            await axios.post(dbUrl + '/auth/login', data);
+            const response = await axios.post(dbUrl + '/auth/login', data);
+            if (response.status === 400) {
+                setErrors(["Неверно введен адрес элктронной почты или пароль"])
+            }
             const userResponse = await axios.get(dbUrl + '/user/me', getJwtAuthHeader());
             navigate('/user/' + userResponse.data._id);
         } catch (error) {
             if (error.response) {
                 console.log(error.response.data.message)
+                setErrors([error.response.data.message])
             } else if (error.request.request.request) {
                 console.log('Ошибка запроса:', error.request)
             } else {
@@ -63,12 +44,12 @@ const LoginPage = () => {
 
     return (
         <div className={classes.login__wrapper}>
+            <div className={classes.form__wrapper}>
             <form onSubmit={handleSubmit}>
                 <div className={classes.label__wrapper}>
                     <p className={classes.label__text}>Вход</p>
                 </div>
-                <p>{error}</p>
-                <div className={classes.form__wrapper}>
+
                     <div className={classes.input__text__wrapper}>
                         <InputText
                             label={"Email"}
@@ -83,7 +64,7 @@ const LoginPage = () => {
                         <InputText
                             label={"Пароль"}
                             type={"password"}
-                            placeholder={"changeme!12_"}
+                            placeholder={"changeMe!12_"}
                             name={"password"}
                             onChange={handleChange}
                             value={data.password}
@@ -92,11 +73,20 @@ const LoginPage = () => {
                     <div className={classes.button__wrapper}>
                         <Button name={"Войти"} onClick={handleSubmit}/>
                     </div>
-                </div>
                 <div className={classes.link__wrapper}>
-                    <Link to={'/registration'}><p className={classes.link__text}>Зарегистрироваться</p></Link>
+                    <Link to={'/registration'}><p className={classes.link__text}>У меня нет аккаунта</p></Link>
                 </div>
+                <div>
+                    <ul>
+                        {errors.map((error) => (
+                            <li key={error}>{error}</li>
+                        ))}
+                    </ul>
+                </div>
+
             </form>
+            </div>
+
         </div>
     )
 }
