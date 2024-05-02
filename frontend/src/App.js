@@ -6,6 +6,7 @@ import CreteRecipePage from "./pages/CreteRecipePage";
 import SearchPage from "./pages/SearchPage";
 import ShowRecipePage from "./pages/ShowRecipePage";
 import Header from "./components/Header";
+import TextPage from "./pages/TextPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
                       <Route path={'/createRecipe'} element={<CreteRecipePage/>}/>
                       <Route path={'/search'} element={<SearchPage/>}/>
                       <Route path={'/recipe/:id'} element={<ShowRecipePage/>}/>
+                      <Route path={'/test'} element={<TextPage/>}/>
                   </Routes>
               </BrowserRouter>
           </main>

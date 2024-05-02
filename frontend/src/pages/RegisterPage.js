@@ -4,7 +4,7 @@ import axios from "axios";
 import {dbUrl} from "../config";
 import {Link, useNavigate} from "react-router-dom";
 import classes from "./RegisterPage.module.css";
-import InputText from "../components/Input";
+import InputText from "../components/InputText";
 import Button from "../components/Button";
 
 const LoginPage = () => {

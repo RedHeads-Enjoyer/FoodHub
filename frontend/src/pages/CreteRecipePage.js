@@ -2,6 +2,10 @@ import React, {useEffect} from "react";
 import {useState} from "react";
 import axios from "axios";
 import {dbUrl, translit} from "../config";
+import classes from "./CreateRecipePage.module.css"
+import InputText from "../components/InputText";
+import InputTextArea from "../components/InputTextArea";
+import Select from "../components/Select";
 
 
 const CreateRecipePage = () => {
@@ -9,10 +13,9 @@ const CreateRecipePage = () => {
     const [recipe, setRecipe] = useState({
         name: "",
         description: "",
-        image: "3",
+        image: "",
         difficult: 1,
         ingredients: [],
-        // comments: [],
         kitchenID: "",
         typeID: "",
         equipment: [],
@@ -40,7 +43,7 @@ const CreateRecipePage = () => {
         axios
             .get(dbUrl + '/kitchen')
             .then(data => {
-                    setKitchens(data.data)
+                setKitchens(data.data)
                 }
             )
 
@@ -244,17 +247,43 @@ const CreateRecipePage = () => {
     }
 
     return (
-        <div>
+        <div className={classes.createRecipePage__wrapper}>
             <form onSubmit={handleSubmit}>
-                <p>Создание рецепта</p>
-                <input
-                    type={"text"}
-                    placeholder={"Название"}
-                    name={"name"}
-                    onChange={handleChangeRecipe}
-                    value={recipe.name}
-                    required
-                />
+                <p className={classes.page__label}>Создание рецепта</p>
+                <div className={classes.main__info__wrapper}>
+                    <InputText
+                        label={"Название рецепта"}
+                        type={"text"}
+                        placeholder={"Введите название"}
+                        name={"name"}
+                        onChange={handleChangeRecipe}
+                        value={recipe.name}
+                    />
+                    <InputTextArea
+                        label={"Описание рецепта"}
+                        placeholder={"Описание"}
+                        name={"description"}
+                        onChange={handleChangeRecipe}
+                        value={recipe.description}
+                        required
+                    />
+                    <div className={classes.select__wrapper}>
+                        <Select
+                            label={"Тип кухни"}
+                            name={"kitchenID"}
+                            onChange={handleChangeRecipeKitchen}
+                            options={kitchens}
+                        />
+                        <Select
+                            label={"Тип блюда"}
+                            name={"typeID"}
+                            onChange={handleChangeRecipeType}
+                            options={types}
+                        />
+                    </div>
+
+                </div>
+
                 <input
                     type="file"
                     accept={"image/*"}
@@ -266,16 +295,6 @@ const CreateRecipePage = () => {
                         src={image}
                     />
                 }
-
-                <textarea
-                    rows="5"
-                    cols="40"
-                    placeholder={"Описание"}
-                    name={"description"}
-                    onChange={handleChangeRecipe}
-                    value={recipe.description}
-                    required
-                />
                 <input
                     min={1}
                     max={10}
@@ -331,20 +350,7 @@ const CreateRecipePage = () => {
                         </div>
                     )))
                 }
-                <p>Тип кухни</p>
-                <select name={"kitchenID"} onChange={handleChangeRecipeKitchen} defaultValue="">
-                    <option disabled value="">Выберите кухню</option>
-                    {kitchens.map((kitchen) => (
-                        <option key={kitchen._id}>{kitchen.name}</option>
-                    ))}
-                </select>
-                <p>Тип блюда</p>
-                <select name={"typeID"} onChange={handleChangeRecipeType} defaultValue="">
-                    <option disabled value="">Выберите тип</option>
-                    {types.map((type) => (
-                        <option key={type._id}>{type.name}</option>
-                    ))}
-                </select>
+
                 {/* Создание этапов */}
                 {recipe.steps.map((step, index) => (
                     <div key={`step${index}`}>

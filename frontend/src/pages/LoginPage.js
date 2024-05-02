@@ -5,7 +5,7 @@ import {Link, useNavigate} from "react-router-dom";
 import classes from "./loginPage.module.css";
 import Button from "../components/Button";
 import {getJwtAuthHeader} from "../functions";
-import InputText from "../components/Input";
+import InputText from "../components/InputText";
 import {useDispatch, useSelector} from "react-redux";
 import {changeStatus} from "../slices/userSlice";
 
