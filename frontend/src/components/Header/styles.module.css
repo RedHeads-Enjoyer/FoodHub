@@ -8,3 +8,66 @@ header {
     font-size: 1.7em;
     margin-left: 10px;
 }
+
+.user__wrapper {
+    cursor: pointer;
+    margin-right: 10px;
+    width: fit-content;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.user__avatar{
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+}
+
+.header__wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.user__username {
+    margin-left: 10px;
+    color: white;
+}
+
+.menu__wrapper {
+    position: absolute;
+    max-width: 300px;
+    top: 40px;
+    right: 10px;
+    background-color: var(--color-accent-main);
+    border-radius: var(--border-radius-main);
+}
+
+.list__wrapper {
+    list-style-type: none;
+    padding: 10px;
+}
+
+.menu__item__wrapper{
+    cursor: pointer;
+}
+
+.menu__item__wrapper:hover .menu__item button{
+    color: var(--color-accent-main);
+    background-color: white;
+}
+
+.menu__item button {
+    outline: none;
+    border: 0;
+    background-color: rgba(255, 255, 255, 0);
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.logo__wrapper {
+    max-width: 300px;
+}

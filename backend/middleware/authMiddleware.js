@@ -4,7 +4,7 @@ const User = require('../models/User')
 const BlackListedToken = require('../models/BlackListedToken')
 
 module.exports = async function (req, res, next) {
-    let token = req.header('Authorization');
+    let token = req.header('Authorization')
     if (token === "" || token == null) {
         res.status(401).send({ error: 'Authorization token is missing or invalid' });
         return;

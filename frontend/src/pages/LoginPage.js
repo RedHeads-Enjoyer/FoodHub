@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import {dbUrl} from "../config";
 import {Link, useNavigate} from "react-router-dom";
@@ -6,9 +6,18 @@ import classes from "./loginPage.module.css";
 import Button from "../components/Button";
 import {getJwtAuthHeader} from "../functions";
 import InputText from "../components/Input";
+import {useDispatch, useSelector} from "react-redux";
+import {changeStatus} from "../slices/userSlice";
 
 
 const LoginPage = () => {
+    const dispatch = useDispatch();
+    const userStatus = useSelector((state)=>state.user.status);
+
+    useEffect(() => {
+        console.log(userStatus)
+    }, [])
+
     const navigate = useNavigate()
     const [data, setData] = useState({
         email: "",
@@ -29,6 +38,7 @@ const LoginPage = () => {
                 setErrors(["Неверно введен адрес элктронной почты или пароль"])
             }
             const userResponse = await axios.get(dbUrl + '/user/me', getJwtAuthHeader());
+            dispatch(changeStatus(true))
             navigate('/user/' + userResponse.data._id);
         } catch (error) {
             if (error.response) {
@@ -44,8 +54,9 @@ const LoginPage = () => {
 
     return (
         <div className={classes.login__wrapper}>
-            <div className={classes.form__wrapper}>
+
             <form onSubmit={handleSubmit}>
+                <div className={classes.form__wrapper}>
                 <div className={classes.label__wrapper}>
                     <p className={classes.label__text}>Вход</p>
                 </div>
@@ -83,10 +94,8 @@ const LoginPage = () => {
                         ))}
                     </ul>
                 </div>
-
+                </div>
             </form>
-            </div>
-
         </div>
     )
 }
