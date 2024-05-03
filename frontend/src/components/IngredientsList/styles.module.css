@@ -104,8 +104,50 @@
     border: 0;
     width: 100%;
     cursor: pointer;
+    background-color: var(--background-semi-color);
 }
 
 .add__button:hover {
     background-color: var(--background-semi-hover-color);
+}
+
+.search__bar {
+    border: 0;
+    outline: none;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
+    background-color: var(--background-semi-color);
+    border-bottom: 2px solid var(--background-semi-hover-color);
+}
+
+.options__wrapper {
+    overflow-y: scroll;
+    max-height: 200px;
+}
+
+.add_option__wrapper {
+    background-color: var(--background-semi-color);
+}
+
+.add_option__wrapper p{
+    text-align: justify;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: var(--fonst-semi-size);
+}
+
+.add__option__button {
+    margin-left: 10px;
+    background-color: var(--color-accent-main);
+    outline: none;
+    border: 0;
+    border-radius: var(--border-radius-main);
+    padding: 0;
+    cursor: pointer;
+}
+
+.add__option__button p {
+    color: white;
 }

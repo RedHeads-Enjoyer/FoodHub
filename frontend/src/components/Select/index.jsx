@@ -53,17 +53,13 @@ const Select = ({name, onChange, options, label, link}) => {
         } catch (error) {
             setBlockAddButton(false)
             if (error.response) {
-                // Здесь обрабатываем ошибку на уровне ответа от сервера
                 console.log(error.response.data.message);
             } else if (error.request) {
-                // Здесь обрабатываем ошибку на уровне запроса
                 console.log('Ошибка запроса:', error.request);
             } else {
-                // Здесь обрабатываем другие типы ошибок
                 console.log('Ошибка:', error.message);
             }
         }
-
     }
 
 

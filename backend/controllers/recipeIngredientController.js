@@ -5,21 +5,16 @@ const {secret} = require("../config");
 class recipeIngredientController {
     async create(req, res) {
         try {
-            const token = req.headers.authorization.split(' ')[1]
-            if (!token) {
-                return res.status(403).json({message: "Пользователь не авторизован"})
-            }
-            const authorId = jwt.verify(token, secret).id
-
             const {name, calorieContent, isAdult} = req.body
+            const authorId = req.user._id
             const candidate = await RecipeIngredient.findOne({name})
             if (candidate) {
-                return res.status(400).json({message: "Ингредиент с таким названием уже сущствует"})
+                return res.status(201).json({message: "Ингредиент с таким названием уже сущствует", object: candidate})
             }
 
             const recipeIngredient = new RecipeIngredient({name, calorieContent,isAdult, authorId})
             await recipeIngredient.save()
-            return res.json({message: "Ингредиент успешно добавлен"})
+            return res.json({message: "Ингредиент успешно добавлен", object: recipeIngredient})
         } catch (e) {
             console.log(e)
             return res.status(500).json({message: 'Ошибка во время добавления ингредиента'})

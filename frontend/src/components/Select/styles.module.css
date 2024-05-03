@@ -93,8 +93,10 @@
     outline: none;
     border: 0;
     background-color: var(--background-semi-color);
+    border-bottom: 2px solid var(--background-semi-hover-color);
     padding-left: 10px;
     padding-right: 10px;
+    border-radius: var(--border-radius-main) var(--border-radius-main) 0 0;
 }
 
 .search__options__wrapper {
