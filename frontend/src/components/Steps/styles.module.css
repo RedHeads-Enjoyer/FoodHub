@@ -1,0 +1,41 @@
+.steps__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.step__wrapper {
+    flex-shrink: 0;
+    flex-grow: 1;
+    max-width: 400px;
+    min-width: 280px;
+}
+
+.duration__wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.number__input {
+    width: 30px;
+}
+
+.div__flex {
+    display: flex;
+    gap: 10px;
+}
+
+.index__wrapper  {
+    width: 24px;
+    height: 24px;
+    background-color: rgb(217, 217, 217);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 100%;
+}
+
+.index__wrapper p {
+    color: white;
+}

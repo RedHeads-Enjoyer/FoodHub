@@ -17,10 +17,10 @@ const Recipe = new Schema({
     kitchenID: {type: Schema.Types.ObjectId, ref: 'recipe_kitchen', required: true},
     typeID: {type: Schema.Types.ObjectId, ref: 'recipe_type', required: true},
     equipment: [{type: Schema.Types.ObjectId, ref: 'recipe_equipment', required: true}],
-    // steps: [{
-    //     description: { type: String, required: true },
-    //     duration: { type: Number, required: true}
-    // }],
+    steps: [{
+        description: { type: String, required: true },
+        duration: { type: Number, required: true}
+    }],
 })
 
 module.exports = model('Recipe', Recipe)
