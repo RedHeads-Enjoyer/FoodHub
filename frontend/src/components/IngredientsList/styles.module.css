@@ -156,7 +156,7 @@
 
 .div__flex {
     display: flex;
-    gap: 10px;
+    gap: 4px;
     align-content: center;
     position: relative;
 }
@@ -183,7 +183,10 @@
 }
 
 .remove__button::after {
-
     top: 4px;
     transform: rotate(45deg);
+}
+
+.calorie__text {
+    margin-right: 10px;
 }

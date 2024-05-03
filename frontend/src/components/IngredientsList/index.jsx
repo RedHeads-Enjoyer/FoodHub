@@ -34,11 +34,12 @@ const IngredientsList = ({addedIngredients, allIngredients, label, setTarget, na
     }
 
     const handleQuantityChange = (e, ingredient) => {
-        const newValue = e.target.value
+        let newValue = e.target.value
         console.log(e.target.value)
         if (newValue === "") return;
-        if (newValue <= 0) e.target.value = 0
+        else if (newValue <= 1) e.target.value = 1
         else if (newValue >= 100000) e.target.value = 99999
+        newValue = e.target.value
         const index = addedIngredients.findIndex((i) => i._id === ingredient._id);
         if (index === -1) return
         const updatedIngredient = { ...addedIngredients[index], quantity: newValue };
@@ -54,9 +55,10 @@ const IngredientsList = ({addedIngredients, allIngredients, label, setTarget, na
         let calories = 0
         let weight = 0
         for (let i = 0; i < addedIngredients.length; i++) {
-            weight += addedIngredients[i].quantity
-            calories += addedIngredients[i].quantity * addedIngredients[i].calorieContent
+            weight += parseInt(addedIngredients[i].quantity)
+            calories += parseInt(addedIngredients[i].quantity) * addedIngredients[i].calorieContent
         }
+        console.log(calories, weight)
         const result = Math.ceil(calories/weight)
         if (result) setCalorieCounter(result)
         else setCalorieCounter(0)
@@ -134,7 +136,7 @@ const IngredientsList = ({addedIngredients, allIngredients, label, setTarget, na
                 <div className={classes.bottom__wrapper}>
                     <button onClick={handleMenuButton} className={menuStatus === false ? classes.open__menu__button : classes.close__menu__button}></button>
                     <div className={classes.calorie__wrapper}>
-                        <p>Калорийность</p>
+                        <p className={classes.calorie__text}>Калорийность</p>
                         <p>{calorieCounter} ккал/100г</p>
                     </div>
                 </div>
