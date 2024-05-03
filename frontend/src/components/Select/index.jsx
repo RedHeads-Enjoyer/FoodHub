@@ -34,6 +34,7 @@ const Select = ({name, onChange, options, label, link}) => {
         e.preventDefault()
         setSelected(option)
         onChange(option._id)
+        setIsOptionsVisible(false)
     }
 
     const handleAddOptionButton = async (e) => {
@@ -47,6 +48,7 @@ const Select = ({name, onChange, options, label, link}) => {
                     setSelected(data.data.object)
                     onChange(data.data.object._id)
                     setBlockAddButton(false)
+                    setIsOptionsVisible(false)
                 })
         } catch (error) {
             if (error.response) {

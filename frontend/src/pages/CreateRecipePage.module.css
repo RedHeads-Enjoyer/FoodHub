@@ -18,10 +18,24 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    flex-grow: 1;
 }
 
-.select__wrapper {
+.flex__wrapper {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.equ__ing__wrapper {
+    max-width: 400px;
+    flex-grow: 1;
+}
+
+.recipe__info__wrapper {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    gap: 10px;
 }

@@ -6,6 +6,9 @@ import classes from "./CreateRecipePage.module.css"
 import InputText from "../components/InputText";
 import InputTextArea from "../components/InputTextArea";
 import Select from "../components/Select";
+import InputNumber from "../components/InputNumber";
+import Switch from "../components/Switch";
+import IngredientsList from "../components/IngredientsList";
 
 
 const CreateRecipePage = () => {
@@ -14,13 +17,14 @@ const CreateRecipePage = () => {
         name: "",
         description: "",
         image: "",
-        difficult: 1,
+        difficult: 5,
         ingredients: [],
         kitchenID: "",
         typeID: "",
         equipment: [],
         authorID: currentUser._id,
-        steps: []
+        steps: [],
+        visible: true
     })
 
     const [selectedIngredients, setSelectedIngredients] = useState([])
@@ -66,6 +70,7 @@ const CreateRecipePage = () => {
 
 
     const handleChangeRecipe = ({currentTarget: input}) => {
+        console.log(input)
         setRecipe({...recipe, [input.name]: input.value})
     }
 
@@ -248,145 +253,188 @@ const CreateRecipePage = () => {
         <div className={classes.createRecipePage__wrapper}>
             <form onSubmit={handleSubmit}>
                 <p className={classes.page__label}>Создание рецепта</p>
-                <div className={classes.main__info__wrapper}>
-                    <InputText
-                        label={"Название рецепта"}
-                        type={"text"}
-                        placeholder={"Введите название"}
-                        name={"name"}
-                        onChange={handleChangeRecipe}
-                        value={recipe.name}
-                    />
-                    <InputTextArea
-                        label={"Описание рецепта"}
-                        placeholder={"Описание"}
-                        name={"description"}
-                        onChange={handleChangeRecipe}
-                        value={recipe.description}
-                        required
-                    />
-                    <div className={classes.select__wrapper}>
-                        <Select
-                            label={"Тип кухни"}
-                            name={"kitchenID"}
-                            onChange={handleChangeRecipeKitchen}
-                            options={kitchens}
-                            link = '/kitchen'
+                <div className={classes.recipe__info__wrapper}>
+                    <div className={classes.main__info__wrapper}>
+                        <InputText
+                            label={"Название рецепта"}
+                            type={"text"}
+                            placeholder={"Введите название"}
+                            name={"name"}
+                            onChange={handleChangeRecipe}
+                            value={recipe.name}
                         />
-                        <Select
-                            label={"Тип блюда"}
-                            name={"typeID"}
-                            onChange={handleChangeRecipeType}
-                            options={types}
-                            link = '/type'
-                        />
-                    </div>
-
-                </div>
-
-                <input
-                    type="file"
-                    accept={"image/*"}
-                    onChange={handleImageChange}
-                />
-                {image === "" || image == null ? "" :
-                    <img
-                        style={{width: "200px"}}
-                        src={image}
-                    />
-                }
-                <input
-                    min={1}
-                    max={10}
-                    type={"number"}
-                    placeholder={"Сложность"}
-                    name={"difficult"}
-                    onChange={handleChangeRecipe}
-                    value={recipe.difficult}
-                    required
-                />
-
-                <p>Все ингредиенты</p>
-                {ingredients.map((ing) => (
-                    <div key={ing._id}>
-                        <button onClick={() => {addIngredient(ing)}}>{ing.name}</button>
-                    </div>
-                ))}
-                {/* выбор ингредиентов */}
-                <p>Добавленные ингредиенты</p>
-                {   selectedIngredients.length === 0 ? (
-                        <p>Нет добавленных ингредиентов</p>
-                    ) : (
-                    selectedIngredients.map((ing) => (
-                        <div key={ing._id} >
-                            <button onClick={() => removeIngredient(ing)}>{ing.name}</button>
-                            <input
-                                min={1}
-                                max={100000}
-                                type={"number"}
-                                placeholder={"Количество"}
-                                name={"quantity"}
-                                onChange={(e) => handleChangeSelectedIngredientsQuantity(e, ing._id)}
-                                value={ing.quantity}
-                                required
-                            />
-                        </div>
-                    )))
-                }
-                {/* выбор оборудования */}
-                <p>Все оборудование</p>
-                {equipment.map((eq) => (
-                    <div key={eq._id}>
-                        <button onClick={() => {addEquipment(eq)}}>{eq.name}</button>
-                    </div>
-                ))}
-                <p>Добавленное оборужование</p>
-                {   selectedEquipment.length === 0 ? (
-                    <p>Нет добавленного оборудования</p>
-                ) : (
-                    selectedEquipment.map((eq) => (
-                        <div key={eq._id} >
-                            <button onClick={() => removeEquipment(eq)}>{eq.name}</button>
-                        </div>
-                    )))
-                }
-
-                {/* Создание этапов */}
-                {recipe.steps.map((step, index) => (
-                    <div key={`step${index}`}>
-                        <p>{`Этап ${index + 1}`}</p>
-                        <input
-                            min={1}
-                            max={100000}
-                            type={"number"}
-                            placeholder={"Количество"}
-                            name={"duration"}
-                            onChange={(e) => handleChangeRecipeStepDuration(e, index)}
-                            value={step.duration}
-                            required
-                        />
-                        <textarea
-                            rows="5"
-                            cols="40"
+                        <InputTextArea
+                            label={"Описание рецепта"}
                             placeholder={"Описание"}
                             name={"description"}
-                            onChange={(e) => handleChangeRecipeStepDescription(e, index)}
-                            value={step.description}
+                            onChange={handleChangeRecipe}
+                            value={recipe.description}
                             required
                         />
-                        <button onClick={(e) => handleRecipeStepDelete(e, index)}>Удалить этап</button>
+                        <div className={classes.flex__wrapper}>
+                            <Select
+                                label={"Тип кухни"}
+                                name={"kitchenID"}
+                                onChange={handleChangeRecipeKitchen}
+                                options={kitchens}
+                                link = '/kitchen'
+                            />
+                            <Select
+                                label={"Тип блюда"}
+                                name={"typeID"}
+                                onChange={handleChangeRecipeType}
+                                options={types}
+                                link = '/type'
+                            />
+                        </div>
+                        <div className={classes.flex__wrapper}>
+                            <InputNumber
+                                max={10}
+                                min={1}
+                                label={"Сложность"}
+                                name={"difficult"}
+                                value={recipe.difficult}
+                                onChange={handleChangeRecipe}
+                                required
+                            />
+                            <Switch
+                                label={"Доступ"}
+                                first={"Для всех"}
+                                second={"Только мне"}
+                                name={"visible"}
+                                onChange={handleChangeRecipe}
+                                value={recipe.visible}
+                            />
+                        </div>
                     </div>
-                ))}
-                <div>
-                    <button onClick={addRecipeStep}>Добавить этап</button>
+                    <div className={classes.equ__ing__wrapper}>
+                        <IngredientsList
+                            label={"Ингредиенты"}
+                            addedIngredients={recipe.ingredients}
+                            allIngredients={ingredients}
+                            onChange={handleChangeRecipe}
+                        />
+                    </div>
                 </div>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <button type={"submit"}>Создать</button>
+
+
+
+
+
+
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<input*/}
+                {/*    type="file"*/}
+                {/*    accept={"image/*"}*/}
+                {/*    onChange={handleImageChange}*/}
+                {/*/>*/}
+                {/*{image === "" || image == null ? "" :*/}
+                {/*    <img*/}
+                {/*        style={{width: "200px"}}*/}
+                {/*        src={image}*/}
+                {/*    />*/}
+                {/*}*/}
+
+                {/*<p>Все ингредиенты</p>*/}
+                {/*{ingredients.map((ing) => (*/}
+                {/*    <div key={ing._id}>*/}
+                {/*        <button onClick={() => {addIngredient(ing)}}>{ing.name}</button>*/}
+                {/*    </div>*/}
+                {/*))}*/}
+                {/*/!* выбор ингредиентов *!/*/}
+                {/*<p>Добавленные ингредиенты</p>*/}
+                {/*{   selectedIngredients.length === 0 ? (*/}
+                {/*        <p>Нет добавленных ингредиентов</p>*/}
+                {/*    ) : (*/}
+                {/*    selectedIngredients.map((ing) => (*/}
+                {/*        <div key={ing._id} >*/}
+                {/*            <button onClick={() => removeIngredient(ing)}>{ing.name}</button>*/}
+                {/*            <input*/}
+                {/*                min={1}*/}
+                {/*                max={100000}*/}
+                {/*                type={"number"}*/}
+                {/*                placeholder={"Количество"}*/}
+                {/*                name={"quantity"}*/}
+                {/*                onChange={(e) => handleChangeSelectedIngredientsQuantity(e, ing._id)}*/}
+                {/*                value={ing.quantity}*/}
+                {/*                required*/}
+                {/*            />*/}
+                {/*        </div>*/}
+                {/*    )))*/}
+                {/*}*/}
+                {/*/!* выбор оборудования *!/*/}
+                {/*<p>Все оборудование</p>*/}
+                {/*{equipment.map((eq) => (*/}
+                {/*    <div key={eq._id}>*/}
+                {/*        <button onClick={() => {addEquipment(eq)}}>{eq.name}</button>*/}
+                {/*    </div>*/}
+                {/*))}*/}
+                {/*<p>Добавленное оборужование</p>*/}
+                {/*{   selectedEquipment.length === 0 ? (*/}
+                {/*    <p>Нет добавленного оборудования</p>*/}
+                {/*) : (*/}
+                {/*    selectedEquipment.map((eq) => (*/}
+                {/*        <div key={eq._id} >*/}
+                {/*            <button onClick={() => removeEquipment(eq)}>{eq.name}</button>*/}
+                {/*        </div>*/}
+                {/*    )))*/}
+                {/*}*/}
+
+                {/*/!* Создание этапов *!/*/}
+                {/*{recipe.steps.map((step, index) => (*/}
+                {/*    <div key={`step${index}`}>*/}
+                {/*        <p>{`Этап ${index + 1}`}</p>*/}
+                {/*        <input*/}
+                {/*            min={1}*/}
+                {/*            max={100000}*/}
+                {/*            type={"number"}*/}
+                {/*            placeholder={"Количество"}*/}
+                {/*            name={"duration"}*/}
+                {/*            onChange={(e) => handleChangeRecipeStepDuration(e, index)}*/}
+                {/*            value={step.duration}*/}
+                {/*            required*/}
+                {/*        />*/}
+                {/*        <textarea*/}
+                {/*            rows="5"*/}
+                {/*            cols="40"*/}
+                {/*            placeholder={"Описание"}*/}
+                {/*            name={"description"}*/}
+                {/*            onChange={(e) => handleChangeRecipeStepDescription(e, index)}*/}
+                {/*            value={step.description}*/}
+                {/*            required*/}
+                {/*        />*/}
+                {/*        <button onClick={(e) => handleRecipeStepDelete(e, index)}>Удалить этап</button>*/}
+                {/*    </div>*/}
+                {/*))}*/}
+                {/*<div>*/}
+                {/*    <button onClick={addRecipeStep}>Добавить этап</button>*/}
+                {/*</div>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<button type={"submit"}>Создать</button>*/}
             </form>
         </div>
     )
