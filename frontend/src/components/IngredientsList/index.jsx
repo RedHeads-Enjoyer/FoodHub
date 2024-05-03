@@ -33,6 +33,35 @@ const IngredientsList = ({addedIngredients, allIngredients, label, setTarget, na
         setSearchRequest(e.target.value)
     }
 
+    const handleQuantityChange = (e, ingredient) => {
+        const newValue = e.target.value
+        console.log(e.target.value)
+        if (newValue === "") return;
+        if (newValue <= 0) e.target.value = 0
+        else if (newValue >= 100000) e.target.value = 99999
+        const index = addedIngredients.findIndex((i) => i._id === ingredient._id);
+        if (index === -1) return
+        const updatedIngredient = { ...addedIngredients[index], quantity: newValue };
+        const updatedList = [
+            ...addedIngredients.slice(0, index),
+            updatedIngredient,
+            ...addedIngredients.slice(index + 1)
+        ];
+        setTarget({ currentTarget: {name, value: updatedList}})
+    }
+
+    useEffect(() => {
+        let calories = 0
+        let weight = 0
+        for (let i = 0; i < addedIngredients.length; i++) {
+            weight += addedIngredients[i].quantity
+            calories += addedIngredients[i].quantity * addedIngredients[i].calorieContent
+        }
+        const result = Math.ceil(calories/weight)
+        if (result) setCalorieCounter(result)
+        else setCalorieCounter(0)
+    }, [addedIngredients])
+
     useEffect(() => {
         if (allIngredients.length === 0) return
         setFilteredIngredients(allIngredients)
@@ -81,14 +110,25 @@ const IngredientsList = ({addedIngredients, allIngredients, label, setTarget, na
             <div className={classes.ingredients__wrapper}>
                 <div className={classes.list__wrapper}>
                     {addedIngredients.map((ingredient) => (
-                        <button
+                        <div
                             key={ingredient._id}
                             className={classes.item__wrapper}
-                            onClick={(e) => handleRemoveIngredientButton(e, ingredient)}
                         >
                             <p>{ingredient.name}</p>
-                            <p>{ingredient.quantity} г</p>
-                        </button>
+                            <div className={classes.div__flex}>
+                                <input
+                                    className={classes.number__input}
+                                    placeholder={"Сколько"}
+                                    type={"number"}
+                                    min={1}
+                                    max={99999}
+                                    onChange={(e) => handleQuantityChange(e, ingredient)}
+                                />
+                                <p>г</p>
+                                <button className={classes.remove__button} onClick={(e) => handleRemoveIngredientButton(e, ingredient)}/>
+                            </div>
+
+                        </div>
                     ))}
                 </div>
                 <div className={classes.bottom__wrapper}>
