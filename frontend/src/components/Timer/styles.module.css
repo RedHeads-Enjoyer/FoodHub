@@ -1,0 +1,9 @@
+.duration__wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.number__input {
+    width: 30px;
+}

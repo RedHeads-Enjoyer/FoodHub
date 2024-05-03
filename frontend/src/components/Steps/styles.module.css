@@ -12,15 +12,6 @@
     min-width: 280px;
 }
 
-.duration__wrapper {
-    display: flex;
-    flex-direction: row;
-}
-
-.number__input {
-    width: 30px;
-}
-
 .div__flex {
     display: flex;
     gap: 10px;

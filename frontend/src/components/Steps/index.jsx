@@ -1,14 +1,12 @@
 import classes from "./styles.module.css";
 import {useEffect, useState} from "react";
 import InputTextArea from "../InputTextArea";
+import Timer from "../Timer";
 
 const Steps = ({steps, onChange, name}) => {
-    const [durations, setDurations] = useState([])
 
     const handleAddStepButton = (e) => {
         e.preventDefault()
-        setDurations([...durations, {"h": 0, "m": 0, "s": 0}])
-        console.log(durations)
         onChange({ currentTarget: {name, value: [...steps, {duration: 0, description: ""}]} })
     }
 
@@ -17,45 +15,6 @@ const Steps = ({steps, onChange, name}) => {
         onChange({ currentTarget: {name, value: steps}})
     }
 
-    const handleDurationHoursChange = (e, index) => {
-        if (e.target.value.length === 2) {
-        }
-        const newDurations = []
-        for (let i = 0; i < durations.length; i++) {
-            if (i !== index) newDurations.push(durations[i])
-            else newDurations.push({...durations[i], h: parseInt(e.target.value)})
-        }
-        setDurations(newDurations)
-    }
-
-    const handleDurationMinutesChange = (e, index) => {
-        const newDurations = []
-        for (let i = 0; i < durations.length; i++) {
-            if (i !== index) newDurations.push(durations[i])
-            else newDurations.push({...durations[i], m: parseInt(e.target.value)})
-        }
-        setDurations(newDurations)
-    }
-
-    const handleDurationSecondsChange = (e, index) => {
-        const newDurations = []
-        for (let i = 0; i < durations.length; i++) {
-            if (i !== index) newDurations.push(durations[i])
-            else newDurations.push({...durations[i], s: parseInt(e.target.value)})
-        }
-        setDurations(newDurations)
-    }
-
-    useEffect(() => {
-        if (durations.length !== 0) {
-            const newSteps = []
-            for (let i = 0; i < steps.length; i++) {
-                newSteps.push({...steps[i], duration: durations[i].h * 3600 + durations[i].m * 60 + durations[i].s})
-            }
-            console.log(newSteps)
-            onChange({ currentTarget: {name, value: newSteps} })
-        }
-    }, [durations])
 
     return (
         <div className={classes.steps__wrapper}>
@@ -64,30 +23,14 @@ const Steps = ({steps, onChange, name}) => {
                     <div className={classes.div__flex}>
                         <div className={classes.index__wrapper}>
                             <p>{index + 1}</p>
-                        </div>
-                        <div className={classes.duration__wrapper}>
-                            <input
-                                ref={`h${index}`}
-                                value={durations[index].h}
-                                className={classes.number__input}
-                                type={"number"}
-                                onChange={(e) => handleDurationHoursChange(e, index)}
-                            />
-                            <input
-                                ref={`m${index}`}
-                                value={durations[index].m}
-                                className={classes.number__input}
-                                type={"number"}
-                                onChange={(e) => handleDurationMinutesChange(e, index)}
-                            />
-                            <input
-                                ref={`s${index}`}
-                                value={durations[index].s}
-                                className={classes.number__input}
-                                type={"number"}
-                                onChange={(e) => handleDurationSecondsChange(e, index)}
+                            <Timer
+                                onChange={onChange}
+                                steps={steps}
+                                index={index}
+                                name={"steps"}
                             />
                         </div>
+
                     </div>
                     <InputTextArea
                         value={step.description}
