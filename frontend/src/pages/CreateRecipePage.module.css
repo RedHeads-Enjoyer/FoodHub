@@ -44,3 +44,19 @@
     flex-wrap: wrap;
     gap: 40px;
 }
+
+.input__file {
+    display: none;
+}
+
+.image__label img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.image__wrapper {
+    max-width: 200px;
+    flex-grow: 1;
+}

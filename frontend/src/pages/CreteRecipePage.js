@@ -10,6 +10,8 @@ import InputNumber from "../components/InputNumber";
 import Switch from "../components/Switch";
 import IngredientsList from "../components/IngredientsList";
 import EquipmentList from "../components/EquipmentList";
+import image_placeholder from "../images/image_placeholder.svg"
+import Steps from "../components/Steps";
 
 
 const CreateRecipePage = () => {
@@ -307,67 +309,35 @@ const CreateRecipePage = () => {
                             name={"equipment"}
                         />
                     </div>
+                    <div className={classes.image__wrapper}>
+                        <label htmlFor={"image"}>
+                            <p>Заставка </p>
+                            <div className={classes.image__label}>
+                                {image === "" || image == null
+                                    ?
+                                    <img src={image_placeholder}/>
+                                    :
+                                    <img src={image}/>
+                                }
+
+                            </div>
+                        </label>
+                        <input
+                            className={classes.input__file}
+                            type="file"
+                            accept={"image/*"}
+                            onChange={handleImageChange}
+                            id={"image"}
+                        />
+                    </div>
+                    <Steps
+                        steps={recipe.steps}
+                        name={"steps"}
+                        onChange={handleChangeRecipe}
+                    />
                 </div>
 
 
-                {/*<input*/}
-                {/*    type="file"*/}
-                {/*    accept={"image/*"}*/}
-                {/*    onChange={handleImageChange}*/}
-                {/*/>*/}
-                {/*{image === "" || image == null ? "" :*/}
-                {/*    <img*/}
-                {/*        style={{width: "200px"}}*/}
-                {/*        src={image}*/}
-                {/*    />*/}
-                {/*}*/}
-
-                {/*<p>Все ингредиенты</p>*/}
-                {/*{ingredients.map((ing) => (*/}
-                {/*    <div key={ing._id}>*/}
-                {/*        <button onClick={() => {addIngredient(ing)}}>{ing.name}</button>*/}
-                {/*    </div>*/}
-                {/*))}*/}
-                {/*/!* выбор ингредиентов *!/*/}
-                {/*<p>Добавленные ингредиенты</p>*/}
-                {/*{   selectedIngredients.length === 0 ? (*/}
-                {/*        <p>Нет добавленных ингредиентов</p>*/}
-                {/*    ) : (*/}
-                {/*    selectedIngredients.map((ing) => (*/}
-                {/*        <div key={ing._id} >*/}
-                {/*            <button onClick={() => removeIngredient(ing)}>{ing.name}</button>*/}
-                {/*            <input*/}
-                {/*                min={1}*/}
-                {/*                max={100000}*/}
-                {/*                type={"number"}*/}
-                {/*                placeholder={"Количество"}*/}
-                {/*                name={"quantity"}*/}
-                {/*                onChange={(e) => handleChangeSelectedIngredientsQuantity(e, ing._id)}*/}
-                {/*                value={ing.quantity}*/}
-                {/*                required*/}
-                {/*            />*/}
-                {/*        </div>*/}
-                {/*    )))*/}
-                {/*}*/}
-                {/*/!* выбор оборудования *!/*/}
-                {/*<p>Все оборудование</p>*/}
-                {/*{equipment.map((eq) => (*/}
-                {/*    <div key={eq._id}>*/}
-                {/*        <button onClick={() => {addEquipment(eq)}}>{eq.name}</button>*/}
-                {/*    </div>*/}
-                {/*))}*/}
-                {/*<p>Добавленное оборужование</p>*/}
-                {/*{   selectedEquipment.length === 0 ? (*/}
-                {/*    <p>Нет добавленного оборудования</p>*/}
-                {/*) : (*/}
-                {/*    selectedEquipment.map((eq) => (*/}
-                {/*        <div key={eq._id} >*/}
-                {/*            <button onClick={() => removeEquipment(eq)}>{eq.name}</button>*/}
-                {/*        </div>*/}
-                {/*    )))*/}
-                {/*}*/}
-
-                {/*/!* Создание этапов *!/*/}
                 {/*{recipe.steps.map((step, index) => (*/}
                 {/*    <div key={`step${index}`}>*/}
                 {/*        <p>{`Этап ${index + 1}`}</p>*/}

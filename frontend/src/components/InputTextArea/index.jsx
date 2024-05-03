@@ -10,7 +10,7 @@ const InputTextArea = ({label, placeholder, name, onChange, value, required}) =>
 
       return (
           <div>
-              <label htmlFor={name}>{label}</label>
+              {label !== null ? <label htmlFor={name}>{label}</label> :""}
               <textarea
                   id = {name}
                   className={classes.input__class}
