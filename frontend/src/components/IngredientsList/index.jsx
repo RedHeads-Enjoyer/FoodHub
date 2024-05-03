@@ -35,7 +35,6 @@ const IngredientsList = ({addedIngredients, allIngredients, label, setTarget, na
 
     const handleQuantityChange = (e, ingredient) => {
         let newValue = e.target.value
-        console.log(e.target.value)
         if (newValue === "") return;
         else if (newValue <= 1) e.target.value = 1
         else if (newValue >= 100000) e.target.value = 99999
@@ -58,7 +57,6 @@ const IngredientsList = ({addedIngredients, allIngredients, label, setTarget, na
             weight += parseInt(addedIngredients[i].quantity)
             calories += parseInt(addedIngredients[i].quantity) * addedIngredients[i].calorieContent
         }
-        console.log(calories, weight)
         const result = Math.ceil(calories/weight)
         if (result) setCalorieCounter(result)
         else setCalorieCounter(0)
@@ -111,7 +109,8 @@ const IngredientsList = ({addedIngredients, allIngredients, label, setTarget, na
             <p>{label}</p>
             <div className={classes.ingredients__wrapper}>
                 <div className={classes.list__wrapper}>
-                    {addedIngredients.map((ingredient) => (
+                    {addedIngredients.length === 0 ? <p>Здесь пока пусто :(</p> :
+                        addedIngredients.map((ingredient) => (
                         <div
                             key={ingredient._id}
                             className={classes.item__wrapper}

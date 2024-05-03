@@ -5,21 +5,16 @@ const {secret} = require("../config");
 class recipeEquipmentController {
     async create(req, res) {
         try {
-            const token = req.headers.authorization.split(' ')[1]
-            if (!token) {
-                return res.status(403).json({message: "Пользователь не авторизован"})
-            }
-            const authorId = jwt.verify(token, secret).id
-
-            const {name, author} = req.body
+            const {name} = req.body
+            const authorID = req.user._id
             const candidate = await RecipeEquipmentContoller.findOne({name})
             if (candidate) {
-                return res.status(400).json({message: "Оборудование с таким названием уже сущствует"})
+                return res.status(201).json({message: "Оборудование с таким названием уже сущствует", object: candidate})
             }
 
-            const recipeEquipment = new RecipeEquipmentContoller({name, author, authorId})
+            const recipeEquipment = new RecipeEquipmentContoller({name, authorID})
             await recipeEquipment.save()
-            return res.json({message: "Оборудование успешно добавлено"})
+            return res.json({message: "Оборудование успешно добавлено", object: recipeEquipment})
         } catch (e) {
             console.log(e)
             return res.status(500).json({message: 'Ошибка во время добавления оборудования'})

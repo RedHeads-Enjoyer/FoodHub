@@ -28,8 +28,13 @@
     flex-wrap: wrap;
 }
 
-.equ__ing__wrapper {
+.ingredients__wrapper {
     max-width: 300px;
+    flex-grow: 1;
+}
+
+.equipment__wrapper {
+    max-width: 200px;
     flex-grow: 1;
 }
 
@@ -37,5 +42,5 @@
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 40px;
 }

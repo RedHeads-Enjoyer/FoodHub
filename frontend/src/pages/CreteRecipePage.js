@@ -9,6 +9,7 @@ import Select from "../components/Select";
 import InputNumber from "../components/InputNumber";
 import Switch from "../components/Switch";
 import IngredientsList from "../components/IngredientsList";
+import EquipmentList from "../components/EquipmentList";
 
 
 const CreateRecipePage = () => {
@@ -64,13 +65,10 @@ const CreateRecipePage = () => {
                     setEquipment(data.data)
                 }
             )
-
-        console.log(recipe.authorID)
     }, [])
 
 
     const handleChangeRecipe = ({currentTarget: input}) => {
-        console.log(input)
         setRecipe({...recipe, [input.name]: input.value})
     }
 
@@ -127,25 +125,6 @@ const CreateRecipePage = () => {
         })
     }
 
-    const addIngredient = (e) => {
-        setIngredients(ingredients.filter(ing => ing._id !== e._id))
-        setSelectedIngredients([...selectedIngredients, {...e, quantity: 1}])
-    }
-
-    const removeIngredient = (e) => {
-        setSelectedIngredients(selectedIngredients.filter(ing => ing._id !== e._id))
-        setIngredients([...ingredients, e])
-    }
-
-    const addEquipment = (e) => {
-        setEquipment(equipment.filter(eq => eq._id !== e._id))
-        setSelectedEquipment([...selectedEquipment, e])
-    }
-
-    const removeEquipment = (e) => {
-        setSelectedEquipment(selectedEquipment.filter(eq => eq._id !== e._id))
-        setEquipment([...equipment, e])
-    }
 
     const addRecipeStep = (e) => {
         e.preventDefault()
@@ -308,7 +287,7 @@ const CreateRecipePage = () => {
                             />
                         </div>
                     </div>
-                    <div className={classes.equ__ing__wrapper}>
+                    <div className={classes.ingredients__wrapper}>
                         <IngredientsList
                             label={"Ингредиенты"}
                             addedIngredients={recipe.ingredients}
@@ -318,33 +297,19 @@ const CreateRecipePage = () => {
                             name={"ingredients"}
                         />
                     </div>
+                    <div className={classes.equipment__wrapper}>
+                        <EquipmentList
+                            label={"Оборудование"}
+                            addedEquipment={recipe.equipment}
+                            allEquipment={equipment}
+                            setTarget={handleChangeRecipe}
+                            setAllEquipment={setEquipment}
+                            name={"equipment"}
+                        />
+                    </div>
                 </div>
 
 
-
-
-
-
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
                 {/*<input*/}
                 {/*    type="file"*/}
                 {/*    accept={"image/*"}*/}
