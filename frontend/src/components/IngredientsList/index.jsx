@@ -16,6 +16,12 @@ const IngredientsList = ({addedIngredients, allIngredients, label, setTarget, na
         setAllIngredients(allIngredients.filter((i) => i !== ingredient))
     }
 
+    const handleRemoveIngredientButton = (e, ingredient) => {
+        e.preventDefault()
+        setTarget({ currentTarget: {name, value: addedIngredients.filter((i) => i._id !== ingredient._id)}})
+        setAllIngredients([...allIngredients, ingredient])
+    }
+
 
 
     return (
@@ -24,10 +30,14 @@ const IngredientsList = ({addedIngredients, allIngredients, label, setTarget, na
             <div className={classes.ingredients__wrapper}>
                 <div className={classes.list__wrapper}>
                     {addedIngredients.map((ingredient) => (
-                        <div key={ingredient._id} className={classes.item__wrapper}>
+                        <button
+                            key={ingredient._id}
+                            className={classes.item__wrapper}
+                            onClick={(e) => handleRemoveIngredientButton(e, ingredient)}
+                        >
                             <p>{ingredient.name}</p>
                             <p>{ingredient.quantity} г</p>
-                        </div>
+                        </button>
                     ))}
                 </div>
                 <div className={classes.bottom__wrapper}>

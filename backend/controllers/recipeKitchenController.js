@@ -9,7 +9,7 @@ class recipeTypeController {
             const authorId = req.user.id
             const candidate = await RecipeKitchen.findOne({name})
             if (candidate) {
-                return res.status(400).json({message: "Кухня с таким названием уже сущствует"})
+                return res.status(201).json({message: "Кухня с таким названием уже сущствует", object: candidate})
             }
             const recipeKitchen = new RecipeKitchen({name, authorId})
             await recipeKitchen.save()

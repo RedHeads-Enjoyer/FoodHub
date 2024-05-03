@@ -51,6 +51,7 @@ const Select = ({name, onChange, options, label, link}) => {
                     setIsOptionsVisible(false)
                 })
         } catch (error) {
+            setBlockAddButton(false)
             if (error.response) {
                 // Здесь обрабатываем ошибку на уровне ответа от сервера
                 console.log(error.response.data.message);

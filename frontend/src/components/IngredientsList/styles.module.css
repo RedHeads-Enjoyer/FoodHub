@@ -11,7 +11,16 @@
     box-sizing: border-box;
     padding: 10px;
     border-radius: var(--border-radius-main);
+    outline: none;
+    border: 0;
+    cursor: pointer;
+    user-select: none;
 }
+
+.item__wrapper:hover {
+    background-color: var(--background-semi-hover-color);
+}
+
 
 .list__wrapper {
     display: flex;

@@ -10,7 +10,7 @@ class recipeTypeController {
 
             const candidate = await RecipeType.findOne({name})
             if (candidate) {
-                return res.status(400).json({message: "Тип блюда с таким названием уже сущствует"})
+                return res.status(201).json({message: "Тип блюда с таким названием уже сущствует", object: candidate})
             }
 
             const recipeType = new RecipeType({name, authorId})
