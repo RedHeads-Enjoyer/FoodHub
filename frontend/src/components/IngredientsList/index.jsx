@@ -41,7 +41,7 @@ const IngredientsList = ({addedIngredients, allIngredients, label, setTarget, na
         newValue = e.target.value
         const index = addedIngredients.findIndex((i) => i._id === ingredient._id);
         if (index === -1) return
-        const updatedIngredient = { ...addedIngredients[index], quantity: newValue };
+        const updatedIngredient = { ...addedIngredients[index], quantity: parseInt(newValue) };
         const updatedList = [
             ...addedIngredients.slice(0, index),
             updatedIngredient,

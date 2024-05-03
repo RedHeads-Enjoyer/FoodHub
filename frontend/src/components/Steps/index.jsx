@@ -18,6 +18,8 @@ const Steps = ({steps, onChange, name}) => {
     }
 
     const handleDurationHoursChange = (e, index) => {
+        if (e.target.value.length === 2) {
+        }
         const newDurations = []
         for (let i = 0; i < durations.length; i++) {
             if (i !== index) newDurations.push(durations[i])
@@ -65,18 +67,21 @@ const Steps = ({steps, onChange, name}) => {
                         </div>
                         <div className={classes.duration__wrapper}>
                             <input
+                                ref={`h${index}`}
                                 value={durations[index].h}
                                 className={classes.number__input}
                                 type={"number"}
                                 onChange={(e) => handleDurationHoursChange(e, index)}
                             />
                             <input
+                                ref={`m${index}`}
                                 value={durations[index].m}
                                 className={classes.number__input}
                                 type={"number"}
                                 onChange={(e) => handleDurationMinutesChange(e, index)}
                             />
                             <input
+                                ref={`s${index}`}
                                 value={durations[index].s}
                                 className={classes.number__input}
                                 type={"number"}
