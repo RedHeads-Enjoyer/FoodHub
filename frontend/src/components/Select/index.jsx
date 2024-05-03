@@ -1,17 +1,26 @@
 import classes from "./styles.module.css";
 import {useEffect, useState} from "react";
+import axios from "axios";
+import {dbUrl} from "../../config";
+import {getJwtAuthHeader} from "../../functions";
 
-const Select = ({name, onChange, options, label}) => {
+const Select = ({name, onChange, options, label, link}) => {
     const [selected, setSelected] = useState({})
     const [isOptionsVisible, setIsOptionsVisible] = useState(false)
-    const [filteredOptions, setFilteredOptions] = useState(options)
+    const [filteredOptions, setFilteredOptions] = useState([])
     const [searchRequest, setSearchRequest] = useState("")
+    const [blockAddButton, setBlockAddButton] = useState(false)
 
     useEffect(() => {
         if (options.length !== 0) {
             setSelected(options[0])
+            setFilteredOptions(options)
         }
     }, [options])
+
+    useEffect(() => {
+        setFilteredOptions(options.filter(option =>  option.name.toLowerCase().includes(searchRequest.toLowerCase())))
+    }, [searchRequest])
 
     const handleSelectorButton = () => {
         setIsOptionsVisible((prevState) => !prevState)
@@ -19,6 +28,39 @@ const Select = ({name, onChange, options, label}) => {
 
     const handleSearchRequest = (e) => {
         setSearchRequest(e.target.value)
+    }
+
+    const handleOptionClick = (e, option) => {
+        e.preventDefault()
+        setSelected(option)
+        onChange(option._id)
+    }
+
+    const handleAddOptionButton = async (e) => {
+        e.preventDefault()
+        setBlockAddButton(true)
+        const url = dbUrl + link;
+        try {
+            await axios.post(url, {name: searchRequest}, getJwtAuthHeader())
+                .then((data) => {
+                    setSearchRequest("")
+                    setSelected(data.data.object)
+                    onChange(data.data.object._id)
+                    setBlockAddButton(false)
+                })
+        } catch (error) {
+            if (error.response) {
+                // Здесь обрабатываем ошибку на уровне ответа от сервера
+                console.log(error.response.data.message);
+            } else if (error.request) {
+                // Здесь обрабатываем ошибку на уровне запроса
+                console.log('Ошибка запроса:', error.request);
+            } else {
+                // Здесь обрабатываем другие типы ошибок
+                console.log('Ошибка:', error.message);
+            }
+        }
+
     }
 
 
@@ -39,10 +81,24 @@ const Select = ({name, onChange, options, label}) => {
                     type={"text"}
                     value={searchRequest}
                     onChange={handleSearchRequest}
+                    placeholder={"Найти.."}
                 />
                 <div className={classes.options__wrapper}>
-                    {options.map((option) => (
-                        <button key={option._id} className={classes.option__button}>{option.name}</button>
+                    {filteredOptions.length === 0 ?
+                        <div className={classes.add_option__wrapper}>
+                            <p>Ничего не найдено :(</p>
+                            <button
+                                className={classes.add__option__button}
+                                onClick={handleAddOptionButton}
+                                disabled={blockAddButton}
+                            >
+                                <p>Добавить свой вариант</p>
+                            </button>
+                            <p>*Модератор должен подтвердить добавлегние, до этого момента элемент будет считаться неопределенным</p>
+                        </div>
+                        :
+                        filteredOptions.map((option) => (
+                        <button key={option._id} onClick={(e) => handleOptionClick(e, option)} className={classes.option__button}>{option.name}</button>
                     ))}
                 </div>
             </>

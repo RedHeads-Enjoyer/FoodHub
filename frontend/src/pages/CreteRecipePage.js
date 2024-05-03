@@ -108,19 +108,17 @@ const CreateRecipePage = () => {
         })
     }
 
-    const handleChangeRecipeType = (e) => {
-        const selectedType = types.find(type => type.name === e.target.value);
+    const handleChangeRecipeType = (id) => {
         setRecipe({
             ...recipe,
-            typeID: selectedType._id,
+            typeID: id,
         })
     }
 
-    const handleChangeRecipeKitchen = (e) => {
-        let selectedKitchen = kitchens.find(kitchen => kitchen.name === e.target.value)
+    const handleChangeRecipeKitchen = (id) => {
         setRecipe({
             ...recipe,
-            kitchenID:  selectedKitchen._id,
+            kitchenID: id,
         })
     }
 
@@ -273,12 +271,14 @@ const CreateRecipePage = () => {
                             name={"kitchenID"}
                             onChange={handleChangeRecipeKitchen}
                             options={kitchens}
+                            link = '/kitchen'
                         />
                         <Select
                             label={"Тип блюда"}
                             name={"typeID"}
                             onChange={handleChangeRecipeType}
                             options={types}
+                            link = '/type'
                         />
                     </div>
 

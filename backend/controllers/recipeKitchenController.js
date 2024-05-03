@@ -5,21 +5,15 @@ const {secret} = require("../config");
 class recipeTypeController {
     async create(req, res) {
         try {
-            const token = req.headers.authorization.split(' ')[1]
-            if (!token) {
-                return res.status(403).json({message: "Пользователь не авторизован"})
-            }
-            const authorId = jwt.verify(token, secret).id
-
-            const {name, author} = req.body
+            const {name} = req.body
+            const authorId = req.user.id
             const candidate = await RecipeKitchen.findOne({name})
             if (candidate) {
                 return res.status(400).json({message: "Кухня с таким названием уже сущствует"})
             }
-
-            const recipeKitchen = new RecipeKitchen({name, author, authorId})
+            const recipeKitchen = new RecipeKitchen({name, authorId})
             await recipeKitchen.save()
-            return res.json({message: "Кухная успешно добавлена"})
+            return res.json({message: "Кухная успешно добавлена", object: recipeKitchen})
         } catch (e) {
             console.log(e)
             return res.status(500).json({message: 'Ошибка во время добавления кухни'})
