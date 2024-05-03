@@ -1,7 +1,7 @@
 .ingredients__wrapper {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 4px;
 }
 
 .item__wrapper {
@@ -14,16 +14,18 @@
 }
 
 .list__wrapper {
-
+    display: flex;
+    gap: 4px;
+    flex-direction: column;
 }
 
 .bottom__wrapper {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 4px;
 }
 
-.add__button {
+.open__menu__button, .close__menu__button {
     display: block;
     width: 40px;
     height: 40px;
@@ -37,7 +39,9 @@
     flex-shrink: 0;
 }
 
-.add__button::before, .add__button::after {
+.open__menu__button::before, .open__menu__button::after,
+.close__menu__button::before, .close__menu__button::after
+{
     position: absolute;
     display: block;
     content: '';
@@ -45,17 +49,30 @@
     width: 2px;
     height: 16px;
     border-radius: var(--border-radius-main);
+    transition: 0.1s;
 }
 
-.add__button::before {
+.open__menu__button::before {
     top: 12px;
     left: 19px;
 }
 
-.add__button::after {
+.open__menu__button::after {
     top: 12px;
     left: 19px;
     transform: rotate(90deg);
+}
+
+.close__menu__button::before {
+    top: 12px;
+    left: 19px;
+    transform: rotate(-45deg);
+}
+
+.close__menu__button::after {
+    top: 12px;
+    left: 19px;
+    transform: rotate(45deg);
 }
 
 .calorie__wrapper {
@@ -66,4 +83,20 @@
     background-color: var(--background-semi-color);
     border-radius: var(--border-radius-main);
     width: 100%;
+}
+
+.menu__wrapper {
+    border-radius: var(--border-radius-main);
+    overflow: hidden;
+}
+
+.add__button {
+    outline: none;
+    border: 0;
+    width: 100%;
+    cursor: pointer;
+}
+
+.add__button:hover {
+    background-color: var(--background-semi-hover-color);
 }

@@ -224,6 +224,7 @@ const CreateRecipePage = () => {
             formData.append('kitchenID', recipe.kitchenID);
             formData.append('typeID', recipe.typeID);
             formData.append('equipment', recipe.equipment);
+            formData.append('ingredients', recipe.ingredients);
             formData.append('steps', recipe.steps);
             formData.append('authorID', recipe.authorID);
 
@@ -312,7 +313,9 @@ const CreateRecipePage = () => {
                             label={"Ингредиенты"}
                             addedIngredients={recipe.ingredients}
                             allIngredients={ingredients}
-                            onChange={handleChangeRecipe}
+                            setTarget={handleChangeRecipe}
+                            setAllIngredients={setIngredients}
+                            name={"ingredients"}
                         />
                     </div>
                 </div>
