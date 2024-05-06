@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import classes from "./styles.module.css";
 
-const RecipeCard = ({label, value}) => {
+const BlocbInfo = ({label, value}) => {
     return (
         <div className={classes.blob__info}>
             <p className={classes.blob__value}>{value}</p>
@@ -10,4 +10,4 @@ const RecipeCard = ({label, value}) => {
     );
 };
 
-export default RecipeCard
+export default BlocbInfo

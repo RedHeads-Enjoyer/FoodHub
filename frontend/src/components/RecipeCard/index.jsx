@@ -8,7 +8,6 @@ import recipe_rating from "../../images/recipe_rating.svg"
 import recipe_view from "../../images/recipe_view.png"
 import recipe_difficult from "../../images/recipe_difficult.png"
 import UserImageName from "../UserImageName";
-import steps from "../Steps";
 import {Link} from "react-router-dom";
 
 const RecipeCard = ({recipe}) => {

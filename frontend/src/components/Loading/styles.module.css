@@ -1,0 +1,13 @@
+.loading__wrapper {
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+
+.loading {
+    position: absolute;
+    background-color: var(--color-accent-main);
+    display: block;
+    width: 100%;
+    height: 100%;
+}

@@ -16,6 +16,52 @@
     object-fit: cover;
 }
 
-.recipe__main__info__wrapper {
-    display: flex;
+.recipe__stats__wrapper {
+    max-width: 360px;
+    min-width: 280px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, 54px);
+    gap: 10px;
+    grid-template-areas:
+    "vie vot"
+    "dur dif"
+    "typ kit"
+    "cal cal";
+    align-items: start;
 }
+
+.recipe__info__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.box1 {
+    grid-area: vie;
+}
+
+.box2 {
+    grid-area: dur;
+}
+
+.box3 {
+    grid-area: dif;
+}
+
+.box4 {
+    grid-area: cal;
+}
+
+.box5 {
+    grid-area: kit;
+}
+
+.box6 {
+    grid-area: typ;
+}
+
+.box7 {
+    grid-area: vot;
+}
+
+
