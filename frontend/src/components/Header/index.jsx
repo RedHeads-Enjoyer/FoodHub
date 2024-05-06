@@ -79,7 +79,7 @@ const Header = () => {
                       placeholder={"Найти..."}
                       className={classes.search__bar}
                   />
-                  <button>
+                  <button className={classes.search__button}>
                       <p>Найти</p>
                   </button>
               </div>
@@ -88,33 +88,33 @@ const Header = () => {
                   <div className={classes.user__wrapper} onClick={changeMenuStatus}>
                       <img className={classes.user__avatar} src={image}/>
                       <p className={classes.user__username}>{currentUser.username}</p>
+                      {menuStatus === true &&
+                          <div className={classes.menu__wrapper}>
+                              <ul className={classes.list__wrapper}>
+                                  <li className={classes.menu__item__wrapper}>
+                                      <div className={classes.menu__item}>
+                                          <button onClick={handleMenuProfile}>Мой профиль</button>
+                                      </div>
+                                  </li>
+                                  <li className={classes.menu__item__wrapper}>
+                                      <div className={classes.menu__item}>
+                                          <button onClick={handleMenuAddRecipe}>Добавить рецепт</button>
+                                      </div>
+                                  </li>
+                                  <li className={classes.menu__item__wrapper}>
+                                      <div className={classes.menu__item}>
+                                          <button>Настройки</button>
+                                      </div>
+                                  </li>
+                                  <li className={classes.menu__item__wrapper}>
+                                      <div className={classes.menu__item}>
+                                          <button onClick={handleMenuExit}>Выйти</button>
+                                      </div>
+                                  </li>
+                              </ul>
+                          </div>
+                      }
                   </div>
-                  {menuStatus === true &&
-                      <div className={classes.menu__wrapper}>
-                          <ul className={classes.list__wrapper}>
-                              <li className={classes.menu__item__wrapper}>
-                                  <div className={classes.menu__item}>
-                                      <button onClick={handleMenuProfile}>Мой профиль</button>
-                                  </div>
-                              </li>
-                              <li className={classes.menu__item__wrapper}>
-                                  <div className={classes.menu__item}>
-                                      <button onClick={handleMenuAddRecipe}>Добавить рецепт</button>
-                                  </div>
-                              </li>
-                              <li className={classes.menu__item__wrapper}>
-                                  <div className={classes.menu__item}>
-                                      <button>Настройки</button>
-                                  </div>
-                              </li>
-                              <li className={classes.menu__item__wrapper}>
-                                  <div className={classes.menu__item}>
-                                      <button onClick={handleMenuExit}>Выйти</button>
-                                  </div>
-                              </li>
-                          </ul>
-                      </div>
-                  }
               </>: ""}
 
           </header>

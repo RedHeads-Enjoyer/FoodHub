@@ -7,6 +7,7 @@ header {
     color: white;
     font-size: 1.7em;
     margin-left: 10px;
+    text-wrap: none;
 }
 
 .user__wrapper {
@@ -17,6 +18,7 @@ header {
     overflow: hidden;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .user__avatar{
@@ -27,6 +29,7 @@ header {
 
 .header__wrapper {
     display: flex;
+    gap: 10px;
     justify-content: space-between;
     align-items: center;
 }
@@ -74,16 +77,30 @@ header {
     max-width: 300px;
 }
 
+.search__bar__wrapper {
+    display: flex;
+    max-width: 400px;
+}
+
 .search__bar {
     outline: none;
     border: 0;
     padding: 10px;
-    border-radius: var(--border-radius-main);
+    border-radius: var(--border-radius-main) 0 0 var(--border-radius-main);
     box-sizing: border-box;
+    width: 100%;
 }
 
 .search__bar::placeholder {
     color: var(--font-placeholder-color);
+}
+
+.search__button {
+    outline: none;
+    border: 0;
+    background-color: white;
+    border-radius: 0 var(--border-radius-main) var(--border-radius-main) 0;
+    cursor: pointer;
 }
 
 
