@@ -11,7 +11,6 @@ import UserImageName from "../UserImageName";
 
 const RecipeCard = ({recipe}) => {
     const [imageUrl, setImageUrl] = useState('');
-    const [user, setUser] = useState('')
 
     useEffect(() => {
         console.log(recipe)

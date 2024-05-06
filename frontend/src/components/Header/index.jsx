@@ -58,11 +58,32 @@ const Header = () => {
             });
     }
 
+    const handleMenuProfile = () => {
+        setMenuStatus(false)
+        navigate('/user/' + currentUser._id)
+    }
+
+    const handleMenuAddRecipe = () => {
+        setMenuStatus(false)
+        navigate('/createRecipe')
+    }
+
       return (
           <header className={classes.header__wrapper}>
               <div className={classes.logo__wrapper}>
                   <h1 className={classes.name}>ЗРЯТЬ ЕДА</h1>
               </div>
+              <div className={classes.search__bar__wrapper}>
+                  <input
+                      type={"text"}
+                      placeholder={"Найти..."}
+                      className={classes.search__bar}
+                  />
+                  <button>
+                      <p>Найти</p>
+                  </button>
+              </div>
+
               {userStatus !== false ? <>
                   <div className={classes.user__wrapper} onClick={changeMenuStatus}>
                       <img className={classes.user__avatar} src={image}/>
@@ -73,7 +94,12 @@ const Header = () => {
                           <ul className={classes.list__wrapper}>
                               <li className={classes.menu__item__wrapper}>
                                   <div className={classes.menu__item}>
-                                      <button>Мой профиль</button>
+                                      <button onClick={handleMenuProfile}>Мой профиль</button>
+                                  </div>
+                              </li>
+                              <li className={classes.menu__item__wrapper}>
+                                  <div className={classes.menu__item}>
+                                      <button onClick={handleMenuAddRecipe}>Добавить рецепт</button>
                                   </div>
                               </li>
                               <li className={classes.menu__item__wrapper}>

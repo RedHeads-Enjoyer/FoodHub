@@ -28,11 +28,13 @@ header {
 .header__wrapper {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .user__username {
     margin-left: 10px;
     color: white;
+    display: block;
 }
 
 .menu__wrapper {
@@ -70,4 +72,27 @@ header {
 
 .logo__wrapper {
     max-width: 300px;
+}
+
+.search__bar {
+    outline: none;
+    border: 0;
+    padding: 10px;
+    border-radius: var(--border-radius-main);
+    box-sizing: border-box;
+}
+
+.search__bar::placeholder {
+    color: var(--font-placeholder-color);
+}
+
+
+@media (max-width: 500px) {
+    .user__username {
+        display: none;
+    }
+
+    .name {
+        font-size: 1em;
+    }
 }
