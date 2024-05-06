@@ -1,0 +1,21 @@
+.recipe__wrapper {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.recipe__name {
+    text-align: center;
+    font-weight: var(--font-accent-weight);
+    margin-top: 10px;
+}
+
+.recipe__avatar {
+    max-width: 400px;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.recipe__main__info__wrapper {
+    display: flex;
+}

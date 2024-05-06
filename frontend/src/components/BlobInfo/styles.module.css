@@ -1,0 +1,17 @@
+.blob__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--background-semi-color);
+    padding: 10px;
+    border-radius: 50px;
+    width: 100%;
+}
+
+.blob__value {
+    color: var(--color-accent-main);
+}
+
+.blob__label {
+    font-size: var(--fonst-semi-size);
+}

@@ -25,7 +25,6 @@ const UserImageName = ({id}) => {
 
     useEffect(() => {
         if (user !== '') {
-            console.log(user)
             const fetchImage = async () => {
                 try {
                     const response = await axios.get(dbUrl + '/image/' + user.image, {

@@ -24,10 +24,6 @@ const SearchPage = () => {
     }, [fetching])
 
     useEffect(() => {
-        console.log(totalCount)
-    }, [totalCount])
-
-    useEffect(() => {
         const recipesWrapper = document.querySelector(`.${classes.recipes__wrapper}`);
         recipesWrapper.addEventListener('scroll', scrollHandler)
         return function () {
