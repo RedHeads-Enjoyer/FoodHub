@@ -2,24 +2,55 @@ import classes from "./styles.module.css";
 import InputTextArea from "../InputTextArea";
 import Timer from "../Timer";
 import {useEffect, useState} from "react";
+import reset_time from '../../images/reset_time.png'
 
 const PlayTimer = ({duration}) => {
-    const [time, setTime] = useState(duration)
+    const [time, setTime] = useState(duration);
+    const [isActive, setIsActive] = useState(false);
+
+    useEffect(() => {
+        let interval = null;
+
+        if (isActive) {
+            interval = setInterval(() => {
+                setTime((time) => time > 0 ? time - 1 : 0);
+            }, 1000);
+        } else if (!isActive && time !== duration) {
+            clearInterval(interval);
+        }
+
+        return () => clearInterval(interval);
+    }, [isActive, time, duration]);
+
+    const toggleStartPause = () => {
+        setIsActive(!isActive);
+    };
+
+    const resetTime = () => {
+        setTime(duration);
+        setIsActive(false);
+    };
 
     return (
         <div className={classes.duration__wrapper}>
-            <div className={classes.number__wrapper}>
+            <div className={isActive ? classes.number__wrapper__active: classes.number__wrapper}>
                 <p>{Math.floor(time / 3600)}</p>
                 <label>час</label>
             </div>
-            <div className={classes.number__wrapper}>
+            <div className={isActive ? classes.number__wrapper__active: classes.number__wrapper}>
                 <p>{Math.floor(time % 3600 / 60)}</p>
                 <label>мин</label>
             </div>
-            <div className={classes.number__wrapper}>
+            <div className={isActive ? classes.number__wrapper__active: classes.number__wrapper}>
                 <p>{time % 60}</p>
                 <label>сек</label>
             </div>
+            <button onClick={toggleStartPause}>
+                {isActive ? 'Пауза' : 'Старт'}
+            </button>
+            {!isActive && time !== duration && (
+                <button onClick={resetTime}>Занаво</button>
+            )}
         </div>
     )
 }
@@ -33,7 +64,7 @@ const StepsWithTimer = ({steps}) => {
                     <div className={classes.step__wrapper}>
                         <div className={classes.header__wrapper}>
                             <div className={classes.index__wrapper}>
-                                <p>{index}</p>
+                                <p>{index + 1}</p>
                             </div>
                             <PlayTimer duration={step.duration}/>
                         </div>
