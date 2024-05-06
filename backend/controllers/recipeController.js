@@ -4,9 +4,32 @@ const path = require('path')
 class recipeController {
     async create(req, res) {
         try {
-            const {name, description, difficult, ingredients, kitchenID, typeID, equipment, steps, authorID} = req.body;
+            const {
+                name,
+                description,
+                difficult,
+                ingredients,
+                kitchenID,
+                typeID,
+                equipment,
+                steps,
+                authorID,
+                visibility
+            } = req.body;
+
             const image = req.file.filename; // Путь к загруженному файлу изображения
-            const recipe = new Recipe({name, description, difficult, ingredients, kitchenID, typeID, equipment, steps, authorID, image});
+            const recipe = new Recipe({
+                name,
+                description,
+                difficult,
+                ingredients: JSON.parse(ingredients),
+                kitchenID,
+                typeID,
+                equipment: JSON.parse(equipment),
+                steps: JSON.parse(steps),
+                visibility,
+                authorID,
+                image});
 
             await recipe.save();
             return res.json({message: "Рецепт успешно добавлен"});

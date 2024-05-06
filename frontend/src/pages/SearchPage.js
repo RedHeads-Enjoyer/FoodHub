@@ -23,6 +23,7 @@ const SearchPage = () => {
 
     return (
         <>
+            asd
             {recipes.map((recipe) => (
                 <div key={recipe._id}>
                     <RecipeCarp recipe={recipe}/>

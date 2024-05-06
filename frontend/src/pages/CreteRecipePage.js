@@ -27,7 +27,7 @@ const CreateRecipePage = () => {
         equipment: [],
         authorID: currentUser._id,
         steps: [],
-        visible: true
+        visibility: true
     })
 
     const [selectedIngredients, setSelectedIngredients] = useState([])
@@ -127,42 +127,6 @@ const CreateRecipePage = () => {
         })
     }
 
-
-    const addRecipeStep = (e) => {
-        e.preventDefault()
-        setRecipe({...recipe, steps: [...recipe.steps, {
-                description: "",
-                duration: ""
-            }]})
-    }
-
-    const handleChangeRecipeStepDescription = (e, index) => {
-        const { name, value } = e.target;
-        setRecipe(prevRecipe => {
-            const updatedSteps = [...prevRecipe.steps];
-            updatedSteps[index][name] = value;
-            return { ...prevRecipe, steps: updatedSteps };
-        });
-    }
-
-    const handleChangeRecipeStepDuration = (e, index) => {
-        const { name, value } = e.target;
-        setRecipe(prevRecipe => {
-            const updatedSteps = [...prevRecipe.steps];
-            updatedSteps[index][name] = parseInt(value);
-            return { ...prevRecipe, steps: updatedSteps };
-        });
-    };
-
-    const handleRecipeStepDelete = (e, index) => {
-        e.preventDefault()
-        setRecipe(prevRecipe => {
-            let updatedSteps = [...prevRecipe.steps];
-            updatedSteps.splice(index, 1)
-            return { ...prevRecipe, steps: updatedSteps };
-        });
-    }
-
     const handleImageChange = (e) => {
         const file = e.target.files[0]; // Получаем выбранный файл изображения
         const newFileName = translit(file.name);
@@ -204,9 +168,10 @@ const CreateRecipePage = () => {
             formData.append('difficult', recipe.difficult);
             formData.append('kitchenID', recipe.kitchenID);
             formData.append('typeID', recipe.typeID);
-            formData.append('equipment', recipe.equipment);
-            formData.append('ingredients', recipe.ingredients);
-            formData.append('steps', recipe.steps);
+            formData.append('equipment', JSON.stringify(recipe.equipment));
+            formData.append('ingredients', JSON.stringify(recipe.ingredients));
+            formData.append('steps', JSON.stringify(recipe.steps));
+            formData.append('visibility', recipe.visibility);
             formData.append('authorID', recipe.authorID);
 
 
@@ -283,9 +248,9 @@ const CreateRecipePage = () => {
                                 label={"Доступ"}
                                 first={"Для всех"}
                                 second={"Только мне"}
-                                name={"visible"}
+                                name={"visibility"}
                                 onChange={handleChangeRecipe}
-                                value={recipe.visible}
+                                value={recipe.visibility}
                             />
                         </div>
                     </div>
@@ -336,43 +301,9 @@ const CreateRecipePage = () => {
                         onChange={handleChangeRecipe}
                     />
                 </div>
-
-
-                {/*{recipe.steps.map((step, index) => (*/}
-                {/*    <div key={`step${index}`}>*/}
-                {/*        <p>{`Этап ${index + 1}`}</p>*/}
-                {/*        <input*/}
-                {/*            min={1}*/}
-                {/*            max={100000}*/}
-                {/*            type={"number"}*/}
-                {/*            placeholder={"Количество"}*/}
-                {/*            name={"duration"}*/}
-                {/*            onChange={(e) => handleChangeRecipeStepDuration(e, index)}*/}
-                {/*            value={step.duration}*/}
-                {/*            required*/}
-                {/*        />*/}
-                {/*        <textarea*/}
-                {/*            rows="5"*/}
-                {/*            cols="40"*/}
-                {/*            placeholder={"Описание"}*/}
-                {/*            name={"description"}*/}
-                {/*            onChange={(e) => handleChangeRecipeStepDescription(e, index)}*/}
-                {/*            value={step.description}*/}
-                {/*            required*/}
-                {/*        />*/}
-                {/*        <button onClick={(e) => handleRecipeStepDelete(e, index)}>Удалить этап</button>*/}
-                {/*    </div>*/}
-                {/*))}*/}
-                {/*<div>*/}
-                {/*    <button onClick={addRecipeStep}>Добавить этап</button>*/}
-                {/*</div>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<br/>*/}
-                {/*<button type={"submit"}>Создать</button>*/}
+                <div className={classes.submit__button__wrapper}>
+                    <button className={classes.submit__button} type={"submit"}>Создать</button>
+                </div>
             </form>
         </div>
     )

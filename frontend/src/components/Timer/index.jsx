@@ -22,7 +22,6 @@ const Timer = ({onChange, steps, index, name}) => {
             }
             newSteps.push(steps[i])
         }
-        console.log(duration)
         onChange({ currentTarget: {name, value: newSteps} })
     }, [duration])
 
@@ -60,26 +59,38 @@ const Timer = ({onChange, steps, index, name}) => {
 
     return (
         <div className={classes.duration__wrapper}>
-            <input
-                value={duration.h}
-                className={classes.number__input}
-                type={"number"}
-                onChange={handleDurationHoursChange}
-            />
-            <input
-                ref={minutesRef}
-                value={duration.m}
-                className={classes.number__input}
-                type={"number"}
-                onChange={handleDurationMinutesChange}
-            />
-            <input
-                ref={secondsRef}
-                value={duration.s}
-                className={classes.number__input}
-                type={"number"}
-                onChange={handleDurationSecondsChange}
-            />
+            <div className={classes.number__wrapper}>
+                <input
+                    value={duration.h}
+                    className={classes.number__input}
+                    type={"number"}
+                    onChange={handleDurationHoursChange}
+                    placeholder={"00"}
+                />
+                <label>час</label>
+            </div>
+            <div className={classes.number__wrapper}>
+                <input
+                    ref={minutesRef}
+                    value={duration.m}
+                    className={classes.number__input}
+                    type={"number"}
+                    onChange={handleDurationMinutesChange}
+                    placeholder={"00"}
+                />
+                <label>мин</label>
+            </div>
+            <div className={classes.number__wrapper}>
+                <input
+                    ref={secondsRef}
+                    value={duration.s}
+                    className={classes.number__input}
+                    type={"number"}
+                    onChange={handleDurationSecondsChange}
+                    placeholder={"00"}
+                />
+                <label>сек</label>
+            </div>
         </div>
     );
 };

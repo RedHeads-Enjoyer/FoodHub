@@ -60,3 +60,20 @@
     max-width: 200px;
     flex-grow: 1;
 }
+
+.submit__button {
+    color: white;
+    background-color: var(--color-accent-main);
+    border-radius: var(--border-radius-main);
+    outline: none;
+    border: 0;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.submit__button__wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    margin-top: 10px;
+}

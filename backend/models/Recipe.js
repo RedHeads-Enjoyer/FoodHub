@@ -11,7 +11,7 @@ const Recipe = new Schema({
     createdAt: {type: Date, default: Date.now(), immutable: true},
     authorID: {type: Schema.Types.ObjectId, ref: 'user', immutable: true},
     ingredients: [{
-        ingredientID: { type: Schema.Types.ObjectId, ref: 'recipe_ingredient', required: true },
+        _id: { type: Schema.Types.ObjectId, ref: 'recipe_ingredient', required: true },
         quantity: { type: Number, required: true }
     }],
     kitchenID: {type: Schema.Types.ObjectId, ref: 'recipe_kitchen', required: true},
@@ -21,6 +21,7 @@ const Recipe = new Schema({
         description: { type: String, required: true },
         duration: { type: Number, required: true}
     }],
+    visibility: {type: Boolean, required: true}
 })
 
 module.exports = model('Recipe', Recipe)
