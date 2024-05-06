@@ -4,15 +4,17 @@
     align-items: center;
     background-color: var(--background-semi-color);
     padding: 10px;
-    border-radius: 50px;
+    border-radius: 27px;
     width: 100%;
     box-sizing: border-box;
 }
 
 .blob__value {
     color: var(--color-accent-main);
+    color: var(--font-main-color);
 }
 
 .blob__label {
     font-size: var(--fonst-semi-size);
+    color: var(--font-placeholder-color);
 }

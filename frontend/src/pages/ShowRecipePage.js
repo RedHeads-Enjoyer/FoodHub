@@ -21,6 +21,9 @@ const ShowRecipePage = () => {
     const [image, setImage] = useState("")
     const [duration, setDuration] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingIngredients, setIsLoadingIngredients] = useState(false)
+    const [isLoadingEquipment, setIsLoadingEquipment] = useState(false)
+    const [equipment, setEquipment] = useState([])
 
     useEffect(() => {
         setIsLoading(true)
@@ -29,13 +32,15 @@ const ShowRecipePage = () => {
             .then(data => {
                     setRecipe(data.data)
                 }
-            ).finally(() => setIsLoading(false))
+            )
     }, [])
 
     useEffect(() => {
         if (Object.keys(recipe).length !== 0) {
+            setIsLoading(false)
             fetchImage(setImage, recipe.image);
             getIngredients()
+            getEquipment()
             getKitchen()
             getType()
             setDuration(countDuration())
@@ -73,15 +78,32 @@ const ShowRecipePage = () => {
 
 
     const getIngredients = () => {
-        const tmpIngredients = []
-        for (let i = 0; i < recipe.ingredients.length; i++) {
+        setIsLoadingIngredients(true);
+        const requests = recipe.ingredients.map(ingredient =>
+            axios.get(dbUrl + '/ingredient/' + ingredient._id)
+        );
+
+        Promise.all(requests).then(responses => {
+            const tmpIngredients = responses.map(response => response.data);
+            setIngredients(tmpIngredients);
+            setIsLoadingIngredients(false);
+        });
+    }
+
+    const getEquipment = () => {
+        setIsLoadingEquipment(true)
+        const tmpEquipment = []
+        for (let i = 0; i < recipe.equipment.length; i++) {
             axios
-                .get(dbUrl + '/ingredient/' + recipe.ingredients[i]._id)
+                .get(dbUrl + '/equipment/' + recipe.equipment[i])
                 .then(data => {
-                    tmpIngredients.push(data.data)
+                    tmpEquipment.push(data.data)
                 })
         }
-        setIngredients(tmpIngredients)
+        console.log(tmpEquipment)
+        console.log(recipe)
+        setEquipment(tmpEquipment)
+        setIsLoadingEquipment(false)
     }
 
     useEffect(() => {
@@ -127,6 +149,27 @@ const ShowRecipePage = () => {
                         <div className={classes.box8}>
                             {isLoading ? <Loading/> : <UserImageName id={recipe.authorID}/>}
                         </div>
+                    </div>
+                </div>
+                <div className={classes.lists__wrapper}>
+                    <div className={classes.ingredients__wrapper}>
+                        <p className={classes.list__label}>Ингредиенты</p>
+                        {isLoadingIngredients ? <Loading/> : (
+                            ingredients.map((ingredient, index) => (
+                                <div className={classes.list__item} key={recipe.ingredients[index]._id}>
+                                    <p>{ingredient.name}</p>
+                                    <p>{recipe.ingredients[index].quantity} г</p>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                    <div className={classes.equipment__wrapper}>
+                        <p className={classes.list__label}>Оборудование</p>
+                        {isLoadingEquipment ? <Loading/> : (
+                            equipment.map((eq, index) => (
+                                <p key={recipe.equipment[index]}>{eq.name}</p>
+                            ))
+                        )}
                     </div>
                 </div>
             </div>

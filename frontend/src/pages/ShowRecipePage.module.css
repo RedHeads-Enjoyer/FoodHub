@@ -80,3 +80,36 @@
     grid-area: use;
 }
 
+.ingredients__wrapper {
+    background-color: var(--background-semi-color);
+    height: fit-content;
+    padding: 10px;
+    border-radius: var(--border-radius-big);
+}
+
+.equipment__wrapper {
+    background-color: var(--background-semi-color);
+    height: fit-content;
+    padding: 10px;
+    border-radius: var(--border-radius-big);
+}
+
+.list__label {
+    align-items: center;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: var(--font-accent-weight);
+}
+
+.list__item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.lists__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 280px;
+}
