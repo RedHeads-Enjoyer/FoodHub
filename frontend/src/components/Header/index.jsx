@@ -22,10 +22,7 @@ const Header = () => {
     const [menuStatus, setMenuStatus] = useState(false)
 
     useEffect(() => {
-        console.log(userStatus)
-        console.log(typeof(userStatus))
         if (userStatus === true) {
-            console.log("get user data")
             axios.get(dbUrl + `/user/me`,getJwtAuthHeader())
                 .then(data => {
                     setCurrentUser(data.data)

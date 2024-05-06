@@ -13,7 +13,6 @@ class recipeController {
                 typeID,
                 equipment,
                 steps,
-                authorID,
                 visibility
             } = req.body;
 
@@ -28,7 +27,7 @@ class recipeController {
                 equipment: JSON.parse(equipment),
                 steps: JSON.parse(steps),
                 visibility,
-                authorID,
+                authorID: req.user._id,
                 image});
 
             await recipe.save();

@@ -10,6 +10,15 @@ export function getJwtAuthHeader() {
     };
 }
 
+export function getJwtAuthFilesHeader() {
+    return {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: "Bearer " + Cookies.get("token")
+        }
+    };
+}
+
 export const fetchImage = async (setImage, url) => {
     try {
         const response = await axios.get(dbUrl + '/image/' + url, {

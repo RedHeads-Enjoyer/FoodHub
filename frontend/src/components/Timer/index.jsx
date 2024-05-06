@@ -18,7 +18,7 @@ const Timer = ({onChange, steps, index, name}) => {
                 if (isNaN(s)) s = 0
                 const newDuration = h * 3600 + m * 60 + s
                 newSteps.push({...steps[i], duration: newDuration})
-                break
+                continue
             }
             newSteps.push(steps[i])
         }

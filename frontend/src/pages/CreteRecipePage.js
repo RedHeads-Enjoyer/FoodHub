@@ -12,10 +12,12 @@ import IngredientsList from "../components/IngredientsList";
 import EquipmentList from "../components/EquipmentList";
 import image_placeholder from "../images/image_placeholder.svg"
 import Steps from "../components/Steps";
+import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {getJwtAuthFilesHeader, getJwtAuthHeader} from "../functions";
 
 
 const CreateRecipePage = () => {
-    let currentUser = JSON.parse(localStorage.getItem("currentUser"))
     const [recipe, setRecipe] = useState({
         name: "",
         description: "",
@@ -25,7 +27,6 @@ const CreateRecipePage = () => {
         kitchenID: "",
         typeID: "",
         equipment: [],
-        authorID: currentUser._id,
         steps: [],
         visibility: true
     })
@@ -37,6 +38,22 @@ const CreateRecipePage = () => {
     const [kitchens, setKitchens] = useState([])
     const [types, setTypes] = useState([])
     const [image, setImage] = useState("")
+    const [currentUser, setCurrentUser] = useState('')
+    const userStatus = useSelector((state)=>state.user.status);
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (userStatus === true) {
+            axios.get(dbUrl + `/user/me`,getJwtAuthHeader())
+                .then(data => {
+                    setCurrentUser(data.data)
+                })
+                .catch(error => {
+                    console.error("Ошибка получения данных:", error.response.data.message);
+                });
+        }
+    }, [userStatus])
 
 
     useEffect(() => {
@@ -176,11 +193,9 @@ const CreateRecipePage = () => {
 
 
             const url = dbUrl + '/recipe';
-            const response = await axios.post(url, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+            const response = await axios.post(url, formData, getJwtAuthFilesHeader()).then(() => {
+                navigate('/user/' + currentUser._id)
+            })
             console.log(response);
         } catch (error) {
             if (error.response) {
