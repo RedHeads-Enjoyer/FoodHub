@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import {dbUrl} from "../../config";
 import classes from "./styles.module.css";
-import {within} from "@testing-library/react";
 import {Link} from "react-router-dom";
 
 const UserImageName = ({id}) => {

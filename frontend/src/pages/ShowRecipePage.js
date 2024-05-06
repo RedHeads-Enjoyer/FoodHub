@@ -8,13 +8,14 @@ import {fetchImage} from "../functions";
 import BlobInfo from "../components/BlobInfo";
 import UserImageName from "../components/UserImageName";
 import Loading from "../components/Loading";
+import image_placeholder from '../images/image_placeholder.svg'
 
 const ShowRecipePage = () => {
     const navigate = useNavigate()
     const {id} = useParams()
     const [recipe, setRecipe] = useState({})
     const [ingredients, setIngredients] = useState([])
-    const [calorieCount, setCalorieCount] = useState(0)
+    const [calorieCount, setCalorieCount] = useState()
     const [kitchen, setKitchen] = useState('')
     const [type, setType] = useState('')
     const [image, setImage] = useState("")
@@ -36,9 +37,7 @@ const ShowRecipePage = () => {
             getKitchen()
             getType()
             setDuration(countDuration())
-
-
-
+            console.log(recipe.authorID)
         }
     }, [recipe])
 
@@ -98,34 +97,34 @@ const ShowRecipePage = () => {
 
     return (
         <div className={classes.recipe__wrapper}>
-            <p className={classes.recipe__name}>{recipe.name === "asd" ? recipe.name : <Loading/>}</p>
-            {/*<div className={classes.recipe__info__wrapper}>*/}
-            {/*    <img className={classes.recipe__avatar} src={image}/>*/}
-            {/*    <div className={classes.recipe__stats__wrapper}>*/}
-            {/*        <div className={classes.box1}>*/}
-            {/*            <BlobInfo label={"Просмотры"} value={recipe.views}/>*/}
-            {/*        </div>*/}
-            {/*        <div className={classes.box2}>*/}
-            {/*            <BlobInfo label={"Длительность"} value={duration}/>*/}
-            {/*        </div>*/}
-            {/*        <div className={classes.box3}>*/}
-            {/*            <BlobInfo label={"Сложность"} value={recipe.difficult}/>*/}
-            {/*        </div>*/}
-            {/*        <div className={classes.box4}>*/}
-            {/*            <BlobInfo label={"Калорийность на 100 г"} value={calorieCount}/>*/}
-            {/*        </div>*/}
-            {/*        <div className={classes.box5}>*/}
-            {/*            <BlobInfo label={"Кухня"} value={kitchen.name}/>*/}
-            {/*        </div>*/}
-            {/*        <div className={classes.box6}>*/}
-            {/*            <BlobInfo label={"Тип блюда"} value={type.name}/>*/}
-            {/*        </div>*/}
-            {/*        <div className={classes.box7}>*/}
-            {/*            <BlobInfo label={"Оценка"} value={ recipe.ratingVotes !== 0 ? recipe.ratingSum + recipe.ratingVotes : 0}/>*/}
-            {/*        </div>*/}
-            {/*        <UserImageName id={recipe.author._id}/>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+            <p className={classes.recipe__name}>{recipe ? recipe.name : <Loading/>}</p>
+            <div className={classes.recipe__info__wrapper}>
+                <img className={classes.recipe__avatar} src={image ? image : image_placeholder}/>
+                <div className={classes.recipe__stats__wrapper}>
+                    <div className={classes.box1}>
+                        <BlobInfo label={"Просмотры"} value={recipe ? recipe.views : <Loading/>}/>
+                    </div>
+                    <div className={classes.box2}>
+                        <BlobInfo label={"Длительность"} value={recipe ? duration : <Loading/>}/>
+                    </div>
+                    <div className={classes.box3}>
+                        <BlobInfo label={"Сложность"} value={recipe ? recipe.difficult : <Loading/>}/>
+                    </div>
+                    <div className={classes.box4}>
+                        <BlobInfo label={"Калорийность на 100 г"} value={recipe ? calorieCount : <Loading/>}/>
+                    </div>
+                    <div className={classes.box5}>
+                        <BlobInfo label={"Кухня"} value={recipe ? kitchen.name : <Loading/>}/>
+                    </div>
+                    <div className={classes.box6}>
+                        <BlobInfo label={"Тип блюда"} value={recipe ? type.name : <Loading/>}/>
+                    </div>
+                    <div className={classes.box7}>
+                        <BlobInfo label={"Оценка"} value={recipe ? recipe.ratingVotes !== 0 ? recipe.ratingSum + recipe.ratingVotes : 0 : <Loading/>}/>
+                    </div>
+                    <UserImageName id={recipe.authorID}/>
+                </div>
+            </div>
         </div>
     )
 }
