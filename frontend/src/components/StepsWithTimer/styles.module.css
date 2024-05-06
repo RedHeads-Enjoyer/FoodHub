@@ -86,3 +86,7 @@
     left: 9px;
     transform: rotate(-45deg);
 }
+
+.step__description {
+    white-space: pre-wrap;
+}

@@ -9,6 +9,7 @@ import BlobInfo from "../components/BlobInfo";
 import UserImageName from "../components/UserImageName";
 import Loading from "../components/Loading";
 import image_placeholder from '../images/image_placeholder.svg'
+import StepsWithTimer from "../components/StepsWithTimer";
 
 const ShowRecipePage = () => {
     const navigate = useNavigate()
@@ -20,10 +21,11 @@ const ShowRecipePage = () => {
     const [type, setType] = useState('')
     const [image, setImage] = useState("")
     const [duration, setDuration] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
-    const [isLoadingIngredients, setIsLoadingIngredients] = useState(false)
-    const [isLoadingEquipment, setIsLoadingEquipment] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoadingIngredients, setIsLoadingIngredients] = useState(true)
+    const [isLoadingEquipment, setIsLoadingEquipment] = useState(true)
     const [equipment, setEquipment] = useState([])
+    const [recipeRating, setRecipeRating] = useState(0)
 
     useEffect(() => {
         setIsLoading(true)
@@ -43,6 +45,7 @@ const ShowRecipePage = () => {
             getEquipment()
             getKitchen()
             getType()
+            setRating()
             setDuration(countDuration())
         }
     }, [recipe])
@@ -55,6 +58,12 @@ const ShowRecipePage = () => {
                 }
             )
     }
+
+    const setRating = () => {
+        if (recipe.ratingVotes === 0) setRecipeRating(0)
+        else setRecipeRating(recipe.ratingSum / recipe.ratingVotes)
+    }
+
 
     const getType = () => {
         axios
@@ -90,6 +99,10 @@ const ShowRecipePage = () => {
         });
     }
 
+    const getSteps = () => {
+
+    }
+
     const getEquipment = () => {
         setIsLoadingEquipment(true)
         const tmpEquipment = []
@@ -100,8 +113,6 @@ const ShowRecipePage = () => {
                     tmpEquipment.push(data.data)
                 })
         }
-        console.log(tmpEquipment)
-        console.log(recipe)
         setEquipment(tmpEquipment)
         setIsLoadingEquipment(false)
     }
@@ -120,31 +131,31 @@ const ShowRecipePage = () => {
 
     return (
         <div className={classes.recipe__wrapper}>
-            <p className={classes.recipe__name}>{isLoading ? <Loading/> : recipe.name}</p>
+           {isLoading ? <Loading/> :  <p className={classes.recipe__name}>{recipe.name}</p>}
             <div className={classes.recipe__info__wrapper}>
                 <img className={classes.recipe__avatar} src={isLoading ? image_placeholder : image}/>
                 <div className={classes.grid__wrapper}>
                     <div className={classes.recipe__stats__wrapper}>
                         <div className={classes.box1}>
-                            <BlobInfo label={"Просмотры"} value={isLoading ? <Loading/> : recipe.views}/>
+                            {isLoading ? <Loading/> : <BlobInfo label={"Просмотры"} value={recipe.views}/>}
                         </div>
                         <div className={classes.box2}>
-                            <BlobInfo label={"Длительность"} value={isLoading ? <Loading/> : duration}/>
+                            {isLoading ? <Loading/> : <BlobInfo label={"Длительность"} value={duration}/>}
                         </div>
                         <div className={classes.box3}>
-                            <BlobInfo label={"Сложность"} value={isLoading ? <Loading/> : recipe.difficult}/>
+                            {isLoading ? <Loading/> : <BlobInfo label={"Сложность"} value={recipe.difficult}/>}
                         </div>
                         <div className={classes.box4}>
-                            <BlobInfo label={"Калорийность на 100 г"} value={isLoading ?  <Loading/> : calorieCount}/>
-                        </div>
+                            {isLoading ? <Loading/> : <BlobInfo label={"Калорийность на 100 г"} value={calorieCount}/>}
+                      </div>
                         <div className={classes.box5}>
-                            <BlobInfo label={"Кухня"} value={isLoading ? <Loading/> : kitchen.name}/>
+                            {isLoading ? <Loading/> : <BlobInfo label={"Кухня"} value={kitchen.name}/>}
                         </div>
                         <div className={classes.box6}>
-                            <BlobInfo label={"Тип блюда"} value={isLoading ?  <Loading/> : type.name}/>
+                            {isLoading ? <Loading/> : <BlobInfo label={"Тип блюда"} value={type.name}/>}
                         </div>
                         <div className={classes.box7}>
-                            <BlobInfo label={"Оценка"} value={recipe ? recipe.ratingVotes !== 0 ? recipe.ratingSum + recipe.ratingVotes : 0 : <Loading/>}/>
+                            {isLoading ? <Loading/> : <BlobInfo label={"Оценка"} value={recipeRating}/>}
                         </div>
                         <div className={classes.box8}>
                             {isLoading ? <Loading/> : <UserImageName id={recipe.authorID}/>}
@@ -172,6 +183,7 @@ const ShowRecipePage = () => {
                         )}
                     </div>
                 </div>
+                {isLoading ? <Loading/> : <StepsWithTimer steps={recipe.steps}/> }
             </div>
         </div>
     )

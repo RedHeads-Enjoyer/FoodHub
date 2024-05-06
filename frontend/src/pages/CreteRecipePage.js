@@ -11,7 +11,7 @@ import Switch from "../components/Switch";
 import IngredientsList from "../components/IngredientsList";
 import EquipmentList from "../components/EquipmentList";
 import image_placeholder from "../images/image_placeholder.svg"
-import Steps from "../components/Steps";
+import Steps from "../components/StepsWithTimer";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {getJwtAuthFilesHeader, getJwtAuthHeader} from "../functions";

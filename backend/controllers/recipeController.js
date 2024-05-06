@@ -54,11 +54,12 @@ class recipeController {
     async getRecipe(req, res) {
         const {id} = req.params
         try {
-            const recipes = await Recipe.findById(id)
-            if (!recipes) {
+            const recipe = await Recipe.findById(id)
+            if (!recipe) {
                 return res.status(404).json({ message: "Рецепт не найден" });
             }
-            return res.json(recipes);
+
+            return res.json(recipe);
         } catch (e) {
             res.status(500).json({ message: "Ошибка при получении рецепта" });
         }
