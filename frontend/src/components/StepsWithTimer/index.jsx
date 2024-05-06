@@ -3,17 +3,31 @@ import InputTextArea from "../InputTextArea";
 import Timer from "../Timer";
 import {useEffect, useState} from "react";
 import reset_time from '../../images/reset_time.png'
+import end_timer_sound from '../../Sounds/end_timer_sound.mp3'
+import useSound from "use-sound";
 
 const PlayTimer = ({duration}) => {
+    const [play] = useSound(end_timer_sound)
     const [time, setTime] = useState(duration);
     const [isActive, setIsActive] = useState(false);
+    const [isStartVisible, setIsStartVisible] = useState(true)
 
     useEffect(() => {
         let interval = null;
 
         if (isActive) {
             interval = setInterval(() => {
-                setTime((time) => time > 0 ? time - 1 : 0);
+                setTime((time) => {
+                    if (time > 0) {
+                        return time - 1;
+                    } else {
+                        clearInterval(interval);
+                        setIsActive(false)
+                        setIsStartVisible(false)
+                        play()
+                        return 0;
+                    }
+                });
             }, 1000);
         } else if (!isActive && time !== duration) {
             clearInterval(interval);
@@ -29,6 +43,7 @@ const PlayTimer = ({duration}) => {
     const resetTime = () => {
         setTime(duration);
         setIsActive(false);
+        setIsStartVisible(true)
     };
 
     return (
@@ -45,9 +60,10 @@ const PlayTimer = ({duration}) => {
                 <p>{time % 60}</p>
                 <label>сек</label>
             </div>
-            <button onClick={toggleStartPause}>
+            {isStartVisible &&             <button onClick={toggleStartPause}>
                 {isActive ? 'Пауза' : 'Старт'}
-            </button>
+            </button>}
+
             {!isActive && time !== duration && (
                 <button onClick={resetTime}>Занаво</button>
             )}
