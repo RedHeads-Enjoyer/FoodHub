@@ -3,6 +3,7 @@ import axios from "axios";
 import {dbUrl} from "../../config";
 import classes from "./styles.module.css";
 import {Link} from "react-router-dom";
+import Loading from "../Loading";
 
 const UserImageName = ({id}) => {
     const [imageUrl, setImageUrl] = useState('');

@@ -1,4 +1,6 @@
 .recipe__wrapper {
+    padding: 10px;
+    box-sizing: border-box;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
@@ -12,28 +14,38 @@
 
 .recipe__avatar {
     max-width: 400px;
-    max-height: 400px;
+    height: auto;
+    min-width: 280px;
     object-fit: cover;
 }
 
-.recipe__stats__wrapper {
+.grid__wrapper {
     max-width: 360px;
     min-width: 280px;
+    flex-shrink: 0;
+    flex-grow: 1;
+}
+
+.recipe__stats__wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(4, 54px);
+    grid-template-rows: repeat(5, 54px);
     gap: 10px;
     grid-template-areas:
     "vie vot"
     "dur dif"
     "typ kit"
-    "cal cal";
+    "cal cal"
+    "use use";
     align-items: start;
 }
 
 .recipe__info__wrapper {
+    margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
 }
 
 .box1 {
@@ -64,4 +76,7 @@
     grid-area: vot;
 }
 
+.box8 {
+    grid-area: use;
+}
 
