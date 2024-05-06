@@ -23,6 +23,7 @@
     flex-shrink: 1;
     justify-content: space-around;
     gap: 10px;
-    height: calc(100vh - 40px);
+    height: calc(100vh - 50px);
     overflow-y: scroll;
+    margin-top: 10px;
 }

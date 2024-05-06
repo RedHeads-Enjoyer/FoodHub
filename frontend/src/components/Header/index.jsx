@@ -6,6 +6,7 @@ import {getJwtAuthHeader, fetchImage} from "../../functions";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {changeStatus} from "../../slices/userSlice";
+import search_button from"../../images/search_button.png"
 
 const Header = () => {
     const navigate = useNavigate()
@@ -80,7 +81,7 @@ const Header = () => {
                       className={classes.search__bar}
                   />
                   <button className={classes.search__button}>
-                      <p>Найти</p>
+                      <img src={search_button}/>
                   </button>
               </div>
 

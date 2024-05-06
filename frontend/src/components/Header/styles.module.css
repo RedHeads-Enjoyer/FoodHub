@@ -1,10 +1,10 @@
 header {
     height: 40px;
-    background-color: var(--color-accent-main);
+    background-color: white;
 }
 
 .name {
-    color: white;
+    color: var(--color-accent-main);
     font-size: 1.7em;
     margin-left: 10px;
     text-wrap: none;
@@ -36,7 +36,7 @@ header {
 
 .user__username {
     margin-left: 10px;
-    color: white;
+    color: var(--color-accent-main);
     display: block;
 }
 
@@ -84,11 +84,11 @@ header {
 
 .search__bar {
     outline: none;
-    border: 0;
     padding: 10px;
     border-radius: var(--border-radius-main) 0 0 var(--border-radius-main);
     box-sizing: border-box;
     width: 100%;
+    border: 2px solid var(--color-accent-main);
 }
 
 .search__bar::placeholder {
@@ -98,7 +98,7 @@ header {
 .search__button {
     outline: none;
     border: 0;
-    background-color: white;
+    background-color: var(--color-accent-main);
     border-radius: 0 var(--border-radius-main) var(--border-radius-main) 0;
     cursor: pointer;
 }

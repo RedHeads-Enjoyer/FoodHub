@@ -8,18 +8,37 @@ import RecipeCarp from "../components/RecipeCard";
 
 const SearchPage = () => {
     const [recipes, setRecipes] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const [fetching, setFetching] = useState(true)
+    const [totalCount, setTotalCount] = useState(0)
 
     useEffect(() => {
+        if (!fetching) return
         axios
-            .get(dbUrl + '/recipe')
-            .then(data => {
-                    setRecipes(data.data)
-                }
-            )
-    }, [])
+            .get(dbUrl + `/recipe?_limit=20&_page=${currentPage}`)
+            .then(response => {
+                setRecipes([...recipes, ...response.data.recipes]);
+                setCurrentPage(currentPage + 1);
+                setTotalCount(response.data.totalCount);
+            }).finally(() => setFetching(false))
+    }, [fetching])
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    useEffect(() => {
+        console.log(totalCount)
+    }, [totalCount])
+
+    useEffect(() => {
+        const recipesWrapper = document.querySelector(`.${classes.recipes__wrapper}`);
+        recipesWrapper.addEventListener('scroll', scrollHandler)
+        return function () {
+            recipesWrapper.removeEventListener('scroll', scrollHandler)
+        }
+    }, [recipes, totalCount])
+
+    const scrollHandler = (e) => {
+        if (e.target.scrollHeight - (e.target.scrollTop + e.target.offsetHeight) < 100 && recipes.length < totalCount) {
+            setFetching(true)
+        }
     }
 
     return (

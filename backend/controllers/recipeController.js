@@ -39,9 +39,13 @@ class recipeController {
     }
 
     async getRecipes(req, res) {
+        const {_limit = 10, _page = 1} = req.query
         try {
             const recipes = await Recipe.find()
-            res.json(recipes)
+                .skip((_page - 1) * _limit)
+                .limit(_limit);
+            const totalCount = await Recipe.countDocuments();
+            return res.json({recipes, totalCount});
         } catch (e) {
             res.status(500).json({ message: "Ошибка при получении рецептов" });
         }
