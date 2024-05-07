@@ -1,4 +1,5 @@
 const Recipe = require('../models/Recipe')
+const User = require('../models/User')
 const path = require('path')
 
 class recipeController {
@@ -52,12 +53,24 @@ class recipeController {
     }
 
     async getRecipe(req, res) {
-        const {id} = req.params
+        const { id } = req.params;
         try {
-            const recipe = await Recipe.findById(id)
+            const recipe = await Recipe.findById(id);
             if (!recipe) {
                 return res.status(404).json({ message: "Рецепт не найден" });
             }
+
+            const user = req.user;
+            const isRecipeInHistory = user.history.some(historyItem => historyItem.id.toString() === recipe._id.toString());
+
+            if (isRecipeInHistory) {
+                user.history = user.history.filter((item) => item.id.toString() !== id);
+            } else {
+                recipe.views += 1;
+                await recipe.save();
+            }
+            user.history.push({ id: id });
+            await user.save();
 
             return res.json(recipe);
         } catch (e) {

@@ -24,4 +24,4 @@ const Recipe = new Schema({
     visibility: {type: Boolean, required: true}
 })
 
-module.exports = model('Recipe', Recipe)
+module.exports = model('recipe', Recipe)

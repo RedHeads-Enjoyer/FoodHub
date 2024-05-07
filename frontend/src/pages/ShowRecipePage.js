@@ -4,7 +4,7 @@ import axios from "axios";
 import {dbUrl} from "../config";
 import {useNavigate, useParams} from "react-router-dom";
 import classes from './ShowRecipePage.module.css'
-import {fetchImage} from "../functions";
+import {fetchImage, getJwtAuthHeader} from "../functions";
 import BlobInfo from "../components/BlobInfo";
 import UserImageName from "../components/UserImageName";
 import Loading from "../components/Loading";
@@ -30,7 +30,7 @@ const ShowRecipePage = () => {
     useEffect(() => {
         setIsLoading(true)
         axios
-            .get(dbUrl + '/recipe/' + id)
+            .get(dbUrl + '/recipe/' + id, getJwtAuthHeader())
             .then(data => {
                     setRecipe(data.data)
                 }

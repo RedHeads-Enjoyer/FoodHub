@@ -25,19 +25,14 @@ function App() {
                 .catch((error) => {
                     setIsAuthenticated(false);
                 });
-        }, []); // Пустой массив зависимостей означает, что эффект выполнится один раз после монтирования компонента
+        }, []);
 
-        // Пока статус аутентификации неизвестен, можно отображать индикатор загрузки или ничего не отображать
         if (isAuthenticated === null) {
             return <div>Загрузка...</div>;
         }
-
-        // Если пользователь не авторизован, перенаправляем на страницу входа
         if (!isAuthenticated) {
             return <Navigate to='/login' replace />;
         }
-
-        // Если пользователь авторизован, отображаем дочерние компоненты
         return children;
     };
 
@@ -49,12 +44,11 @@ function App() {
                   <Routes>
                       <Route path={'/login'} element={<LoginPage/>}/>
                       <Route path={'/registration'} element={<RegisterPage/>}/>
-                      <Route path={'/user/:id'} element={<UserPage/>}/>
-                      <Route path={'/createRecipe'} element={<CreteRecipePage/>}/>
+                      <Route path={'/user/:id'} element={<ProtectedRoute><UserPage/></ProtectedRoute>}/>
+                      <Route path={'/createRecipe'} element={<ProtectedRoute><CreteRecipePage/></ProtectedRoute>}/>
                       <Route path={'/search'} element={<ProtectedRoute><SearchPage/></ProtectedRoute>}/>
-                      <Route path={'/recipe/:id'} element={<ShowRecipePage/>}/>
-                      <Route path={'/test'} element={<TextPage/>}/>
-                      <Route path={'*'} element={<Navigate to={'search'} replace/>}/>
+                      <Route path={'/recipe/:id'} element={<ProtectedRoute><ShowRecipePage/></ProtectedRoute>}/>
+                      <Route path={'*'} element={<ProtectedRoute><Navigate to={'search'} replace/></ProtectedRoute>}/>
                   </Routes>
               </BrowserRouter>
           </main>
