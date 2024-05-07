@@ -17,6 +17,7 @@ const Header = () => {
     const [currentUser, setCurrentUser] = useState('')
     const [image, setImage] = useState('')
     const [menuStatus, setMenuStatus] = useState(false)
+    const [searchRequest, setSearchRequest] = useState('')
 
     useEffect(() => {
         if (userStatus === true) {
@@ -70,6 +71,15 @@ const Header = () => {
         navigate('/user/edit/' + currentUser._id)
     }
 
+    const handleSearchRequest = (e) => {
+        setSearchRequest(e.target.value)
+    }
+
+    const handleSearchButton = (e) => {
+        e.preventDefault();
+        navigate('/search?searchRequest=' + encodeURIComponent(searchRequest));
+    }
+
       return (
           <header className={classes.header__wrapper}>
               <Link to={"/search"}>
@@ -83,8 +93,13 @@ const Header = () => {
                       type={"text"}
                       placeholder={"Найти..."}
                       className={classes.search__bar}
+                      value={searchRequest}
+                      onChange={handleSearchRequest}
                   />
-                  <button className={classes.search__button}>
+                  <button
+                      className={classes.search__button}
+                      onClick={handleSearchButton}
+                  >
                       <img src={search_button}/>
                   </button>
               </div> }

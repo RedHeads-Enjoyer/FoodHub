@@ -46,12 +46,16 @@ class recipeController {
     }
 
     async getRecipes(req, res) {
-        const {_limit = 10, _page = 1} = req.query
+        const {_limit = 10, _page = 1, name} = req.query
         try {
-            const recipes = await Recipe.find()
+            let query = {};
+            if (name !== "") {
+                query.name = new RegExp(name, 'i'); // 'i' для поиска без учета регистра
+            }
+            const recipes = await Recipe.find(query)
                 .skip((_page - 1) * _limit)
                 .limit(_limit);
-            const totalCount = await Recipe.countDocuments();
+            const totalCount = await Recipe.countDocuments(query);
             return res.json({recipes, totalCount});
         } catch (e) {
             res.status(500).json({ message: "Ошибка при получении рецептов" });
