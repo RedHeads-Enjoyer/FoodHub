@@ -32,58 +32,67 @@ const CreateRecipePage = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     const navigate = useNavigate()
+    let recipeData = {}
 
     useEffect(() => {
-        axios.get(dbUrl + '/recipe/' + id, getJwtAuthHeader())
-            .then((response) => {
-                const recipeData = response.data;
+        async function fetchData() {
+            try {
+                // Получаем данные рецепта
+                const recipeResponse = await axios.get(dbUrl + '/recipe/' + id, getJwtAuthHeader());
+                const recipeData = recipeResponse.data;
                 setRecipe(recipeData);
                 const recipeIngredientIds = recipeData.ingredients.map(ing => ing._id);
+                const recipeEquipmentIds = recipeData.equipment.map(eq => eq);
 
+                // Получаем ингредиенты
+                const ingredientsResponse = await axios.get(dbUrl + '/ingredient');
+                const ingredientsMap = ingredientsResponse.data.reduce((map, ingredient) => {
+                    map[ingredient._id] = ingredient;
+                    return map;
+                }, {});
+                const newRecipeIngredients = recipeData.ingredients.map(ingredient => {
+                    return { ...ingredient, ...ingredientsMap[ingredient._id] };
+                });
+                setRecipe(prevRecipe => ({ ...prevRecipe, ingredients: newRecipeIngredients }));
+                const filteredIngredients = ingredientsResponse.data.filter(item =>
+                    !recipeIngredientIds.includes(item._id)
+                );
+                setIngredients(filteredIngredients);
 
-                axios.get(dbUrl + '/ingredient')
-                    .then(response => {
-                        const ingredientsMap = response.data.reduce((map, ingredient) => {
-                            map[ingredient._id] = ingredient;
-                            return map;
-                        }, {});
-                        const newRecipeIngredients = recipeData.ingredients.map(ingredient => {
-                            return { ...ingredient, ...ingredientsMap[ingredient._id] };
-                        });
-                        setRecipe({ ...recipeData, ingredients: newRecipeIngredients });
-                        const filteredIngredients = response.data.filter(item =>
-                            !recipeIngredientIds.includes(item._id)
-                        );
-                        setIngredients(filteredIngredients);
-                    })
-                    .catch((error) => console.log(error.message));
-            })
-            .catch((error) => console.log(error.message))
+                // Получаем оборудование
+                const equipmentResponse = await axios.get(dbUrl + '/equipment');
+                const equipmentMap = equipmentResponse.data.reduce((map, equipment) => {
+                    map[equipment._id] = equipment;
+                    return map;
+                }, {});
+                const newRecipeEquipment = recipeData.equipment.map(eq => {
+                    return {...equipmentMap[eq] }; // Исправьте здесь, чтобы использовать eq._id
+                });
+                setRecipe(prevRecipe => ({ ...prevRecipe, equipment: newRecipeEquipment }));
+                console.log(recipeEquipmentIds, equipmentResponse)
+                const filteredEquipment = equipmentResponse.data.filter(item =>
+                    !recipeEquipmentIds.includes(item._id)
+                );
+                setEquipment(filteredEquipment);
 
-        // axios
-        //     .get(dbUrl + '/kitchen')
-        //     .then(data => {
-        //             setKitchens(data.data)
-        //         }
-        //     )
-        //
-        // axios
-        //     .get(dbUrl + '/type')
-        //     .then(data => {
-        //             setTypes(data.data)
-        //         }
-        //     )
-        //
-        // axios
-        //     .get(dbUrl + '/equipment')
-        //     .then(data => {
-        //             setEquipment(data.data)
-        //         }
-        //     )
-    }, [])
+                // Получаем данные о кухне
+                const kitchensResponse = await axios.get(dbUrl + '/kitchen');
+                setKitchens(kitchensResponse.data);
+
+                // Получаем типы
+                const typesResponse = await axios.get(dbUrl + '/type');
+                setTypes(typesResponse.data);
+
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+
+        fetchData();
+    }, [id]);
 
     useEffect(() => {
-        if (Object.keys(recipe).length === 0 || ingredients.length === 0) return
+        if (Object.keys(recipe).length === 0 || ingredients.length === 0 || equipment.length === 0) return
         setIsLoading(false)
     }, [recipe, ingredients])
 
@@ -269,16 +278,16 @@ const CreateRecipePage = () => {
                                 name={"ingredients"}
                             />
                         </div>
-                        {/*    <div className={classes.equipment__wrapper}>*/}
-                        {/*        <EquipmentList*/}
-                        {/*            label={"Оборудование"}*/}
-                        {/*            addedEquipment={recipe.equipment}*/}
-                        {/*            allEquipment={equipment}*/}
-                        {/*            setTarget={handleChangeRecipe}*/}
-                        {/*            setAllEquipment={setEquipment}*/}
-                        {/*            name={"equipment"}*/}
-                        {/*        />*/}
-                        {/*    </div>*/}
+                            <div className={classes.equipment__wrapper}>
+                                <EquipmentList
+                                    label={"Оборудование"}
+                                    addedEquipment={recipe.equipment}
+                                    allEquipment={equipment}
+                                    setTarget={handleChangeRecipe}
+                                    setAllEquipment={setEquipment}
+                                    name={"equipment"}
+                                />
+                            </div>
                         {/*    <div className={classes.image__wrapper}>*/}
                         {/*        <label htmlFor={"image"}>*/}
                         {/*            <p>Заставка </p>*/}
