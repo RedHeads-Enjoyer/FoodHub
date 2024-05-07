@@ -50,6 +50,6 @@
 .admin__button {
     outline: none;
     border: 0;
-    background-color: var(--color-admin);
+    background-color: var(--color-accent-main);
     color: white;
 }

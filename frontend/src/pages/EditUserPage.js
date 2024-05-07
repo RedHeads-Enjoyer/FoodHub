@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {useState} from "react";
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {dbUrl, translit} from "../config";
 import {getJwtAuthHeader} from "../functions";
 import classes from "./EditUserPage.module.css";
@@ -20,6 +20,7 @@ const UserPage = () => {
         roles: []
     })
 
+    const navigate = useNavigate()
     const [currentUser, setCurrentUser] = useState("")
     const [avatar, setAvatar] = useState("")
     const {id} = useParams()
@@ -93,8 +94,9 @@ const UserPage = () => {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
+        }).then(() => {
+            navigate("/user/" + id)
         });
-        console.log(response);
     }
 
     const handleChangeUser = ({currentTarget: input}) => {

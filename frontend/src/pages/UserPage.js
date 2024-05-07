@@ -83,7 +83,16 @@ const UserPage = () => {
                     }
                 </div>
                 <p>{user.username}</p>
-                {isLoadingCurrentUser ? " " : currentUser._id === id || currentUser.roles.includes('admin') ? <Link to={"/user/edit/" + id}><button className={classes.admin__button}>asd</button></Link> : "" }
+                {isLoadingCurrentUser ? " "
+                    :
+                    currentUser._id === id || currentUser.roles.includes('admin') ?
+                        <Link to={"/user/edit/" + id}>
+                            <button className={classes.admin__button}>
+                                изменить
+                            </button>
+                        </Link>
+                        : ""
+                }
             </div>
             <p className={classes.recipes__label}>Рецепты пользователя</p>
             <div className={classes.recipes__wrapper}>

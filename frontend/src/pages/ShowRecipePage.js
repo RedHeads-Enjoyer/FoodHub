@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useState} from "react";
 import axios from "axios";
 import {dbUrl} from "../config";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import classes from './ShowRecipePage.module.css'
 import {fetchImage, getJwtAuthHeader} from "../functions";
 import BlobInfo from "../components/BlobInfo";
@@ -29,6 +29,18 @@ const ShowRecipePage = () => {
     const [equipment, setEquipment] = useState([])
     const [recipeRating, setRecipeRating] = useState(0)
     const [rateButtons, setRateButtons] = useState([false, false, false, false, false])
+    const [currentUser, setCurrentUser] = useState({})
+    const [isLoadingCurrentUser, setIsLoadingCurrentUser] = useState(true)
+
+    useEffect(() => {
+        axios.get(dbUrl + '/user/me', getJwtAuthHeader())
+            .then((response) => {
+                setCurrentUser(response.data)
+            })
+            .catch((error) => {
+                console.log(error.error)
+            }).finally(()=> setIsLoadingCurrentUser(false));
+    }, [])
 
     useEffect(() => {
         setIsLoading(true)
@@ -154,7 +166,21 @@ const ShowRecipePage = () => {
 
     return (
         <div className={classes.recipe__wrapper}>
-           {isLoading ? <Loading/> :  <p className={classes.recipe__name}>{recipe.name}</p>}
+           {isLoading ? <Loading/> :
+               <p className={classes.recipe__name}>
+                   {recipe.name}
+                   {isLoadingCurrentUser ? " "
+                       :
+                       currentUser._id === id || currentUser.roles.includes('admin') ?
+                           <Link to={"/recipe/edit/" + id}>
+                               <button className={classes.admin__button}>
+                                   изменить
+                               </button>
+                           </Link>
+                           : ""
+                   }
+               </p>
+           }
             <div className={classes.recipe__info__wrapper}>
                 <img className={classes.recipe__avatar} src={isLoading ? image_placeholder : image}/>
                 <div className={classes.grid__wrapper}>

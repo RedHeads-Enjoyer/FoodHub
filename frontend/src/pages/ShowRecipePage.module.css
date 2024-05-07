@@ -131,3 +131,12 @@
 .rate__wrapper {
     margin-top: 10px;
 }
+
+.admin__button {
+    border: 0;
+    outline: none;
+    background-color: var(--color-accent-main);
+    color: white;
+    margin-left: 10px;
+    cursor: pointer;
+}
