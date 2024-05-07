@@ -7,9 +7,7 @@ import classes from "./UserPage.module.css";
 import image_placeholder from "../images/image_placeholder.svg"
 import {fetchImage, getJwtAuthHeader} from "../functions";
 import Loading from "../components/Loading";
-import RecipeCard from "../components/RecipeCard";
 import RecipeCarp from "../components/RecipeCard";
-import Button from "../components/Button";
 
 
 const UserPage = () => {
@@ -51,7 +49,7 @@ const UserPage = () => {
 
     useEffect(() => {
         if (user.image !== "") {
-            fetchImage(setAvatar, user.image)
+            fetchImage(setAvatar, user.image).catch((error) => console.log(error.error))
 
             setIsLoading(true);
             const requests = user.recipes.map(recipe =>

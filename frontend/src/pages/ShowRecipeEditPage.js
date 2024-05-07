@@ -136,6 +136,12 @@ const CreateRecipePage = () => {
         }
     };
 
+    const handleDeleteRecipe = () => {
+        axios.delete(dbUrl + '/recipe/' + id).then(
+            navigate('/user/' + recipe.authorID)
+        )
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -291,7 +297,10 @@ const CreateRecipePage = () => {
                         </div>
                         <div className={classes.submit__button__wrapper}>
                             <button className={classes.submit__button} type={"submit"}>Изменить</button>
-                    </div>
+                        </div>
+                        <div className={classes.submit__button__wrapper}>
+                            <button className={classes.submit__button} onClick={handleDeleteRecipe}>Удалить рецепт</button>
+                        </div>
                 </>
 
                 }

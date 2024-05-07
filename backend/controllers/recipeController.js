@@ -110,7 +110,11 @@ class recipeController {
             if (!recipes) {
                 return res.status(404).json({ message: "Рецепт не найден" });
             }
+            const authorID = recipes.authorID
             await Recipe.findByIdAndDelete(id);
+            const user = User.findById(authorID)
+            user.recipes.filter((recipe) => recipe.id !== id)
+            await user.save()
             return res.status(200).json({ message: "Рецепт успешно удален" });
         } catch (e) {
             console.error(e);
