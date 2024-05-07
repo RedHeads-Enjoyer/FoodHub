@@ -9,6 +9,10 @@ const User = new Schema({
     history: [{
         id: {type: String, ref: 'recipe', required: true},
         addedAt: {type: Date, default: Date.now, expires: '30d'}
+    }],
+    rated: [{
+        id: {type: String, ref: 'recipe', required: true},
+        rate: {type: Number, required: true}
     }]
 })
 

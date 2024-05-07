@@ -115,3 +115,19 @@
     gap: 10px;
     min-width: 280px;
 }
+
+.rate__buttons__wrapper button{
+    border: 0;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+}
+
+.rate__label {
+    font-weight: var(--font-accent-weight);
+}
+
+.rate__wrapper {
+    margin-top: 10px;
+}

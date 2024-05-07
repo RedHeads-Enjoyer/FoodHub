@@ -109,6 +109,39 @@ class recipeController {
             res.status(500).json({ message: "Ошибка при обновлении рецепта" });
         }
     }
+
+    async rateRecipe(req, res) {
+        const { id } = req.params;
+        const { rate } = req.body;
+        try {
+            const recipe = await Recipe.findById(id);
+            if (!recipe) {
+                return res.status(404).json({ message: "Рецепт не найден" });
+            }
+
+            const user = req.user;
+
+            const isRecipeInRated = user.rated.some(rateItem => rateItem.id.toString() === recipe._id.toString());
+
+            if (isRecipeInRated) {
+                const oldRate = user.rated.find(rateItem => rateItem.id.toString() === id).rate;
+                recipe.ratingSum -= oldRate;
+                user.rated = user.rated.filter((item) => item.id.toString() !== id);
+            } else {
+                recipe.ratingVotes += 1;
+            }
+
+            recipe.ratingSum += rate;
+            user.rated.push({ id: id, rate: rate });
+
+            await recipe.save();
+            await user.save();
+
+            return res.json({ message: "Рецепт успешно обновлен" });
+        } catch (e) {
+            res.status(500).json({ message: "Ошибка при обновлении рецепта" });
+        }
+    }
 }
 
 module.exports = new recipeController()

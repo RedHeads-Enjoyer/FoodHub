@@ -9,5 +9,6 @@ router.get('/recipe',controller.getRecipes)
 router.get('/recipe/:id', authMiddleware, controller.getRecipe)
 router.delete('/recipe/:id', controller.deleteRecipe)
 router.put('/recipe/:id', controller.updateRecipe)
+router.put('/recipe/:id/rate', authMiddleware, controller.rateRecipe)
 
 module.exports = router

@@ -82,7 +82,7 @@ const StepsWithTimer = ({steps}) => {
                             <div className={classes.index__wrapper}>
                                 <p>{index + 1}</p>
                             </div>
-                            <PlayTimer duration={step.duration}/>
+                            {step.duration !== 0 && <PlayTimer duration={step.duration}/>}
                         </div>
                         <div className={classes.description__wrapper}>
                             <p className={classes.description}>{step.description}</p>

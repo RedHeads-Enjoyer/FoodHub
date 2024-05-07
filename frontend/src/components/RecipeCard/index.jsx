@@ -16,11 +16,13 @@ const RecipeCard = ({recipe}) => {
 
     useEffect(() => {
         let tmpDuration = 0
-        console.log(recipe)
-        for (let i = 0; i < recipe.steps; i++) {
-            tmpDuration += parseInt(recipe.steps[i].duration)
+        for (let i = 0; i < recipe.steps.length; i++) {
+            tmpDuration += recipe.steps[i].duration
         }
-        setDuration(tmpDuration)
+        const hours = Math.floor(tmpDuration / 3600)
+        const minutes = Math.ceil((tmpDuration - hours * 3600) / 60)
+        if (hours === 0) setDuration (`${minutes} мин`)
+        else setDuration(`${hours} ч ${minutes} мин`)
 
         const fetchImage = async () => {
             try {
@@ -34,6 +36,12 @@ const RecipeCard = ({recipe}) => {
             }
         };
         fetchImage();
+
+        for (let i = 0; i < recipe.steps.length; i++) {
+            tmpDuration += recipe.steps[i].duration
+        }
+
+
 
         return () => {
             URL.revokeObjectURL(imageUrl);

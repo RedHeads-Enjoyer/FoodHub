@@ -10,6 +10,8 @@ import UserImageName from "../components/UserImageName";
 import Loading from "../components/Loading";
 import image_placeholder from '../images/image_placeholder.svg'
 import StepsWithTimer from "../components/StepsWithTimer";
+import rate_star_active from '../images/rate_star_active.png'
+import rate_star_inactive from '../images/rate_star_inactive.png'
 
 const ShowRecipePage = () => {
     const navigate = useNavigate()
@@ -26,6 +28,7 @@ const ShowRecipePage = () => {
     const [isLoadingEquipment, setIsLoadingEquipment] = useState(true)
     const [equipment, setEquipment] = useState([])
     const [recipeRating, setRecipeRating] = useState(0)
+    const [rateButtons, setRateButtons] = useState([false, false, false, false, false])
 
     useEffect(() => {
         setIsLoading(true)
@@ -46,6 +49,7 @@ const ShowRecipePage = () => {
             getKitchen()
             getType()
             setRating()
+            getRate()
             setDuration(countDuration())
         }
     }, [recipe])
@@ -99,10 +103,6 @@ const ShowRecipePage = () => {
         });
     }
 
-    const getSteps = () => {
-
-    }
-
     const getEquipment = () => {
         setIsLoadingEquipment(true)
         const tmpEquipment = []
@@ -115,6 +115,29 @@ const ShowRecipePage = () => {
         }
         setEquipment(tmpEquipment)
         setIsLoadingEquipment(false)
+    }
+
+    const getRate = () => {
+        axios
+            .get(dbUrl + '/user/me', getJwtAuthHeader())
+            .then(response => {
+                const user = response.data
+                const isRecipeInRated = user.rated.some(rateItem => rateItem.id.toString() === recipe._id.toString());
+
+                if (isRecipeInRated) {
+                    const oldRate = user.rated.find(rateItem => rateItem.id.toString() === id).rate;
+                    setRateButtons(Array(5).fill(false).fill(true, 0, oldRate))
+                } else {
+                    setRateButtons(Array(5).fill(false))
+                }
+            })
+    }
+
+    const handleRateChange = (e, rate) => {
+        const newRateButtons = Array(5).fill(false).fill(true, 0, rate);
+        setRateButtons(newRateButtons)
+        axios.put(dbUrl + `/recipe/${id}/rate`, {rate: rate}, getJwtAuthHeader()).then(
+        ).catch((error) => console.log(error.error))
     }
 
     useEffect(() => {
@@ -185,6 +208,29 @@ const ShowRecipePage = () => {
                 </div>
                 {isLoading ? <Loading/> : <StepsWithTimer steps={recipe.steps}/> }
             </div>
+            {isLoading ? <Loading/> : (
+                <div className={classes.rate__wrapper}>
+                    <p className={classes.rate__label}>Оценка</p>
+                    <div className={classes.rate__buttons__wrapper}>
+                        {rateButtons.map((btn, index) => (
+                            btn === true ?
+                                <button
+                                    key={`rate_button_${index}`}
+                                    onClick={(e) => handleRateChange(e, index + 1)}
+                                >
+                                    <img src={rate_star_active}/>
+                                </button>
+                                :
+                                <button
+                                    key={`rate_button_${index}`}
+                                    onClick={(e) => handleRateChange(e, index + 1)}
+                                >
+                                    <img src={rate_star_inactive}/>
+                                </button>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
