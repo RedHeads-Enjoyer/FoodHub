@@ -57,34 +57,35 @@ const CreateRecipePage = () => {
                         setIngredients(filteredIngredients);
                     })
                     .catch((error) => console.log(error.message));
-
-
-
             })
             .catch((error) => console.log(error.message))
-            .finally(() => setIsLoading(false));
 
-        axios
-            .get(dbUrl + '/kitchen')
-            .then(data => {
-                    setKitchens(data.data)
-                }
-            )
-
-        axios
-            .get(dbUrl + '/type')
-            .then(data => {
-                    setTypes(data.data)
-                }
-            )
-
-        axios
-            .get(dbUrl + '/equipment')
-            .then(data => {
-                    setEquipment(data.data)
-                }
-            )
+        // axios
+        //     .get(dbUrl + '/kitchen')
+        //     .then(data => {
+        //             setKitchens(data.data)
+        //         }
+        //     )
+        //
+        // axios
+        //     .get(dbUrl + '/type')
+        //     .then(data => {
+        //             setTypes(data.data)
+        //         }
+        //     )
+        //
+        // axios
+        //     .get(dbUrl + '/equipment')
+        //     .then(data => {
+        //             setEquipment(data.data)
+        //         }
+        //     )
     }, [])
+
+    useEffect(() => {
+        if (Object.keys(recipe).length === 0 || ingredients.length === 0) return
+        setIsLoading(false)
+    }, [recipe, ingredients])
 
 
     const handleChangeRecipe = ({currentTarget: input}) => {
@@ -202,62 +203,63 @@ const CreateRecipePage = () => {
             <form onSubmit={handleSubmit}>
 
                 <p className={classes.page__label}>Создание рецепта</p>
-                <div className={classes.recipe__info__wrapper}>
-                    <div className={classes.main__info__wrapper}>
-                        <InputText
-                            label={"Название рецепта"}
-                            type={"text"}
-                            placeholder={"Введите название"}
-                            name={"name"}
-                            onChange={handleChangeRecipe}
-                            value={recipe.name}
-                        />
-                        <InputTextArea
-                            label={"Описание рецепта"}
-                            placeholder={"Описание"}
-                            name={"description"}
-                            onChange={handleChangeRecipe}
-                            value={recipe.description}
-                            required
-                        />
-                        <div className={classes.flex__wrapper}>
-                            <Select
-                                label={"Тип кухни"}
-                                name={"kitchenID"}
-                                onChange={handleChangeRecipeKitchen}
-                                options={kitchens}
-                                link = '/kitchen'
-                            />
-                            <Select
-                                label={"Тип блюда"}
-                                name={"typeID"}
-                                onChange={handleChangeRecipeType}
-                                options={types}
-                                link = '/type'
-                            />
-                        </div>
-                        <div className={classes.flex__wrapper}>
-                            <InputNumber
-                                max={10}
-                                min={1}
-                                label={"Сложность"}
-                                name={"difficult"}
-                                value={recipe.difficult}
+                {isLoading ? <Loading/> :
+                <>
+                    <div className={classes.recipe__info__wrapper}>
+                        <div className={classes.main__info__wrapper}>
+                            <InputText
+                                label={"Название рецепта"}
+                                type={"text"}
+                                placeholder={"Введите название"}
+                                name={"name"}
                                 onChange={handleChangeRecipe}
+                                value={recipe.name}
+                            />
+                            <InputTextArea
+                                label={"Описание рецепта"}
+                                placeholder={"Описание"}
+                                name={"description"}
+                                onChange={handleChangeRecipe}
+                                value={recipe.description}
                                 required
                             />
-                            <Switch
-                                label={"Доступ"}
-                                first={"Для всех"}
-                                second={"Только мне"}
-                                name={"visibility"}
-                                onChange={handleChangeRecipe}
-                                value={recipe.visibility}
-                            />
+                            <div className={classes.flex__wrapper}>
+                                <Select
+                                    label={"Тип кухни"}
+                                    name={"kitchenID"}
+                                    onChange={handleChangeRecipeKitchen}
+                                    options={kitchens}
+                                    link = '/kitchen'
+                                />
+                                <Select
+                                    label={"Тип блюда"}
+                                    name={"typeID"}
+                                    onChange={handleChangeRecipeType}
+                                    options={types}
+                                    link = '/type'
+                                />
+                            </div>
+                            <div className={classes.flex__wrapper}>
+                                <InputNumber
+                                    max={10}
+                                    min={1}
+                                    label={"Сложность"}
+                                    name={"difficult"}
+                                    value={recipe.difficult}
+                                    onChange={handleChangeRecipe}
+                                    required
+                                />
+                                <Switch
+                                    label={"Доступ"}
+                                    first={"Для всех"}
+                                    second={"Только мне"}
+                                    name={"visibility"}
+                                    onChange={handleChangeRecipe}
+                                    value={recipe.visibility}
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <div className={classes.ingredients__wrapper}>
-                        {isLoading ? <Loading/> :
+                        <div className={classes.ingredients__wrapper}>
                             <IngredientsList
                                 label={"Ингредиенты"}
                                 addedIngredients={recipe.ingredients}
@@ -266,48 +268,51 @@ const CreateRecipePage = () => {
                                 setAllIngredients={setIngredients}
                                 name={"ingredients"}
                             />
-                        }
-                    </div>
-                {/*    <div className={classes.equipment__wrapper}>*/}
-                {/*        <EquipmentList*/}
-                {/*            label={"Оборудование"}*/}
-                {/*            addedEquipment={recipe.equipment}*/}
-                {/*            allEquipment={equipment}*/}
-                {/*            setTarget={handleChangeRecipe}*/}
-                {/*            setAllEquipment={setEquipment}*/}
-                {/*            name={"equipment"}*/}
-                {/*        />*/}
-                {/*    </div>*/}
-                {/*    <div className={classes.image__wrapper}>*/}
-                {/*        <label htmlFor={"image"}>*/}
-                {/*            <p>Заставка </p>*/}
-                {/*            <div className={classes.image__label}>*/}
-                {/*                {image === "" || image == null*/}
-                {/*                    ?*/}
-                {/*                    <img src={image_placeholder}/>*/}
-                {/*                    :*/}
-                {/*                    <img src={image}/>*/}
-                {/*                }*/}
+                        </div>
+                        {/*    <div className={classes.equipment__wrapper}>*/}
+                        {/*        <EquipmentList*/}
+                        {/*            label={"Оборудование"}*/}
+                        {/*            addedEquipment={recipe.equipment}*/}
+                        {/*            allEquipment={equipment}*/}
+                        {/*            setTarget={handleChangeRecipe}*/}
+                        {/*            setAllEquipment={setEquipment}*/}
+                        {/*            name={"equipment"}*/}
+                        {/*        />*/}
+                        {/*    </div>*/}
+                        {/*    <div className={classes.image__wrapper}>*/}
+                        {/*        <label htmlFor={"image"}>*/}
+                        {/*            <p>Заставка </p>*/}
+                        {/*            <div className={classes.image__label}>*/}
+                        {/*                {image === "" || image == null*/}
+                        {/*                    ?*/}
+                        {/*                    <img src={image_placeholder}/>*/}
+                        {/*                    :*/}
+                        {/*                    <img src={image}/>*/}
+                        {/*                }*/}
 
-                {/*            </div>*/}
-                {/*        </label>*/}
-                {/*        <input*/}
-                {/*            className={classes.input__file}*/}
-                {/*            type="file"*/}
-                {/*            accept={"image/*"}*/}
-                {/*            onChange={handleImageChange}*/}
-                {/*            id={"image"}*/}
-                {/*        />*/}
-                {/*    </div>*/}
-                {/*    <Steps*/}
-                {/*        steps={recipe.steps}*/}
-                {/*        name={"steps"}*/}
-                {/*        onChange={handleChangeRecipe}*/}
-                {/*    />*/}
-                {/*</div>*/}
-                {/*<div className={classes.submit__button__wrapper}>*/}
-                {/*    <button className={classes.submit__button} type={"submit"}>Создать</button>*/}
-                </div>
+                        {/*            </div>*/}
+                        {/*        </label>*/}
+                        {/*        <input*/}
+                        {/*            className={classes.input__file}*/}
+                        {/*            type="file"*/}
+                        {/*            accept={"image/*"}*/}
+                        {/*            onChange={handleImageChange}*/}
+                        {/*            id={"image"}*/}
+                        {/*        />*/}
+                        {/*    </div>*/}
+                        {/*    <Steps*/}
+                        {/*        steps={recipe.steps}*/}
+                        {/*        name={"steps"}*/}
+                        {/*        onChange={handleChangeRecipe}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
+                        {/*<div className={classes.submit__button__wrapper}>*/}
+                        {/*    <button className={classes.submit__button} type={"submit"}>Создать</button>*/}
+                    </div>
+                </>
+
+                }
+
             </form>
         </div>
     )

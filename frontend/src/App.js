@@ -15,46 +15,72 @@ import ShowRecipeEditPage from "./pages/ShowRecipeEditPage";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
+
     const [currentUser, setCurrentUser] = useState({})
 
-    useEffect(() => {
-        axios.get(dbUrl + '/user/me', getJwtAuthHeader())
-            .then((response) => {
-                setCurrentUser(response.data)
-                setIsAuthenticated(true);
-            })
-            .catch((error) => {
-                setIsAuthenticated(false);
-            });
-    }, [])
-
     const ProtectedRoute = ({ children }) => {
-        // useEffect(() => {
-        //     axios.get(dbUrl + '/user/me', getJwtAuthHeader())
-        //         .then((data) => {
-        //             setIsAuthenticated(true);
-        //         })
-        //         .catch((error) => {
-        //             setIsAuthenticated(false);
-        //         });
-        // }, []);
-        //
-        // if (isAuthenticated === null) {
-        //     return <div>Загрузка...</div>;
-        // }
-        // if (!isAuthenticated) {
-        //     return <Navigate to='/login' replace />;
-        // }
+        const [isAuthenticated, setIsAuthenticated] = useState(false);
+        const [isLoading, setIsLoading] = useState(true);
+
+        useEffect(() => {
+            axios.get(dbUrl + '/user/me', getJwtAuthHeader())
+                .then((response) => {
+                    setIsAuthenticated(true);
+                })
+                .catch((error) => {
+                    setIsAuthenticated(false);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        }, []);
+
+        if (isLoading) {
+            return <div>Загрузка...</div>;
+        }
+        if (!isAuthenticated) {
+            return <Navigate to='/login' replace />;
+        }
         return children;
     };
 
-    const PermissionRoute = ({children}) => {
-        // const { id } = useParams();
-        // if (currentUser._id !== id && !currentUser.roles.includes('admin')) {
-        //     return <Navigate to='/search?searchRequest=' replace />;
-        // }
-        return children
-    }
+    const PermissionRoute = ({ children }) => {
+        const [isAuthenticated, setIsAuthenticated] = useState(false);
+        const [currentUser, setCurrentUser] = useState({});
+        const [isLoading, setIsLoading] = useState(true);
+        const { id } = useParams(); // Получаем ID из параметров маршрута
+
+        useEffect(() => {
+            axios.get(dbUrl + '/user/me', getJwtAuthHeader())
+                .then((response) => {
+                    setCurrentUser(response.data);
+                    setIsAuthenticated(true); // Устанавливаем аутентификацию в true
+                })
+                .catch((error) => {
+                    console.log(error.message);
+                    setIsAuthenticated(false); // В случае ошибки устанавливаем аутентификацию в false
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        }, []);
+
+        useEffect(() => {
+            // Проверка роли 'admin' или совпадения ID пользователя с переданным
+            if (!isLoading && (!isAuthenticated || (currentUser._id !== id && !currentUser.roles.includes('admin')))) {
+                // Если пользователь не аутентифицирован или не имеет роли 'admin' и его ID не совпадает с переданным
+                return <Navigate to='/search?searchRequest=' replace />;
+            }
+        }, [currentUser, isAuthenticated, isLoading, id]); // Зависимости эффекта
+
+        if (isLoading) {
+            return <div>Загрузка...</div>;
+        }
+        if (!isAuthenticated) {
+            return <Navigate to='/login' replace />;
+        }
+        return children;
+    };
 
     return (
       <>
