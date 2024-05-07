@@ -119,17 +119,51 @@ class recipeController {
     }
 
     async updateRecipe(req, res) {
-        const {id} = req.params
-        const updatedFields = req.body
+        const { id } = req.params;
         try {
-            const recipes = await Recipe.findById(id)
-            if (!recipes) {
+            // Проверяем, был ли файл передан с запросом
+            const image = req.file ? req.file.filename : null;
+
+            // Деструктуризация данных из тела запроса
+            const {
+                name,
+                description,
+                difficult,
+                ingredients,
+                kitchenID,
+                typeID,
+                equipment,
+                steps,
+                visibility
+            } = req.body;
+
+            // Находим рецепт по ID
+            const recipe = await Recipe.findById(id);
+            if (!recipe) {
                 return res.status(404).json({ message: "Рецепт не найден" });
             }
-            Object.assign(recipes, updatedFields)
-            await recipes.save()
-            return res.json({ message: "Рецепт успешно обновлен", recipes });
+
+            // Обновляем поля рецепта
+            recipe.name = name;
+            recipe.description = description;
+            recipe.difficult = difficult;
+            recipe.ingredients = JSON.parse(ingredients);
+            recipe.kitchenID = kitchenID;
+            recipe.typeID = typeID;
+            recipe.equipment = JSON.parse(equipment);
+            recipe.steps = JSON.parse(steps);
+            recipe.visibility = visibility;
+
+            // Если изображение было передано, обновляем поле image
+            if (image) {
+                recipe.image = image;
+            }
+
+            // Сохраняем обновленный рецепт
+            await recipe.save();
+            return res.json({ message: "Рецепт успешно обновлен", recipe });
         } catch (e) {
+            console.error(e); // Логируем ошибку для отладки
             res.status(500).json({ message: "Ошибка при обновлении рецепта" });
         }
     }

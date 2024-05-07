@@ -15,6 +15,7 @@ import Steps from "../components/Steps";
 import {useNavigate, useParams} from "react-router-dom";
 import {fetchImage, getJwtAuthFilesHeader, getJwtAuthHeader} from "../functions";
 import Loading from "../components/Loading";
+import Cookies from "js-cookie";
 
 
 const CreateRecipePage = () => {
@@ -194,7 +195,12 @@ const CreateRecipePage = () => {
             }
 
             const url = dbUrl + '/recipe/' + id;
-            await axios.put(url, formData, getJwtAuthFilesHeader()).then((response) => {
+            await axios.put(url, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: "Bearer " + Cookies.get("token")
+                }
+            }).then((response) => {
                 console.log(response.data)
                 // navigate('/user/' + currentUser._id)
             })
