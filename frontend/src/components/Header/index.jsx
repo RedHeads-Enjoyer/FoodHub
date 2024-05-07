@@ -65,6 +65,11 @@ const Header = () => {
         navigate('/createRecipe')
     }
 
+    const handleMenuSettings = () => {
+        setMenuStatus(false)
+        navigate('/user/edit/' + currentUser._id)
+    }
+
       return (
           <header className={classes.header__wrapper}>
               <Link to={"/search"}>
@@ -103,7 +108,7 @@ const Header = () => {
                                   </li>
                                   <li className={classes.menu__item__wrapper}>
                                       <div className={classes.menu__item}>
-                                          <button>Настройки</button>
+                                          <button onClick={handleMenuSettings}>Настройки</button>
                                       </div>
                                   </li>
                                   <li className={classes.menu__item__wrapper}>

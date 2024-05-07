@@ -1,0 +1,36 @@
+.profile__wrapper {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    height: calc(100% - 40px);
+    overflow-y: scroll;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.user__info__wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.avatar__wrapper {
+    width: 200px;
+    height: 200px;
+}
+
+.avatar__wrapper img{
+    cursor: pointer;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.page__label {
+    font-weight: var(--font-accent-weight);
+    text-align: center;
+}
+
+.recipes__label {
+    margin-top: 10px;
+    font-weight: var(--font-accent-weight);
+}

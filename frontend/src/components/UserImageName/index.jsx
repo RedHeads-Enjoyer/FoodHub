@@ -48,7 +48,7 @@ const UserImageName = ({id}) => {
 
     return (
         <Link className={classes.user__wrapper} to={"/user/" + user._id}>
-            <img className={classes.user__image} style={{width: "40px"}} src={imageUrl}/>
+            <img className={classes.user__image} src={imageUrl}/>
             <p className={classes.username}>{user.username}</p>
         </Link>
     );
