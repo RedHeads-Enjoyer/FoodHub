@@ -2,6 +2,10 @@
     width: 280px;
 }
 
+.image__wrapper {
+    width: 100%;
+}
+
 .image__wrapper img {
     width: 100%;
 }
