@@ -53,6 +53,10 @@ const ShowRecipePage = () => {
     }, [])
 
     useEffect(() => {
+        console.log(currentUser)
+    }, [currentUser])
+
+    useEffect(() => {
         if (Object.keys(recipe).length !== 0) {
             setIsLoading(false)
             fetchImage(setImage, recipe.image);
@@ -171,7 +175,7 @@ const ShowRecipePage = () => {
                    {recipe.name}
                    {isLoadingCurrentUser ? " "
                        :
-                       currentUser._id === id || currentUser.roles.includes('admin') ?
+                       currentUser._id === recipe.authorID || currentUser.roles.includes('admin') ?
                            <Link to={"/recipe/edit/" + id}>
                                <button className={classes.admin__button}>
                                    изменить

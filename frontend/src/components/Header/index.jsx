@@ -33,7 +33,7 @@ const Header = () => {
 
     useEffect(() => {
         if (currentUser !== '') {
-            // fetchImage(setImage, currentUser.image)
+            fetchImage(setImage, currentUser.image)
         }
     }, [currentUser])
 

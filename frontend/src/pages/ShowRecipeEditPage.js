@@ -136,11 +136,16 @@ const CreateRecipePage = () => {
         }
     };
 
-    const handleDeleteRecipe = () => {
-        axios.delete(dbUrl + '/recipe/' + id).then(
-            navigate('/user/' + recipe.authorID)
-        )
-    }
+    // const handleDeleteRecipe = (e) => {
+    //     e.preventDefault()
+    //     console.log('asd')
+        // axios.delete(dbUrl + '/recipe/' + id).then(() => {
+        // navigate('/recipe/' + id)
+        // }
+        // ) .catch(error => {
+        //     console.error('Ошибка при удалении рецепта:', error);
+        // })
+    // }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -170,7 +175,6 @@ const CreateRecipePage = () => {
                     Authorization: "Bearer " + Cookies.get("token")
                 }
             }).then((response) => {
-                console.log(response.data)
                 navigate('/recipe/' + id)
             })
         } catch (error) {
@@ -298,9 +302,9 @@ const CreateRecipePage = () => {
                         <div className={classes.submit__button__wrapper}>
                             <button className={classes.submit__button} type={"submit"}>Изменить</button>
                         </div>
-                        <div className={classes.submit__button__wrapper}>
-                            <button className={classes.submit__button} onClick={handleDeleteRecipe}>Удалить рецепт</button>
-                        </div>
+                        {/*<div className={classes.submit__button__wrapper}>*/}
+                        {/*    <button className={classes.submit__button} onClick={handleDeleteRecipe}>Удалить рецепт</button>*/}
+                        {/*</div>*/}
                 </>
 
                 }
