@@ -60,7 +60,6 @@ const IngredientsList = ({addedIngredients, allIngredients, label, setTarget, na
         const result = Math.ceil(calories/weight)
         if (result) setCalorieCounter(result)
         else setCalorieCounter(0)
-        console.log(addedIngredients)
     }, [addedIngredients])
 
     useEffect(() => {

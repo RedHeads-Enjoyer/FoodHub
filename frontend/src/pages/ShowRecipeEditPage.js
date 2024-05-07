@@ -13,7 +13,7 @@ import EquipmentList from "../components/EquipmentList";
 import image_placeholder from "../images/image_placeholder.svg"
 import Steps from "../components/Steps";
 import {useNavigate, useParams} from "react-router-dom";
-import {getJwtAuthFilesHeader, getJwtAuthHeader} from "../functions";
+import {fetchImage, getJwtAuthFilesHeader, getJwtAuthHeader} from "../functions";
 import Loading from "../components/Loading";
 
 
@@ -33,6 +33,10 @@ const CreateRecipePage = () => {
 
     const navigate = useNavigate()
     let recipeData = {}
+
+    useEffect(() => {
+        console.log(recipe)
+    }, [recipe])
 
     useEffect(() => {
         async function fetchData() {
@@ -69,7 +73,6 @@ const CreateRecipePage = () => {
                     return {...equipmentMap[eq] }; // Исправьте здесь, чтобы использовать eq._id
                 });
                 setRecipe(prevRecipe => ({ ...prevRecipe, equipment: newRecipeEquipment }));
-                console.log(recipeEquipmentIds, equipmentResponse)
                 const filteredEquipment = equipmentResponse.data.filter(item =>
                     !recipeEquipmentIds.includes(item._id)
                 );
@@ -82,6 +85,8 @@ const CreateRecipePage = () => {
                 // Получаем типы
                 const typesResponse = await axios.get(dbUrl + '/type');
                 setTypes(typesResponse.data);
+
+                fetchImage(setImage, recipeData.image)
 
             } catch (error) {
                 console.log(error.message);
@@ -160,10 +165,6 @@ const CreateRecipePage = () => {
     };
 
     useEffect(() => {
-        console.log(recipe)
-    }, [recipe])
-
-    useEffect(() => {
         handleChangeSelectedIngredients()
     }, [selectedIngredients])
 
@@ -175,7 +176,7 @@ const CreateRecipePage = () => {
         e.preventDefault();
         try {
             const formData = new FormData();
-            formData.append('image', recipe.image); // Используем выбранный файл из состояния recipe
+            formData.append('image', recipe.image);
             formData.append('name', recipe.name);
             formData.append('description', recipe.description);
             formData.append('difficult', recipe.difficult);
@@ -187,12 +188,16 @@ const CreateRecipePage = () => {
             formData.append('visibility', recipe.visibility);
             formData.append('authorID', recipe.authorID);
 
+            console.log(recipe)
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
 
-            const url = dbUrl + '/recipe';
-            const response = await axios.post(url, formData, getJwtAuthFilesHeader()).then(() => {
-                navigate('/user/' + currentUser._id)
+            const url = dbUrl + '/recipe/' + id;
+            await axios.put(url, formData, getJwtAuthFilesHeader()).then((response) => {
+                console.log(response.data)
+                // navigate('/user/' + currentUser._id)
             })
-            console.log(response);
         } catch (error) {
             if (error.response) {
                 // Здесь обрабатываем ошибку на уровне ответа от сервера
@@ -288,35 +293,35 @@ const CreateRecipePage = () => {
                                     name={"equipment"}
                                 />
                             </div>
-                        {/*    <div className={classes.image__wrapper}>*/}
-                        {/*        <label htmlFor={"image"}>*/}
-                        {/*            <p>Заставка </p>*/}
-                        {/*            <div className={classes.image__label}>*/}
-                        {/*                {image === "" || image == null*/}
-                        {/*                    ?*/}
-                        {/*                    <img src={image_placeholder}/>*/}
-                        {/*                    :*/}
-                        {/*                    <img src={image}/>*/}
-                        {/*                }*/}
+                            <div className={classes.image__wrapper}>
+                                <label htmlFor={"image"}>
+                                    <p>Заставка </p>
+                                    <div className={classes.image__label}>
+                                        {image === "" || image == null
+                                            ?
+                                            <img src={image_placeholder}/>
+                                            :
+                                            <img src={image}/>
+                                        }
 
-                        {/*            </div>*/}
-                        {/*        </label>*/}
-                        {/*        <input*/}
-                        {/*            className={classes.input__file}*/}
-                        {/*            type="file"*/}
-                        {/*            accept={"image/*"}*/}
-                        {/*            onChange={handleImageChange}*/}
-                        {/*            id={"image"}*/}
-                        {/*        />*/}
-                        {/*    </div>*/}
-                        {/*    <Steps*/}
-                        {/*        steps={recipe.steps}*/}
-                        {/*        name={"steps"}*/}
-                        {/*        onChange={handleChangeRecipe}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
-                        {/*<div className={classes.submit__button__wrapper}>*/}
-                        {/*    <button className={classes.submit__button} type={"submit"}>Создать</button>*/}
+                                    </div>
+                                </label>
+                                <input
+                                    className={classes.input__file}
+                                    type="file"
+                                    accept={"image/*"}
+                                    onChange={handleImageChange}
+                                    id={"image"}
+                                />
+                            </div>
+                            <Steps
+                                steps={recipe.steps}
+                                name={"steps"}
+                                onChange={handleChangeRecipe}
+                            />
+                        </div>
+                        <div className={classes.submit__button__wrapper}>
+                            <button className={classes.submit__button} type={"submit"}>Изменить</button>
                     </div>
                 </>
 

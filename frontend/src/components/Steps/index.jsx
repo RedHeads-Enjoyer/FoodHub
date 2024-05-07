@@ -46,6 +46,7 @@ const Steps = ({steps, onChange, name}) => {
                         value={step.description}
                         placeholder={"Описание"}
                         required={true}
+                        name={`editDescription${index}`}
                         onChange={(e) => handleDescriptionChange(e, index)}
                     />
                 </div>
