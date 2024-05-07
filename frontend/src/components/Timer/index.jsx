@@ -2,8 +2,13 @@ import classes from "./styles.module.css";
 import {useEffect, useRef, useState} from "react";
 
 const Timer = ({onChange, steps, index, name}) => {
-    const [duration, setDuration] = useState({h: "", m: "", s: ""})
-    const minutesRef= useRef()
+    const [duration, setDuration] = useState(
+        {
+            h: Math.floor(steps[index].duration / 3600),
+            m: Math.floor(steps[index].duration % 3600 / 60),
+            s: steps[index].duration % 60
+        })
+    const minutesRef = useRef()
     const secondsRef = useRef()
 
     useEffect(() => {

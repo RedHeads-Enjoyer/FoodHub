@@ -22,18 +22,14 @@ const CreateRecipePage = () => {
     const [recipe, setRecipe] = useState({})
     const {id} = useParams()
 
-    const [selectedIngredients, setSelectedIngredients] = useState([])
     const [ingredients, setIngredients] = useState([])
     const [equipment, setEquipment] = useState([])
-    const [selectedEquipment, setSelectedEquipment] = useState([])
     const [kitchens, setKitchens] = useState([])
     const [types, setTypes] = useState([])
     const [image, setImage] = useState("")
-    const [currentUser, setCurrentUser] = useState('')
     const [isLoading, setIsLoading] = useState(true)
 
     const navigate = useNavigate()
-    let recipeData = {}
 
     useEffect(() => {
         console.log(recipe)
@@ -107,31 +103,6 @@ const CreateRecipePage = () => {
         setRecipe({...recipe, [input.name]: input.value})
     }
 
-    const handleChangeSelectedIngredients = () => {
-        let recipeIngredients = []
-        selectedIngredients.forEach((ingredient) => {
-            recipeIngredients.push({
-                ingredientID: ingredient._id,
-                quantity: parseInt(ingredient.quantity)
-            })
-        })
-        setRecipe({
-            ...recipe,
-            ingredients: recipeIngredients,
-        })
-    }
-
-    const handleChangeSelectedEquipment = () => {
-        let recipeEquipment = []
-        selectedEquipment.forEach((equipment) => {
-            recipeEquipment.push(String(equipment._id))
-        })
-        setRecipe({
-            ...recipe,
-            equipment: recipeEquipment,
-        })
-    }
-
     const handleChangeRecipeType = (id) => {
         setRecipe({
             ...recipe,
@@ -165,14 +136,6 @@ const CreateRecipePage = () => {
         }
     };
 
-    useEffect(() => {
-        handleChangeSelectedIngredients()
-    }, [selectedIngredients])
-
-    useEffect(() => {
-        handleChangeSelectedEquipment()
-    }, [selectedEquipment])
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -202,7 +165,7 @@ const CreateRecipePage = () => {
                 }
             }).then((response) => {
                 console.log(response.data)
-                // navigate('/user/' + currentUser._id)
+                navigate('/recipe/' + id)
             })
         } catch (error) {
             if (error.response) {

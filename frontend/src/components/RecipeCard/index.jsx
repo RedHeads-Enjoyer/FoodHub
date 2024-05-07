@@ -52,7 +52,7 @@ const RecipeCard = ({recipe}) => {
         <div className={classes.card__wrapper}>
             <Link to={'/recipe/' + recipe._id}>
                 <div className={classes.image__wrapper}>
-                    <img src={imageUrl} alt={recipe.name} />
+                    <img className={classes.recipe__image} src={imageUrl} alt={recipe.name} />
                 </div>
                 <p className={classes.recipe__name}>{recipe.name}</p>
                 <div className={classes.info__grid}>

@@ -4,8 +4,7 @@ import InputTextArea from "../InputTextArea";
 import Timer from "../Timer";
 
 const Steps = ({steps, onChange, name}) => {
-
-    const handleAddStepButton = (e) => {
+        const handleAddStepButton = (e) => {
         e.preventDefault()
         onChange({ currentTarget: {name, value: [...steps, {duration: 0, description: ""}]} })
     }

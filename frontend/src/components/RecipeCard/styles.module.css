@@ -6,8 +6,10 @@
     width: 100%;
 }
 
-.image__wrapper img {
-    width: 100%;
+.recipe__image {
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
 }
 
 .recipe__name {
