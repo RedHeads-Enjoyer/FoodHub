@@ -34,3 +34,11 @@
     margin-top: 10px;
     font-weight: var(--font-accent-weight);
 }
+
+.recipes__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    flex-shrink: 1;
+    justify-content: space-around;
+    gap: 10px;
+}

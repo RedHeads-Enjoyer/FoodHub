@@ -5,16 +5,23 @@ import {useParams} from "react-router-dom";
 import {dbUrl} from "../config";
 import classes from "./UserPage.module.css";
 import image_placeholder from "../images/image_placeholder.svg"
+import {fetchImage, getJwtAuthHeader} from "../functions";
+import Loading from "../components/Loading";
+import RecipeCard from "../components/RecipeCard";
+import RecipeCarp from "../components/RecipeCard";
 
 
 const UserPage = () => {
     const [user, setUser] = useState({
         username: "",
         image: "",
-
+        recipes: []
     })
 
+    const [isLoading, setIsLoading] = useState(true)
+
     const [avatar, setAvatar] = useState("")
+    const [recipes, setRecipes] = useState([])
     const {id} = useParams()
 
     useEffect(() => {
@@ -30,22 +37,18 @@ const UserPage = () => {
 
     useEffect(() => {
         if (user.image !== "") {
-            const fetchImage = async () => {
-                try {
-                    const response = await axios.get(dbUrl + '/image/' + user.image, {
-                        responseType: 'blob'
-                    });
-                    const avatar = URL.createObjectURL(response.data);
-                    setAvatar(avatar);
-                } catch (error) {
-                    console.error('Error fetching image:', error);
-                }
-            };
-            fetchImage();
+            fetchImage(setAvatar, user.image)
 
-            return () => {
-                URL.revokeObjectURL(avatar);
-            };
+            setIsLoading(true);
+            const requests = user.recipes.map(recipe =>
+                axios.get(dbUrl + '/recipe_without_view/' + recipe.id, getJwtAuthHeader())
+            );
+
+            Promise.all(requests).then(responses => {
+                const tmpRecipes = responses.map(response => response.data);
+                setRecipes(tmpRecipes);
+                setIsLoading(false);
+            });
         }
     }, [user]);
 
@@ -68,7 +71,13 @@ const UserPage = () => {
                 <p>{user.username}</p>
             </div>
             <p className={classes.recipes__label}>Рецепты пользователя</p>
-
+            <div className={classes.recipes__wrapper}>
+                {recipes.map((recipe) => (
+                    <div key={recipe._id}>
+                        <RecipeCarp recipe={recipe}/>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }

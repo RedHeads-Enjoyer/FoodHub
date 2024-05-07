@@ -21,4 +21,5 @@ router.delete('/user/:id', ownerMiddleware(['admin']), controller.deleteById)
 router.put('/user/:id', upload.single('image'), controller.updateById)
 
 
+
 module.exports = router

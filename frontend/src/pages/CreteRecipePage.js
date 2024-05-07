@@ -91,20 +91,6 @@ const CreateRecipePage = () => {
         setRecipe({...recipe, [input.name]: input.value})
     }
 
-    const handleChangeSelectedIngredientsQuantity = (e, ingId) => {
-        const { name, value } = e.target;
-        setSelectedIngredients(prevIngredients => {
-            return prevIngredients.map(ing => {
-                if (ing._id === ingId) {
-                    return { ...ing, [name]: value };
-                }
-                return ing;
-            });
-        });
-    };
-
-
-
     const handleChangeSelectedIngredients = () => {
         let recipeIngredients = []
         selectedIngredients.forEach((ingredient) => {

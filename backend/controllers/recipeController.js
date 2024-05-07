@@ -31,7 +31,13 @@ class recipeController {
                 authorID: req.user._id,
                 image});
 
+
+
             await recipe.save();
+
+            const user = req.user
+            user.recipes.push({id: recipe._id})
+            await user.save()
             return res.json({message: "Рецепт успешно добавлен"});
         } catch (e) {
             console.log(e);
@@ -71,6 +77,20 @@ class recipeController {
             }
             user.history.push({ id: id });
             await user.save();
+
+            return res.json(recipe);
+        } catch (e) {
+            res.status(500).json({ message: "Ошибка при получении рецепта" });
+        }
+    }
+
+    async getRecipeWithoutView(req, res) {
+        const { id } = req.params;
+        try {
+            const recipe = await Recipe.findById(id);
+            if (!recipe) {
+                return res.status(404).json({ message: "Рецепт не найден" });
+            }
 
             return res.json(recipe);
         } catch (e) {

@@ -13,6 +13,9 @@ const User = new Schema({
     rated: [{
         id: {type: String, ref: 'recipe', required: true},
         rate: {type: Number, required: true}
+    }],
+    recipes: [{
+        id: {type: String, ref: 'recipe', required: true}
     }]
 })
 
