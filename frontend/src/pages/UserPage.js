@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {useState} from "react";
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {dbUrl} from "../config";
 import classes from "./UserPage.module.css";
 import image_placeholder from "../images/image_placeholder.svg"
@@ -9,6 +9,7 @@ import {fetchImage, getJwtAuthHeader} from "../functions";
 import Loading from "../components/Loading";
 import RecipeCard from "../components/RecipeCard";
 import RecipeCarp from "../components/RecipeCard";
+import Button from "../components/Button";
 
 
 const UserPage = () => {
@@ -17,6 +18,19 @@ const UserPage = () => {
         image: "",
         recipes: []
     })
+
+    const [currentUser, setCurrentUser] = useState({})
+    const [isLoadingCurrentUser, setIsLoadingCurrentUser] = useState(true)
+
+    useEffect(() => {
+        axios.get(dbUrl + '/user/me', getJwtAuthHeader())
+            .then((response) => {
+                setCurrentUser(response.data)
+            })
+            .catch((error) => {
+                console.log(error.error)
+            }).finally(()=> setIsLoadingCurrentUser(false));
+    }, [])
 
     const [isLoading, setIsLoading] = useState(true)
 
@@ -69,10 +83,13 @@ const UserPage = () => {
                     }
                 </div>
                 <p>{user.username}</p>
+                {isLoadingCurrentUser ? " " : currentUser._id === id || currentUser.roles.includes('admin') ? <Link to={"/user/edit/" + id}><button className={classes.admin__button}>asd</button></Link> : "" }
             </div>
             <p className={classes.recipes__label}>Рецепты пользователя</p>
             <div className={classes.recipes__wrapper}>
-                {recipes.map((recipe) => (
+                {recipes.length === 0 ? <p>У этого пользователя нет рецептов</p> :
+                    isLoading ? <Loading/> :
+                    recipes.map((recipe) => (
                     <div key={recipe._id}>
                         <RecipeCarp recipe={recipe}/>
                     </div>

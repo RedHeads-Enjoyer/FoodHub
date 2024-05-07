@@ -39,7 +39,6 @@ const UserPage = () => {
             .get(dbUrl + `/user/${id}`)
             .then(data => {
                 setUser(data.data)
-                console.log(data.data)
             })
             .catch(error => {
                 console.error("Ошибка получения данных:", error.response.data.message);
@@ -90,7 +89,7 @@ const UserPage = () => {
         const formData = new FormData();
         formData.append('image', user.image);
         formData.append('username', user.username);
-        const response = await axios.put(dbUrl + '/user/' + currentUser._id, formData, {
+        const response = await axios.put(dbUrl + '/user/' + user._id, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -106,7 +105,7 @@ const UserPage = () => {
     return (
         <div className={classes.profile__wrapper}>
             <p className={classes.page__label}>Изменение профиля</p>
-            {currentUser !== "" && currentUser._id=== user._id && <>
+            <>
                 <input
                     className={classes.input__file}
                     id={"user_avatar"}
@@ -145,7 +144,7 @@ const UserPage = () => {
                     <Button onClick={handleUpdate} name={"Сохранить изменения"}/>
                 </div>
 
-            </>}
+            </>
         </div>
     )
 }

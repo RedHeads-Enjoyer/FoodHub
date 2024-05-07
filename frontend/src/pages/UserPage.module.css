@@ -12,6 +12,7 @@
     margin-top: 10px;
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .avatar__wrapper {
@@ -44,4 +45,11 @@
     flex-grow: 1;
     justify-content: space-around;
     gap: 10px;
+}
+
+.admin__button {
+    outline: none;
+    border: 0;
+    background-color: var(--color-admin);
+    color: white;
 }

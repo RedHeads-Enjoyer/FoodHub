@@ -82,7 +82,7 @@ const Header = () => {
 
       return (
           <header className={classes.header__wrapper}>
-              <Link to={"/search"}>
+              <Link to={"/search?searchRequest="}>
                   <div className={classes.logo__wrapper}>
                       <h1 className={classes.name}>ЗРЯТЬ ЕДА</h1>
                   </div>
