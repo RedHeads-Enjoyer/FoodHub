@@ -12,11 +12,6 @@ import {changeStatus} from "../slices/userSlice";
 
 const LoginPage = () => {
     const dispatch = useDispatch();
-    const userStatus = useSelector((state)=>state.user.status);
-
-    useEffect(() => {
-        console.log(userStatus)
-    }, [])
 
     const navigate = useNavigate()
     const [data, setData] = useState({

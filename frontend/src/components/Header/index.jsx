@@ -14,10 +14,6 @@ const Header = () => {
     const dispatch = useDispatch();
     const userStatus = useSelector((state)=>state.user.status);
 
-    useEffect(() => {
-        console.log(userStatus)
-    }, [userStatus])
-
     const [currentUser, setCurrentUser] = useState('')
     const [image, setImage] = useState('')
     const [menuStatus, setMenuStatus] = useState(false)
@@ -71,9 +67,12 @@ const Header = () => {
 
       return (
           <header className={classes.header__wrapper}>
-              <div className={classes.logo__wrapper}>
-                  <h1 className={classes.name}>ЗРЯТЬ ЕДА</h1>
-              </div>
+              <Link to={"/search"}>
+                  <div className={classes.logo__wrapper}>
+                      <h1 className={classes.name}>ЗРЯТЬ ЕДА</h1>
+                  </div>
+              </Link>
+              { userStatus !== false &&
               <div className={classes.search__bar__wrapper}>
                   <input
                       type={"text"}
@@ -83,7 +82,7 @@ const Header = () => {
                   <button className={classes.search__button}>
                       <img src={search_button}/>
                   </button>
-              </div>
+              </div> }
 
               {userStatus !== false ? <>
                   <div className={classes.user__wrapper} onClick={changeMenuStatus}>
