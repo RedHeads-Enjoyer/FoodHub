@@ -9,7 +9,7 @@ import RecipeCarp from "../components/RecipeCard";
 const SearchPage = () => {
     const [recipes, setRecipes] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
-    const [fetching, setFetching] = useState(true)
+    const [fetching, setFetching] = useState(false)
     const [totalCount, setTotalCount] = useState(0)
 
     const [searchParams] = useSearchParams();
@@ -17,7 +17,6 @@ const SearchPage = () => {
 
     useEffect(() => {
         if (!fetching) return
-        console.log(searchRequest)
         axios
             .get(dbUrl + `/recipe?_limit=20&_page=${currentPage}&name=${searchRequest}`)
             .then(response => {
@@ -53,11 +52,11 @@ const SearchPage = () => {
             {/*    <p className={classes.filters__label}>Фильтры</p>*/}
             {/*</div>*/}
             <div className={classes.recipes__wrapper}>
-                {recipes.map((recipe) => (
+                {recipes.length !== 0 ? recipes.map((recipe) => (
                     <div key={recipe._id}>
                         <RecipeCarp recipe={recipe}/>
                     </div>
-                ))}
+                )) : <p>Ничего не найдно</p>}
             </div>
         </div>
     )
