@@ -22,6 +22,6 @@ module.exports = async function (req, res, next) {
         req.user = user;
         next();
     } catch (error) {
-        res.status(500).send({ error: 'Internal server error' });
+        res.status(500).send({ error: 'Internal server error123' });
     }
 }
