@@ -14,8 +14,8 @@ const Recipe = new Schema({
         _id: { type: Schema.Types.ObjectId, ref: 'recipe_ingredient', required: true },
         quantity: { type: Number, required: true }
     }],
-    kitchenID: {type: Schema.Types.ObjectId, ref: 'recipe_kitchen', required: true},
-    typeID: {type: Schema.Types.ObjectId, ref: 'recipe_type', required: true},
+    kitchenID: {type: Schema.Types.ObjectId, ref: 'recipe_kitchen', default: "6633e62ef8f574377f536ad9"},
+    typeID: {type: Schema.Types.ObjectId, ref: 'recipe_type', default: "663d3c74ef921765d8a77388"},
     equipment: [{type: Schema.Types.ObjectId, ref: 'recipe_equipment', required: true}],
     steps: [{
         description: { type: String, required: true },
