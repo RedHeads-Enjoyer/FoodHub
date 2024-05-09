@@ -16,7 +16,6 @@ class imageController {
                 // Если файл найден, отправляем его
                 res.sendFile(filePath);
             });
-
         } catch (e) {
             res.status(500).json({ message: "Ошибка при получении файла" });
         }
