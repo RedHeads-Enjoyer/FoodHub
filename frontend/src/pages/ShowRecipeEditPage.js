@@ -13,8 +13,9 @@ import EquipmentList from "../components/EquipmentList";
 import image_placeholder from "../images/image_placeholder.svg"
 import Steps from "../components/Steps";
 import {useNavigate, useParams} from "react-router-dom";
-import {fetchImage, getCookie, getJwtAuthFilesHeader, getJwtAuthHeader} from "../functions";
+import {fetchImage, getJwtAuthFilesHeader, getJwtAuthHeader} from "../functions";
 import Loading from "../components/Loading";
+import Cookies from "js-cookie";
 
 
 const CreateRecipePage = () => {
@@ -171,7 +172,7 @@ const CreateRecipePage = () => {
             await axios.put(url, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: "Bearer " + getCookie("token")
+                    Authorization: "Bearer " + Cookies.get("token")
                 }
             }).then((response) => {
                 navigate('/recipe/' + id)

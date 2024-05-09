@@ -50,7 +50,6 @@ class authController {
                 return res.status(400).json({message: "Неверно введен адрес элктронной почты или пароль"})
             }
             const token = generateAccessToken(user._id, user.roles, user.username)
-            res.cookie("token", token)
             return res.json({token: token})
 
         } catch (e) {

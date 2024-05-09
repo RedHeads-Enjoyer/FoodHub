@@ -10,6 +10,8 @@ module.exports = async function (req, res, next) {
         return;
     }
     token = token.replace('Bearer ', '')
+    console.log(token)
+
     try {
         const decoded = jwt.verify(token, secret);
         const user = await User.findById(decoded.id);
